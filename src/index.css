@@ -1,0 +1,105 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+  Palette "atelier / chantier" — chaux, charbon, brique brûlée, jaune balisage.
+  Volontairement à l'écart du bleu/violet SaaS.
+*/
+:root {
+  --radius: 0.375rem;
+
+  --background: #f7f3ec;
+  --foreground: #1b1714;
+
+  --card: #fffdf8;
+  --card-foreground: #1b1714;
+
+  --popover: #fffdf8;
+  --popover-foreground: #1b1714;
+
+  /* Brique brûlée */
+  --primary: #b4441f;
+  --primary-foreground: #fff8f1;
+
+  /* Charbon */
+  --secondary: #262019;
+  --secondary-foreground: #f7f3ec;
+
+  --muted: #ede6d9;
+  --muted-foreground: #6b6155;
+
+  /* Jaune balisage chantier */
+  --accent: #e9a723;
+  --accent-foreground: #241c0b;
+
+  --destructive: #a02c1c;
+  --destructive-foreground: #fff8f1;
+
+  --border: #ddd3c1;
+  --input: #ddd3c1;
+  --ring: #b4441f;
+
+  --surface-plaster: #efe8db;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-plaster: var(--surface-plaster);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Fine trame diagonale type bâche de chantier, utilisée en fond de sections. */
+  .bg-tarp {
+    background-image: repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--foreground) 4%, transparent) 0 1px,
+      transparent 1px 11px
+    );
+  }
+
+  /* Liseré de balisage chantier. */
+  .bg-hazard {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--accent) 0 12px,
+      var(--secondary) 12px 24px
+    );
+  }
+}
