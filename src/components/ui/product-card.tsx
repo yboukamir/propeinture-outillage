@@ -1,5 +1,4 @@
 import * as React from "react"
-import { motion, type HTMLMotionProps } from "framer-motion"
 
 import { cn, formatPrix } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -12,17 +11,12 @@ import { Button } from "@/components/ui/button"
  * Modifications : formatage roupies → euros (`formatPrix`, locale fr-FR),
  * `imageUrl` remplacé par un visuel libre en ReactNode, prix barré / texte
  * d'offre remplacés par le prix à l'unité, la référence et l'état de stock,
- * ajout d'un bouton d'ajout au panier. Animation `whileHover` d'origine
- * conservée.
+ * ajout d'un bouton d'ajout au panier. Le `whileHover` framer-motion d'origine
+ * est rendu en transition CSS.
  */
 
-/*
- * Le composant d'origine étendait `React.HTMLAttributes<HTMLDivElement>` tout
- * en rendant un `motion.div` : les types de `onDrag` et consorts entrent en
- * conflit. On part donc des props de framer-motion.
- */
 export interface ProductCardProps
-  extends Omit<HTMLMotionProps<"div">, "children"> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   visuel: React.ReactNode
   nom: string
   detail: string
@@ -52,14 +46,14 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     ref,
   ) => {
     return (
-      <motion.div
+      <div
         ref={ref}
         className={cn(
-          "group relative flex h-full w-full flex-col items-center justify-start overflow-hidden rounded-xl border border-border bg-card text-center text-card-foreground shadow-sm transition-all duration-300 ease-in-out hover:shadow-md",
+          // `translate` et non `transform` : en Tailwind v4 les utilitaires de
+          // translation passent par la propriété `translate`.
+          "group relative flex h-full w-full flex-col items-center justify-start overflow-hidden rounded-xl border border-border bg-card text-center text-card-foreground shadow-sm transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-md",
           className,
         )}
-        whileHover={{ y: -5 }}
-        transition={{ type: "spring", stiffness: 300 }}
         {...props}
       >
         <div className="relative flex h-44 w-full items-center justify-center border-b border-border bg-plaster bg-tarp p-6">
@@ -110,7 +104,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             Ajouter
           </Button>
         </div>
-      </motion.div>
+      </div>
     )
   },
 )

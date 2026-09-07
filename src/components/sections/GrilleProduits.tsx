@@ -1,27 +1,7 @@
-import { motion, type Variants } from "framer-motion"
-
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/ui/product-card"
 import { ProduitIllustration } from "@/components/ProduitIllustration"
 import { produits } from "@/data/produits"
-
-/* Animation d'entrée en cascade reprise de la démo 21st de la ProductCard. */
-const conteneurVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-}
-
-const carteVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 14 },
-  },
-}
 
 export function GrilleProduits() {
   return (
@@ -49,15 +29,15 @@ export function GrilleProduits() {
           </Button>
         </div>
 
-        <motion.div
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          variants={conteneurVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-        >
-          {produits.map((produit) => (
-            <motion.div key={produit.id} variants={carteVariants}>
+        {/* Cascade d'apparition en CSS : le délai porte sur l'enveloppe, la
+            carte garde son propre `transform` pour le survol. */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {produits.map((produit, index) => (
+            <div
+              key={produit.id}
+              className="animate-apparition"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
               <ProductCard
                 visuel={<ProduitIllustration id={produit.illustration} />}
                 nom={produit.nom}
@@ -69,9 +49,9 @@ export function GrilleProduits() {
                 enStock={produit.stock === "en-stock"}
                 badge={produit.populaire ? "Best-seller" : undefined}
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         <p className="mt-8 text-sm text-muted-foreground">
           Besoin d'une référence absente de cette sélection ?{" "}

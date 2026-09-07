@@ -73,7 +73,33 @@
     Roboto, Helvetica, Arial, sans-serif;
 }
 
+/*
+ * Apparition des sections, en CSS pur : `both` laisse l'élément dans son état
+ * final, donc rien ne peut rester bloqué à `opacity: 0`. La cascade se règle
+ * avec `animation-delay` en style inline.
+ */
+@theme {
+  --animate-apparition: apparition 0.6s ease-out both;
+
+  @keyframes apparition {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 @layer base {
+  @media (prefers-reduced-motion: reduce) {
+    .animate-apparition {
+      animation: none;
+    }
+  }
+
   * {
     border-color: var(--border);
   }

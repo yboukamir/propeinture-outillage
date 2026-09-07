@@ -11,7 +11,7 @@ haut de page.
 - Tailwind CSS v4 (plugin `@tailwindcss/vite`, thème en variables CSS)
 - Composants shadcn/ui (`new-york`, base `stone`) : `button`, `badge`, `card`,
   `separator`, `sheet`
-- `framer-motion` pour les animations d'entrée, `lucide-react` pour les icônes
+- `lucide-react` pour les icônes ; aucune librairie d'animation, tout est en CSS
 
 ## Composants issus du catalogue 21st.dev
 
@@ -65,10 +65,11 @@ Univers artisanal / BTP plutôt que SaaS : fond chaux `#f7f3ec`, charbon
 
 - Tous les boutons sont inertes : c'est une maquette de style, pas une
   boutique. Aucun panier, aucun back-end, aucun moyen de paiement branché.
-- Les sections apparaissent en fondu (`initial/animate` pour le hero,
-  `whileInView` pour la grille produits) : c'est le motif des démos 21st.
-  Dans un onglet en arrière-plan le navigateur suspend `requestAnimationFrame`,
-  donc l'animation ne démarre qu'au retour sur l'onglet.
+- Les apparitions et les effets de survol sont en CSS pur, sans librairie
+  d'animation. L'utilitaire `animate-apparition` (défini dans `index.css`) monte
+  en `animation-fill-mode: both`, donc l'élément finit toujours visible ; la
+  cascade se règle avec `animation-delay` en style inline, et tout est neutralisé
+  sous `prefers-reduced-motion: reduce`.
 - Si vous déplacez le projet dans un dossier Windows redirigé (OneDrive, dossier
   d'une application packagée), le serveur de dev peut servir les sources non
   transformées : il faut alors ancrer `root` sur `fs.realpathSync(__dirname)` et

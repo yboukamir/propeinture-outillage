@@ -12,7 +12,6 @@
 
 import * as React from "react"
 import { ArrowUpRight, Menu, Phone, Search, ShoppingBasket } from "lucide-react"
-import { motion } from "framer-motion"
 
 import {
   Sheet,
@@ -185,35 +184,24 @@ export function CommerceHero({
           </div>
         </header>
 
-        <motion.section
-          className="w-full px-4 py-20 sm:py-24"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <section className="w-full animate-apparition px-4 py-20 sm:py-24">
           <div className="mx-auto max-w-4xl text-center">
-            <motion.h1
-              className="mb-6 text-4xl font-bold leading-tight tracking-tight text-balance md:text-5xl lg:text-6xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            <h1
+              className="mb-6 animate-apparition text-4xl font-bold leading-tight tracking-tight text-balance md:text-5xl lg:text-6xl"
+              style={{ animationDelay: "200ms" }}
             >
               {titre}
-            </motion.h1>
-            <motion.p
-              className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            </h1>
+            <p
+              className="mx-auto max-w-2xl animate-apparition text-base leading-relaxed text-muted-foreground md:text-lg"
+              style={{ animationDelay: "400ms" }}
             >
               {sousTitre}
-            </motion.p>
+            </p>
 
-            <motion.div
-              className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+            <div
+              className="mt-8 flex animate-apparition flex-col justify-center gap-3 sm:flex-row"
+              style={{ animationDelay: "500ms" }}
             >
               <Button asChild size="lg">
                 <a href={ctaPrincipal.href}>
@@ -224,13 +212,11 @@ export function CommerceHero({
               <Button asChild size="lg" variant="outline">
                 <a href={ctaSecondaire.href}>{ctaSecondaire.label}</a>
               </Button>
-            </motion.div>
+            </div>
 
-            <motion.ul
-              className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+            <ul
+              className="mt-8 flex animate-apparition flex-wrap items-center justify-center gap-x-6 gap-y-3"
+              style={{ animationDelay: "600ms" }}
             >
               {reassurance.map(({ icone: Icone, texte }) => (
                 <li
@@ -241,19 +227,17 @@ export function CommerceHero({
                   {texte}
                 </li>
               ))}
-            </motion.ul>
+            </ul>
           </div>
-        </motion.section>
+        </section>
       </div>
 
       <div className="mx-auto mt-12 grid max-w-7xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
         {vignettes.map((vignette, index) => (
-          <motion.div
+          <div
             key={vignette.title}
-            className="group relative min-h-[220px] w-full overflow-hidden rounded-3xl border border-border bg-card p-4 transition-all duration-500 sm:min-h-[260px] sm:p-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+            className="group relative min-h-[220px] w-full animate-apparition overflow-hidden rounded-3xl border border-border bg-card p-4 sm:min-h-[260px] sm:p-6"
+            style={{ animationDelay: `${index * 100}ms` }}
           >
             <a href={vignette.href} className="absolute inset-0 z-20">
               <h2 className="relative z-10 my-2 text-center text-xl font-bold text-primary transition-colors duration-300 group-hover:text-primary/90 sm:my-4 sm:text-2xl">
@@ -270,7 +254,7 @@ export function CommerceHero({
                 </span>
               </div>
             </a>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
