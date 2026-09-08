@@ -5,6 +5,36 @@ et de matériel pour peintres professionnels. **Aucune commande réelle**, aucun
 société derrière, aucun paiement branché — un bandeau permanent le rappelle en
 haut de page.
 
+## Aperçu
+
+![Header et hero : panneau charbon, titre en Barlow Semi Condensed, double appel à l'action et ligne de réassurance](docs/captures/01-hero.png)
+
+Le hero et sa barre de navigation. Le panneau charbon et l'encoche claire du
+header donnent le contraste ; les quatre vignettes de catégories suivent juste
+en dessous.
+
+![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.png)
+
+Le catalogue. Chaque carte porte sa photo en plein cadre, son état de stock, sa
+référence et son prix à l'unité.
+
+![Trois paliers tarifaires, celui du milieu en charbon avec la remise en jaune](docs/captures/03-tarifs.png)
+
+Les tarifs dégressifs, palier « Artisan » mis en avant.
+
+<img src="docs/captures/04-mobile.png" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="360">
+
+En mobile, la navigation se replie dans un panneau latéral.
+
+Les captures se régénèrent avec le serveur de dev lancé :
+
+```bash
+npm run captures
+```
+
+Le script utilise le Chrome installé sur la machine, sans télécharger de
+navigateur (`CHROME_PATH=...` pour en désigner un autre).
+
 ## Stack
 
 - Vite 6 + React 19 + TypeScript
@@ -41,6 +71,8 @@ Build de production : `npm run build`, puis `npm run preview`.
 ## Structure
 
 ```
+docs/captures/       les images de l'aperçu ci-dessus
+scripts/captures.mjs le script qui les régénère
 src/
   components/
     ui/               composants shadcn/ui + les 4 composants 21st adaptés
