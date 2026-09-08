@@ -37,7 +37,7 @@ export const produits: Produit[] = [
     reference: "PP-40-SY",
     stock: "en-stock",
     photo: "/produits/pinceau-plat.webp",
-    photoAlt: "Pinceaux alignés sur un textile",
+    photoAlt: "Pinceau plat de peintre sur fond uni",
   },
   {
     id: "bache-4x5",

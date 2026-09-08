@@ -8,7 +8,7 @@ commercial, sans attribution obligatoire). Elles sont ici en WebP, redimensionn√
 | Fichier | Identifiant Unsplash |
 |---|---|
 | `rouleau-laqueur.webp` | `photo-1516962080544-eac695c93791` |
-| `pinceau-plat.webp` | `photo-1513364776144-60967b0f800f` |
+| `pinceau-plat.webp` | `photo-1643312918957-9ccb79b08881` |
 | `bache-protection.webp` | `photo-1783361728036-94e0ff894f21` |
 | `enduit-lissage.webp` | `photo-1768839725085-829e6ac7ac26` |
 | `ruban-masquage.webp` | `photo-1536356915696-c6bf1c01da46` |
