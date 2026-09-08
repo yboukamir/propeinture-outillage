@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { imageUrl } from "@/lib/utils"
 
 export type LienNav = { name: string; href: string }
 
@@ -245,7 +244,7 @@ export function CommerceHero({
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <img
-              src={imageUrl(vignette.photo, 700)}
+              src={vignette.photo}
               alt={vignette.alt}
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"

@@ -7,7 +7,7 @@ export type Produit = {
   categorie: string
   reference: string
   stock: "en-stock" | "reappro"
-  /** Identifiant de photo Unsplash, voir `imageUrl()` dans lib/utils. */
+  /** Chemin servi depuis `public/`, voir public/produits/SOURCES.md. */
   photo: string
   photoAlt: string
   populaire?: boolean
@@ -23,7 +23,7 @@ export const produits: Produit[] = [
     categorie: "Application",
     reference: "RL-18-04",
     stock: "en-stock",
-    photo: "photo-1516962080544-eac695c93791",
+    photo: "/produits/rouleau-laqueur.webp",
     photoAlt: "Rouleau à peinture blanc posé sur un fond clair",
     populaire: true,
   },
@@ -36,7 +36,7 @@ export const produits: Produit[] = [
     categorie: "Application",
     reference: "PP-40-SY",
     stock: "en-stock",
-    photo: "photo-1513364776144-60967b0f800f",
+    photo: "/produits/pinceau-plat.webp",
     photoAlt: "Pinceaux alignés sur un textile",
   },
   {
@@ -48,7 +48,7 @@ export const produits: Produit[] = [
     categorie: "Protection",
     reference: "BP-450-100",
     stock: "en-stock",
-    photo: "photo-1783361728036-94e0ff894f21",
+    photo: "/produits/bache-protection.webp",
     photoAlt: "Bâche drapée formant des plis profonds",
   },
   {
@@ -60,7 +60,7 @@ export const produits: Produit[] = [
     categorie: "Préparation",
     reference: "EL-25-INT",
     stock: "reappro",
-    photo: "photo-1768839725085-829e6ac7ac26",
+    photo: "/produits/enduit-lissage.webp",
     photoAlt: "Application d'enduit sur un mur à la truelle",
     populaire: true,
   },
@@ -73,7 +73,7 @@ export const produits: Produit[] = [
     categorie: "Protection",
     reference: "RM-50-PRO",
     stock: "en-stock",
-    photo: "photo-1536356915696-c6bf1c01da46",
+    photo: "/produits/ruban-masquage.webp",
     photoAlt: "Rouleau de ruban de masquage sur fond jaune",
   },
   {
@@ -85,7 +85,7 @@ export const produits: Produit[] = [
     categorie: "Accessoires",
     reference: "GE-UNI",
     stock: "en-stock",
-    photo: "photo-1652829069862-87874e119527",
+    photo: "/produits/grille-essorage.webp",
     photoAlt: "Rouleau chargé de peinture dans son bac",
   },
 ]
@@ -93,22 +93,22 @@ export const produits: Produit[] = [
 export const categories = [
   {
     titre: "Application",
-    photo: "photo-1525909002-1b05e0c869d8",
+    photo: "/produits/categorie-application.webp",
     alt: "Rouleaux à peinture de couleurs vives",
   },
   {
     titre: "Préparation",
-    photo: "photo-1639430257115-f63af9eab97d",
+    photo: "/produits/categorie-preparation.webp",
     alt: "Mur fraîchement enduit",
   },
   {
     titre: "Protection",
-    photo: "photo-1783361728036-94e0ff894f21",
+    photo: "/produits/bache-protection.webp",
     alt: "Bâche de protection drapée",
   },
   {
     titre: "Accessoires",
-    photo: "photo-1456086272160-b28b0645b729",
+    photo: "/produits/categorie-accessoires.webp",
     alt: "Pots de peinture vus de dessus",
   },
 ]

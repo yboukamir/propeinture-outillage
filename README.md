@@ -68,10 +68,11 @@ courant en **Inter**, les deux chargées depuis Google Fonts dans `index.html`.
 
 ## Photos
 
-Les visuels produit et catégories sont des photos Unsplash appelées par leur
-identifiant dans `data/produits.ts` et assemblées par `imageUrl()`. Pour une
-vraie boutique, déposer les visuels du catalogue dans `public/` et remplacer
-cet helper.
+Les visuels produit et catégories sont dans `public/produits/` (WebP, 1000 px de
+large) et référencés par leur chemin dans `data/produits.ts` — aucune dépendance
+réseau à l'exécution. Leur provenance est listée dans
+[`public/produits/SOURCES.md`](public/produits/SOURCES.md). Pour une vraie
+boutique, remplacer les fichiers en gardant les mêmes noms.
 
 ## Notes
 
