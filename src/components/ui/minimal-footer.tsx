@@ -43,23 +43,25 @@ export function MinimalFooter({
   const annee = new Date().getFullYear()
 
   return (
-    <footer className="relative" id={id}>
-      <div className="mx-auto max-w-6xl bg-[radial-gradient(35%_80%_at_30%_0%,--theme(--color-foreground/.08),transparent)] md:border-x">
-        <div className="absolute inset-x-0 h-px w-full bg-border" />
+    <footer
+      className="bg-tarp-dark relative bg-secondary text-secondary-foreground"
+      id={id}
+    >
+      <div className="mx-auto max-w-6xl md:border-x md:border-border-dark">
 
         <div className="grid max-w-6xl grid-cols-6 gap-6 p-6">
           <div className="col-span-6 flex flex-col gap-5 md:col-span-4">
             <div className="w-max">{marque}</div>
-            <p className="max-w-sm text-sm text-balance text-muted-foreground">
+            <p className="max-w-sm text-sm text-balance text-secondary-foreground/70">
               {accroche}
             </p>
             <ul className="flex flex-col gap-2.5">
               {contacts.map(({ icone: Icone, texte }) => (
                 <li
                   key={texte}
-                  className="flex items-center gap-2.5 text-sm text-muted-foreground"
+                  className="flex items-center gap-2.5 text-sm text-secondary-foreground/80"
                 >
-                  <Icone className="size-4 shrink-0 text-primary" />
+                  <Icone className="size-4 shrink-0 text-accent" />
                   {texte}
                 </li>
               ))}
@@ -68,14 +70,14 @@ export function MinimalFooter({
 
           {colonnes.map((colonne) => (
             <div key={colonne.titre} className="col-span-3 w-full md:col-span-1">
-              <span className="mb-1 text-xs text-muted-foreground">
+              <span className="mb-1 text-xs uppercase tracking-[0.16em] text-secondary-foreground/50">
                 {colonne.titre}
               </span>
               <div className="flex flex-col gap-1">
                 {colonne.liens.map((lien) => (
                   <a
                     key={lien.titre}
-                    className="w-max py-1 text-sm duration-200 hover:underline"
+                    className="w-max py-1 text-sm text-secondary-foreground/80 duration-200 hover:text-accent hover:underline"
                     href={lien.href}
                   >
                     {lien.titre}
@@ -86,13 +88,13 @@ export function MinimalFooter({
           ))}
         </div>
 
-        <div className="absolute inset-x-0 h-px w-full bg-border" />
+        <div className="mx-6 h-px bg-border-dark" />
 
         <div className="flex max-w-6xl flex-col justify-between gap-2 px-6 pb-6 pt-4">
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm text-secondary-foreground/60">
             © {annee} {mentions}
           </p>
-          <p className="text-center text-xs font-medium text-primary">
+          <p className="text-center text-xs font-medium text-accent">
             {rappel}
           </p>
         </div>

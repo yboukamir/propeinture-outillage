@@ -48,18 +48,30 @@ src/
                       BandeLivraison, Footer — de fines enveloppes qui
                       alimentent les composants ui/ en contenu français
     Marque.tsx        le logo, partagé header / footer
-    ProduitIllustration.tsx   illustrations SVG maison (aucune image externe)
-  data/produits.ts    les 6 références du catalogue
-  lib/utils.ts        cn() + formatage des prix en euros (fr-FR)
-  index.css           palette et thème Tailwind v4
+  data/produits.ts    les 6 références du catalogue + les 4 catégories
+  lib/utils.ts        cn(), formatage des prix en euros (fr-FR), imageUrl()
+  index.css           palette, polices et thème Tailwind v4
 ```
 
-## Palette
+## Palette et typographie
 
-Univers artisanal / BTP plutôt que SaaS : fond chaux `#f7f3ec`, charbon
-`#1b1714`, brique brûlée `#b4441f` en couleur principale, jaune de balisage
-`#e9a723` en accent. Deux motifs utilitaires accompagnent le thème : `bg-tarp`
-(trame diagonale façon bâche) et `bg-hazard` (liseré de balisage).
+Univers artisanal / BTP plutôt que SaaS, construit sur un écart de valeurs
+franc : chaux `#f3eee4` en fond de page, blanc pur `#ffffff` pour les cartes
+produit — ce sont les photos qui doivent porter la couleur —, charbon `#15110d`
+pour ancrer le hero, le palier tarifaire mis en avant et le footer, brique
+brûlée `#b23c17` en couleur principale et jaune de balisage `#f0a81c` en accent.
+Deux motifs accompagnent le thème : `bg-tarp` / `bg-tarp-dark` (trame diagonale
+façon bâche) et `bg-hazard` (liseré de balisage).
+
+Titres et marque en **Barlow Semi Condensed** (police de signalétique), texte
+courant en **Inter**, les deux chargées depuis Google Fonts dans `index.html`.
+
+## Photos
+
+Les visuels produit et catégories sont des photos Unsplash appelées par leur
+identifiant dans `data/produits.ts` et assemblées par `imageUrl()`. Pour une
+vraie boutique, déposer les visuels du catalogue dans `public/` et remplacer
+cet helper.
 
 ## Notes
 

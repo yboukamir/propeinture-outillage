@@ -73,7 +73,9 @@ export function PricingSection({
             <Card
               key={palier.id}
               className={cn("flex h-full flex-col overflow-hidden py-6", {
-                "border-primary shadow-lg lg:-mt-4 lg:pb-9 lg:pt-9":
+                // Le palier mis en avant bascule en charbon : c'est plus net
+                // qu'une simple bordure colorée, et ça rappelle le hero.
+                "border-transparent bg-secondary text-secondary-foreground shadow-[0_30px_60px_-30px_rgba(23,19,15,0.6)] lg:-mt-4 lg:pt-9 lg:pb-9":
                   palier.populaire,
               })}
             >
@@ -83,12 +85,22 @@ export function PricingSection({
                     {palier.nom}
                   </CardTitle>
                   {palier.populaire ? (
-                    <Badge className="rounded-full px-2.5 py-0.5 font-semibold">
+                    <Badge
+                      variant="accent"
+                      className="rounded-full px-2.5 py-0.5 font-semibold"
+                    >
                       Le plus choisi
                     </Badge>
                   ) : null}
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p
+                  className={cn(
+                    "text-sm",
+                    palier.populaire
+                      ? "text-secondary-foreground/70"
+                      : "text-muted-foreground",
+                  )}
+                >
                   {palier.description}
                 </p>
               </CardHeader>
@@ -97,21 +109,40 @@ export function PricingSection({
                 <div className="mb-6 flex items-baseline gap-2">
                   <span
                     className={cn(
-                      "text-3xl font-bold lg:text-4xl",
-                      palier.populaire && "text-primary",
+                      "font-display text-4xl font-bold lg:text-5xl",
+                      palier.populaire && "text-accent",
                     )}
                   >
                     {palier.remise}
                   </span>
-                  <span className="text-sm text-muted-foreground">
+                  <span
+                    className={cn(
+                      "text-sm",
+                      palier.populaire
+                        ? "text-secondary-foreground/60"
+                        : "text-muted-foreground",
+                    )}
+                  >
                     {palier.volume}
                   </span>
                 </div>
                 <ul className="flex flex-col gap-3">
                   {palier.avantages.map((avantage) => (
                     <li key={avantage} className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                      <span className="text-sm leading-snug text-muted-foreground">
+                      <Check
+                        className={cn(
+                          "mt-0.5 size-4 shrink-0",
+                          palier.populaire ? "text-accent" : "text-primary",
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "text-sm leading-snug",
+                          palier.populaire
+                            ? "text-secondary-foreground/85"
+                            : "text-muted-foreground",
+                        )}
+                      >
                         {avantage}
                       </span>
                     </li>
@@ -124,7 +155,7 @@ export function PricingSection({
                   className="h-10 w-full cursor-pointer gap-2 px-8"
                   size="lg"
                   type="button"
-                  variant={palier.populaire ? "default" : "outline"}
+                  variant={palier.populaire ? "accent" : "outline"}
                   aria-label={`${palier.cta} — palier ${palier.nom}`}
                 >
                   {palier.cta} <ArrowRight />

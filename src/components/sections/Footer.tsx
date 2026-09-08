@@ -33,7 +33,7 @@ const colonnes = [
 export function Footer() {
   return (
     <MinimalFooter
-      marque={<Marque />}
+      marque={<Marque sombre />}
       accroche="Outillage et matériel pour peintres professionnels. Petite ou grosse quantité, livré sur chantier."
       contacts={contacts}
       colonnes={colonnes}

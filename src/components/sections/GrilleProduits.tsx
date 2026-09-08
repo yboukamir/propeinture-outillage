@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/ui/product-card"
-import { ProduitIllustration } from "@/components/ProduitIllustration"
 import { produits } from "@/data/produits"
 
 export function GrilleProduits() {
   return (
     <section
       id="catalogue"
-      className="border-y border-border bg-background px-4 py-16 sm:py-20 lg:py-24"
+      className="border-y border-border bg-plaster bg-tarp px-4 py-16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -39,7 +38,8 @@ export function GrilleProduits() {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <ProductCard
-                visuel={<ProduitIllustration id={produit.illustration} />}
+                photo={produit.photo}
+                photoAlt={produit.photoAlt}
                 nom={produit.nom}
                 detail={produit.detail}
                 prix={produit.prix}

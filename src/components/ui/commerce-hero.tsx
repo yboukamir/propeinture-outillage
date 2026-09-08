@@ -5,9 +5,10 @@
  * https://21st.dev/@bankkroll/components/commerce-hero
  *
  * Modifications : contenu sorti en props (le composant d'origine embarquait ses
- * données), images CDN remplacées par des visuels libres en ReactNode, ajout
- * d'un CTA secondaire et d'une ligne de réassurance, panneau du hero repeint
- * dans la palette atelier plutôt qu'en `bg-accent/50`.
+ * données), ajout d'un CTA secondaire et d'une ligne de réassurance. Le panneau
+ * du hero passe en charbon au lieu du `bg-accent/50` d'origine : l'encoche
+ * blanche du header y découpe franchement, ce qui reproduit le contraste fort
+ * de la preview du catalogue tout en gardant l'univers chantier.
  */
 
 import * as React from "react"
@@ -22,13 +23,15 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { imageUrl } from "@/lib/utils"
 
 export type LienNav = { name: string; href: string }
 
 export type Vignette = {
   title: string
   href: string
-  visuel: React.ReactNode
+  photo: string
+  alt: string
 }
 
 export interface CommerceHeroProps {
@@ -59,9 +62,12 @@ export function CommerceHero({
 }: CommerceHeroProps) {
   return (
     <div className="relative mx-auto w-full max-w-7xl px-2 pb-16 sm:px-4">
-      <div className="relative mt-6 rounded-2xl border border-border bg-plaster bg-tarp">
+      <div className="bg-tarp-dark relative mt-6 overflow-hidden rounded-2xl bg-secondary text-secondary-foreground shadow-[0_30px_60px_-30px_rgba(23,19,15,0.6)]">
         <header className="flex items-center">
-          <div className="flex w-full items-center gap-2 rounded-tl-2xl rounded-br-2xl bg-background/95 p-4 backdrop-blur-sm md:w-2/3 lg:w-1/2">
+          {/* `text-foreground` explicite : l'encoche est claire alors que le
+              panneau qui l'entoure est en charbon, sans quoi la marque et les
+              icônes héritent de la couleur claire et disparaissent. */}
+          <div className="flex w-full items-center gap-2 rounded-tl-2xl rounded-br-2xl bg-background/95 p-4 text-foreground backdrop-blur-sm md:w-2/3 lg:w-1/2">
             <a href="#" className="shrink-0">
               {marque}
             </a>
@@ -164,19 +170,18 @@ export function CommerceHero({
           <div className="ml-auto hidden w-1/2 items-center justify-end gap-4 pr-4 md:flex">
             <a
               href="#contact"
-              className="flex items-center gap-2 text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+              className="flex items-center gap-2 text-sm font-medium text-secondary-foreground/70 transition-colors hover:text-secondary-foreground"
             >
               <Phone className="h-4 w-4" />
               {telephone}
             </a>
             <Button
               asChild
-              variant="secondary"
-              className="group cursor-pointer rounded-full p-0 pr-1 shadow-lg transition-all duration-300 hover:shadow-xl"
+              className="group cursor-pointer rounded-full bg-background p-0 pr-1 text-foreground shadow-lg transition-all duration-300 hover:bg-background/90 hover:shadow-xl"
             >
               <a href="#tarifs">
                 <span className="py-2 pl-4 text-sm font-medium">Compte pro</span>
-                <span className="m-auto ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-background text-foreground transition-transform duration-300 group-hover:scale-110">
+                <span className="m-auto ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
                   <ArrowUpRight className="h-5 w-5" />
                 </span>
               </a>
@@ -193,7 +198,7 @@ export function CommerceHero({
               {titre}
             </h1>
             <p
-              className="mx-auto max-w-2xl animate-apparition text-base leading-relaxed text-muted-foreground md:text-lg"
+              className="mx-auto max-w-2xl animate-apparition text-base leading-relaxed text-secondary-foreground/70 md:text-lg"
               style={{ animationDelay: "400ms" }}
             >
               {sousTitre}
@@ -221,9 +226,9 @@ export function CommerceHero({
               {reassurance.map(({ icone: Icone, texte }) => (
                 <li
                   key={texte}
-                  className="flex items-center gap-2 text-sm font-medium text-foreground/80"
+                  className="flex items-center gap-2 text-sm font-medium text-secondary-foreground/80"
                 >
-                  <Icone className="h-4 w-4 text-primary" />
+                  <Icone className="h-4 w-4 text-accent" />
                   {texte}
                 </li>
               ))}
@@ -236,24 +241,29 @@ export function CommerceHero({
         {vignettes.map((vignette, index) => (
           <div
             key={vignette.title}
-            className="group relative min-h-[220px] w-full animate-apparition overflow-hidden rounded-3xl border border-border bg-card p-4 sm:min-h-[260px] sm:p-6"
+            className="group relative min-h-[220px] w-full animate-apparition overflow-hidden rounded-2xl border border-border bg-secondary sm:min-h-[260px]"
             style={{ animationDelay: `${index * 100}ms` }}
           >
+            <img
+              src={imageUrl(vignette.photo, 700)}
+              alt={vignette.alt}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            />
+            {/* Voile sombre : sans lui, le titre devient illisible dès que la
+                photo est claire. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/45 to-secondary/5" />
+
             <a href={vignette.href} className="absolute inset-0 z-20">
-              <h2 className="relative z-10 my-2 text-center text-xl font-bold text-primary transition-colors duration-300 group-hover:text-primary/90 sm:my-4 sm:text-2xl">
-                {vignette.title}
-              </h2>
-              <div className="absolute inset-0 flex items-center justify-center p-4">
-                <div className="w-full max-w-[160px] opacity-90 transition-all duration-500 group-hover:scale-110 group-hover:opacity-100">
-                  {vignette.visuel}
-                </div>
-              </div>
-              <div className="absolute bottom-0 right-0 z-10 flex h-16 w-16 items-center justify-center rounded-tl-xl border-l border-t border-border/50 bg-background/95 backdrop-blur-sm md:h-20 md:w-20">
-                <span className="absolute bottom-2 right-2 flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground md:bottom-3 md:right-3 md:h-12 md:w-12">
-                  <ArrowUpRight className="h-5 w-5" />
-                </span>
-              </div>
+              <span className="sr-only">Voir la catégorie {vignette.title}</span>
             </a>
+
+            <h2 className="absolute bottom-5 left-5 z-10 text-xl font-bold text-secondary-foreground sm:text-2xl">
+              {vignette.title}
+            </h2>
+            <span className="absolute bottom-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-background text-foreground shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground">
+              <ArrowUpRight className="h-5 w-5" />
+            </span>
           </div>
         ))}
       </div>

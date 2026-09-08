@@ -8,38 +8,46 @@
 :root {
   --radius: 0.375rem;
 
-  --background: #f7f3ec;
-  --foreground: #1b1714;
+  /*
+    Échelle de valeurs volontairement écartée : le blanc franc porte les photos
+    produit, la chaux sert de fond de page, le charbon ancre le hero, les tarifs
+    et le footer. C'est cet écart qui fait tenir la page — la première version
+    empilait trois beiges quasi identiques et paraissait délavée.
+  */
+  --background: #f3eee4;
+  --foreground: #17130f;
 
-  --card: #fffdf8;
-  --card-foreground: #1b1714;
+  --card: #ffffff;
+  --card-foreground: #17130f;
 
-  --popover: #fffdf8;
-  --popover-foreground: #1b1714;
+  --popover: #ffffff;
+  --popover-foreground: #17130f;
 
   /* Brique brûlée */
-  --primary: #b4441f;
-  --primary-foreground: #fff8f1;
+  --primary: #b23c17;
+  --primary-foreground: #fff6ef;
 
   /* Charbon */
-  --secondary: #262019;
-  --secondary-foreground: #f7f3ec;
+  --secondary: #15110d;
+  --secondary-foreground: #f3eee4;
 
-  --muted: #ede6d9;
-  --muted-foreground: #6b6155;
+  --muted: #e6ddcc;
+  --muted-foreground: #6a6053;
 
   /* Jaune balisage chantier */
-  --accent: #e9a723;
-  --accent-foreground: #241c0b;
+  --accent: #f0a81c;
+  --accent-foreground: #1d1608;
 
   --destructive: #a02c1c;
-  --destructive-foreground: #fff8f1;
+  --destructive-foreground: #fff6ef;
 
-  --border: #ddd3c1;
-  --input: #ddd3c1;
-  --ring: #b4441f;
+  --border: #d8cdb8;
+  --input: #d8cdb8;
+  --ring: #b23c17;
 
-  --surface-plaster: #efe8db;
+  --surface-plaster: #eae2d3;
+  /* Bordure discrète à l'intérieur des sections charbon. */
+  --border-dark: #2e2720;
 }
 
 @theme inline {
@@ -63,14 +71,24 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-plaster: var(--surface-plaster);
+  --color-border-dark: var(--border-dark);
 
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 6px);
 
+  /*
+    Inter pour le texte courant, Barlow Semi Condensed pour les titres et la
+    marque : c'est une police de signalétique, elle amène le registre chantier
+    sans déguisement. Les deux sont chargées dans index.html — la version
+    précédente déclarait Inter sans jamais la charger, et tout tombait en
+    Segoe UI.
+  */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Barlow Semi Condensed", "Inter", ui-sans-serif, system-ui,
+    sans-serif;
 }
 
 /*
@@ -111,11 +129,29 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Les titres passent en signalétique, avec un léger resserrement. */
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
   /* Fine trame diagonale type bâche de chantier, utilisée en fond de sections. */
   .bg-tarp {
     background-image: repeating-linear-gradient(
       45deg,
-      color-mix(in srgb, var(--foreground) 4%, transparent) 0 1px,
+      color-mix(in srgb, var(--foreground) 5%, transparent) 0 1px,
+      transparent 1px 11px
+    );
+  }
+
+  /* Même trame, sur fond charbon. */
+  .bg-tarp-dark {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgb(255 255 255 / 0.045) 0 1px,
       transparent 1px 11px
     );
   }
