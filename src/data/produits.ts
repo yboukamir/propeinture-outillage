@@ -49,7 +49,7 @@ export const produits: Produit[] = [
     reference: "BP-450-100",
     stock: "en-stock",
     photo: "/produits/bache-protection.webp",
-    photoAlt: "Bâche drapée formant des plis profonds",
+    photoAlt: "Bâche plastique translucide tendue en protection",
   },
   {
     id: "enduit-lissage-25",
@@ -61,7 +61,7 @@ export const produits: Produit[] = [
     reference: "EL-25-INT",
     stock: "reappro",
     photo: "/produits/enduit-lissage.webp",
-    photoAlt: "Application d'enduit sur un mur à la truelle",
+    photoAlt: "Enduit appliqué au mur à la truelle",
     populaire: true,
   },
   {
@@ -103,7 +103,7 @@ export const categories = [
   },
   {
     titre: "Protection",
-    photo: "/produits/bache-protection.webp",
+    photo: "/produits/categorie-protection.webp",
     alt: "Bâche de protection drapée",
   },
   {
