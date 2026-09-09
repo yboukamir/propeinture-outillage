@@ -3,7 +3,8 @@ import { Info, MessageSquareOff } from "lucide-react"
 
 import { Etoiles } from "@/components/Etoiles"
 import { Separator } from "@/components/ui/separator"
-import { avisPour, noteMoyenne, type Avis } from "@/data/avis"
+import { type Avis } from "@/data/avis"
+import { FormulaireAvis } from "@/components/sections/FormulaireAvis"
 
 const dateLongue = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -29,7 +30,15 @@ function trier(liste: Avis[], tri: TriAvis) {
   )
 }
 
-export function AvisClients({ produitId }: { produitId: string }) {
+export function AvisClients({
+  liste: tous,
+  moyenne,
+  onAjout,
+}: {
+  liste: Avis[]
+  moyenne: number | null
+  onAjout: (avis: Avis) => void
+}) {
   /*
    * En état local et non dans l'URL, contrairement au tri du catalogue. La
    * règle qu'on suit : l'URL porte ce qu'on regarde — fiche, filtre, recherche,
@@ -39,8 +48,7 @@ export function AvisClients({ produitId }: { produitId: string }) {
    */
   const [tri, setTri] = React.useState<TriAvis>("recent")
 
-  const liste = trier(avisPour(produitId), tri)
-  const moyenne = noteMoyenne(produitId)
+  const liste = trier(tous, tri)
 
   return (
     <section className="mt-16" aria-labelledby="titre-avis">
@@ -101,7 +109,14 @@ export function AvisClients({ produitId }: { produitId: string }) {
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <p className="font-semibold">{avis.auteur}</p>
+                  <p className="flex flex-wrap items-center gap-2 font-semibold">
+                    {avis.auteur}
+                    {avis.local && (
+                      <span className="rounded-full border border-border px-2 py-0.5 text-xs font-normal text-muted-foreground">
+                        Non enregistré
+                      </span>
+                    )}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {avis.metier}
                   </p>
@@ -121,6 +136,8 @@ export function AvisClients({ produitId }: { produitId: string }) {
           ))}
         </ul>
       )}
+
+      <FormulaireAvis onAjout={onAjout} />
     </section>
   )
 }

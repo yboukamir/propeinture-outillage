@@ -8,7 +8,7 @@ import { EnTeteProduit } from "@/components/EnTeteProduit"
 import { SuggestionsProduits } from "@/components/SuggestionsProduits"
 import { AvisClients } from "@/components/sections/AvisClients"
 import { Etoiles } from "@/components/Etoiles"
-import { avisPour, noteMoyenne } from "@/data/avis"
+import { avisPour, type Avis } from "@/data/avis"
 import { type Produit } from "@/data/produits"
 import { naviguer, urlCatalogue } from "@/lib/navigation"
 import { paliers, formatRemise } from "@/lib/tarifs"
@@ -18,8 +18,18 @@ import { usePanier } from "@/panier/PanierContext"
 export function PageProduit({ produit }: { produit: Produit }) {
   const { ajouter, definirQuantite, lignes } = usePanier()
   const [quantite, setQuantite] = React.useState(1)
-  const moyenne = noteMoyenne(produit.id)
-  const nombreAvis = avisPour(produit.id).length
+  /* Les avis déposés depuis la page vivent ici, et non dans la section, pour
+     que le résumé sous le titre et la liste ne puissent pas diverger. La clé
+     posée sur PageProduit dans App les remet à zéro d'une fiche à l'autre. */
+  const [ajoutes, setAjoutes] = React.useState<Avis[]>([])
+  const avis = [...ajoutes, ...avisPour(produit.id)]
+  const nombreAvis = avis.length
+  const moyenne =
+    nombreAvis === 0
+      ? null
+      : Math.round(
+          (avis.reduce((somme, a) => somme + a.note, 0) / nombreAvis) * 10,
+        ) / 10
 
   function ajouterAuPanier() {
     // `ajouter` incrémente d'une unité : on pose ensuite la quantité voulue,
@@ -153,7 +163,11 @@ export function PageProduit({ produit }: { produit: Produit }) {
           </div>
         </div>
 
-        <AvisClients produitId={produit.id} />
+        <AvisClients
+          liste={avis}
+          moyenne={moyenne}
+          onAjout={(nouveau) => setAjoutes((liste) => [nouveau, ...liste])}
+        />
 
         <SuggestionsProduits titre="Dans le même chantier" exclure={produit.id} />
       </main>

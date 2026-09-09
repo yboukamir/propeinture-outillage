@@ -121,6 +121,17 @@ lecteur d'écran annonce « 4,7 sur 5 » au lieu d'énumérer cinq icônes. Là 
 valeur est déjà écrite à côté, ce texte est muselé pour ne pas être annoncé
 deux fois.
 
+Un formulaire permet d'en déposer un : note en étoiles, nom, métier facultatif
+et texte, avec validation à la soumission — messages d'erreur reliés aux champs
+par `aria-describedby`, `aria-invalid`, et focus porté sur le premier champ
+fautif. L'avis rejoint la liste, porte la mention « Non enregistré » et pèse
+sur la moyenne, mais rien n'est envoyé : il disparaît au rechargement, ce que
+le formulaire annonce avant la saisie.
+
+Les avis déposés vivent dans `PageProduit` et non dans la section, pour que le
+résumé sous le titre et la liste ne puissent pas afficher deux chiffres
+différents. Une clé sur la fiche les remet à zéro d'un produit à l'autre.
+
 Les avis se trient par date ou par note, à note égale le plus récent d'abord.
 Ce tri-là reste en état local, contrairement à celui du catalogue : la règle
 suivie est que l'URL porte ce qu'on regarde — fiche, filtre, recherche, ordre
@@ -222,6 +233,7 @@ src/
     ui/               composants shadcn/ui + les 4 composants 21st adaptés
     sections/         BandeauDemo, Hero, GrilleProduits, TarifsDegressifs,
                       BandeLivraison, Footer, PageProduit, AvisClients,
+                      FormulaireAvis,
                       ProduitIntrouvable,
                       PanierPanneau —
                       de fines enveloppes qui alimentent les composants ui/

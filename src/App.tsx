@@ -35,7 +35,8 @@ function Contenu() {
           <BandeauDemo />
         </div>
         {produit ? (
-          <PageProduit produit={produit} />
+          // La clé remet à zéro quantité et avis déposés d'une fiche à l'autre.
+          <PageProduit key={produit.id} produit={produit} />
         ) : (
           // L'adresse est valide, seul son contenu manque : on le dit plutôt
           // que de renvoyer silencieusement sur l'accueil.

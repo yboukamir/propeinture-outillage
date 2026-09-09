@@ -14,6 +14,8 @@ export type Avis = {
   /** Format ISO, affiché en toutes lettres. */
   date: string
   texte: string
+  /** Déposé depuis la page, jamais enregistré : signalé comme tel à l'écran. */
+  local?: boolean
 }
 
 export const avis: Avis[] = [
