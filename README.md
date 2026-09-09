@@ -150,7 +150,10 @@ et déposer un avis lève le filtre en cours, sans quoi le nouvel avis serait
 invisible s'il tombait hors du filtre. La moyenne et le total en tête portent
 toujours sur l'ensemble : ils doivent parler du même lot.
 
-Les avis se trient par date ou par note, à note égale le plus récent d'abord.
+Les avis se trient par date, par utilité ou par note, avec un départage par
+date décroissante pour que la liste reste stable. Le tri par utilité porte sur
+le compteur tel qu'il s'affiche, vote du visiteur compris : sinon l'ordre
+contredirait les chiffres sous les yeux du lecteur.
 Ce tri-là reste en état local, contrairement à celui du catalogue : la règle
 suivie est que l'URL porte ce qu'on regarde — fiche, filtre, recherche, ordre
 du catalogue — et l'état local la façon de le lire à l'intérieur d'une vue.

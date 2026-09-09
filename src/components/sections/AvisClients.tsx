@@ -13,22 +13,35 @@ const dateLongue = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 })
 
-type TriAvis = "recent" | "note-desc" | "note-asc"
+type TriAvis = "recent" | "note-desc" | "note-asc" | "utiles"
 
 const TRIS_AVIS: { valeur: TriAvis; libelle: string }[] = [
   { valeur: "recent", libelle: "Plus récents" },
+  { valeur: "utiles", libelle: "Les plus utiles" },
   { valeur: "note-desc", libelle: "Meilleures notes" },
   { valeur: "note-asc", libelle: "Notes les plus basses" },
 ]
 
-/** À note égale, le plus récent d'abord — la liste reste stable et lisible. */
-function trier(liste: Avis[], tri: TriAvis) {
+/**
+ * Départage toujours par date décroissante, pour que la liste reste stable.
+ * `utilite` compte le vote du visiteur : le tri doit suivre le nombre affiché,
+ * sinon l'ordre contredirait les compteurs sous les yeux du lecteur.
+ */
+function trier(
+  liste: Avis[],
+  tri: TriAvis,
+  utilite: (avis: Avis) => number,
+) {
   if (tri === "recent") return liste
-  return [...liste].sort(
-    (a, b) =>
-      (tri === "note-desc" ? b.note - a.note : a.note - b.note) ||
-      b.date.localeCompare(a.date),
-  )
+  return [...liste].sort((a, b) => {
+    const ecart =
+      tri === "utiles"
+        ? utilite(b) - utilite(a)
+        : tri === "note-desc"
+          ? b.note - a.note
+          : a.note - b.note
+    return ecart || b.date.localeCompare(a.date)
+  })
 }
 
 export function AvisClients({
@@ -53,6 +66,9 @@ export function AvisClients({
   /** Avis que le visiteur a marqués utiles. Rien n'est envoyé, comme le reste. */
   const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
 
+  /** Compteur tel qu'il s'affiche : base des données plus le vote du visiteur. */
+  const utilite = (avis: Avis) => avis.utiles + (votes.has(avis.id) ? 1 : 0)
+
   function basculerVote(id: string) {
     setVotes((actuels) => {
       const suivants = new Set(actuels)
@@ -70,7 +86,7 @@ export function AvisClients({
   const filtres = filtreNote
     ? tous.filter((a) => a.note === filtreNote)
     : tous
-  const liste = trier(filtres, tri)
+  const liste = trier(filtres, tri, utilite)
 
   return (
     <section className="mt-16" aria-labelledby="titre-avis">
@@ -239,7 +255,7 @@ export function AvisClients({
                   />
                   {votes.has(avis.id) ? "Avis utile" : "Cet avis est utile"}
                   <span className="tabular-nums">
-                    {avis.utiles + (votes.has(avis.id) ? 1 : 0)}
+                    {utilite(avis)}
                   </span>
                 </button>
                 {votes.has(avis.id) && (
