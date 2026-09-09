@@ -25,12 +25,12 @@ porte sa photo en plein cadre, son état de stock, sa référence et son prix à
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 à chaque palier, en euros plutôt qu'en pourcentage.
 
-![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité et de signalement, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
+![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité et de signalement dont un suivi d'une réponse du vendeur, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
 
 Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri,
-liste avec boutons d'utilité et de signalement, pagination et formulaire de
-dépôt. La mention d'avis fictifs est en clair au-dessus, et le formulaire
-annonce avant la saisie que rien n'est envoyé.
+liste avec boutons d'utilité et de signalement, réponses du vendeur,
+pagination et formulaire de dépôt. La mention d'avis fictifs est en clair
+au-dessus, et le formulaire annonce avant la saisie que rien n'est envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
@@ -142,6 +142,13 @@ Chaque avis porte un bouton « Cet avis est utile » avec son compteur. Le vote
 bascule au second clic, incrémente le compteur affiché et signale « Compté
 seulement ici » — rien n'est envoyé, comme le reste de la maquette. Un avis
 déposé depuis la page démarre à zéro.
+
+Quatre avis portent une réponse publique de la boutique, décalée sous l'avis
+auquel elle répond et signée d'un badge « Vendeur ». Le champ est facultatif :
+un vendeur ne répond pas à tout, et une réponse sous chaque avis sonnerait
+faux. Ce sont les avis mitigés qui en reçoivent une, comme sur une vraie
+vitrine, avec une date forcément postérieure à celle de l'avis. La rangée
+d'actions reste sous la réponse : elle porte sur l'avis, pas sur elle.
 
 Un lien « Signaler » discret, aligné à droite, complète la rangée. Il n'y a
 aucune modération derrière : l'avis reste affiché et la mention « Signalé, rien

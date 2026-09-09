@@ -164,8 +164,8 @@ export function AvisClients({
           sérieux qu'un prix inventé. */}
       <p className="mt-3 flex items-start gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
         <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-        Avis fictifs, écrits pour la démonstration : ni ces clients ni cette
-        boutique n'existent.
+        Avis et réponses fictifs, écrits pour la démonstration : ni ces clients
+        ni cette boutique n'existent.
       </p>
 
       {tous.length > 0 && (
@@ -296,6 +296,29 @@ export function AvisClients({
                 </div>
                 <Separator className="my-3" />
                 <p className="text-sm leading-relaxed">{avis.texte}</p>
+
+                {/* Placée juste sous l'avis auquel elle répond, et décalée
+                    pour qu'on ne la confonde pas avec la parole du client. La
+                    rangée d'actions qui suit porte sur l'avis, pas sur elle. */}
+                {avis.reponse && (
+                  <div className="mt-4 rounded-md border-s-2 border-primary/40 bg-muted/40 py-3 pe-3 ps-4">
+                    <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm font-semibold">
+                      Réponse de ProPeinture Outillage
+                      <span className="rounded-full border border-border px-2 py-0.5 text-xs font-normal text-muted-foreground">
+                        Vendeur
+                      </span>
+                      <time
+                        dateTime={avis.reponse.date}
+                        className="text-xs font-normal text-muted-foreground"
+                      >
+                        {dateLongue.format(new Date(avis.reponse.date))}
+                      </time>
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed">
+                      {avis.reponse.texte}
+                    </p>
+                  </div>
+                )}
 
                 {/* Passe à la ligne plutôt que de déborder : sur mobile,
                     un avis à la fois voté et signalé ne tient pas sur une. */}

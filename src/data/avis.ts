@@ -16,6 +16,12 @@ export type Avis = {
   texte: string
   /** Nombre de personnes ayant trouvé l'avis utile. Fictif lui aussi. */
   utiles: number
+  /**
+   * Réponse publique de la boutique, quand elle en a fait une. Facultative :
+   * un vendeur ne répond pas à tout, et une réponse sous chaque avis sonnerait
+   * faux. Sa date est forcément postérieure à celle de l'avis.
+   */
+  reponse?: { date: string; texte: string }
   /** Déposé depuis la page, jamais enregistré : signalé comme tel à l'écran. */
   local?: boolean
 }
@@ -97,6 +103,11 @@ export const avis: Avis[] = [
     texte:
       "Le produit est bon mais les sacs arrivent parfois éventrés. À voir avec le transporteur, ce n'est pas la faute de l'enduit.",
     utiles: 3,
+    reponse: {
+      date: "2026-04-02",
+      texte:
+        "Merci Julien pour le signalement. Les sacs voyagent désormais filmés sur palette, et un sac éventré à la livraison est remplacé sans discussion.",
+    },
   },
   {
     id: "av-8",
@@ -119,6 +130,11 @@ export const avis: Avis[] = [
     texte:
       "Bonne tenue sur support propre. Sur crépi il faut appuyer davantage, mais c'est vrai de tous les rubans.",
     utiles: 5,
+    reponse: {
+      date: "2026-05-27",
+      texte:
+        "Merci Cédric. Sur crépi, nous conseillons plutôt notre ruban à adhérence renforcée, il pardonne les supports irréguliers.",
+    },
   },
   {
     id: "av-10",
@@ -152,6 +168,11 @@ export const avis: Avis[] = [
     texte:
       "Correct sans plus. Bien pour la laque, mais j'ai eu deux manches voilés sur un lot de dix.",
     utiles: 7,
+    reponse: {
+      date: "2026-06-04",
+      texte:
+        "Merci Bruno. Deux manches voilés sur dix, c'est trop : renvoyez-les-nous, l'échange est à notre charge et le transport aussi.",
+    },
   },
   {
     id: "av-13",
@@ -196,6 +217,11 @@ export const avis: Avis[] = [
     texte:
       "Déçu sur ce lot : la fibre s'est détachée dès le deuxième passage. Les précédents tenaient mieux, peut-être un mauvais tirage.",
     utiles: 15,
+    reponse: {
+      date: "2026-03-20",
+      texte:
+        "Bonjour Hervé, une fibre qui se détache dès le deuxième passage n'est pas normale et ce lot est parti au contrôle. Contactez-nous avec votre numéro de commande, nous vous le remplaçons.",
+    },
   },
 ]
 
