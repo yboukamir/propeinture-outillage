@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn, formatPrix } from "@/lib/utils"
+import { asset, cn, formatPrix } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -63,7 +63,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       >
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
           <img
-            src={photo}
+            src={asset(photo)}
             alt={photoAlt}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"

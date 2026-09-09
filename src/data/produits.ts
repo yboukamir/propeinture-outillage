@@ -23,7 +23,7 @@ export const produits: Produit[] = [
     categorie: "Application",
     reference: "RL-18-04",
     stock: "en-stock",
-    photo: "/produits/rouleau-laqueur.webp",
+    photo: "produits/rouleau-laqueur.webp",
     photoAlt: "Rouleau à peinture blanc posé sur un fond clair",
     populaire: true,
   },
@@ -36,7 +36,7 @@ export const produits: Produit[] = [
     categorie: "Application",
     reference: "PP-40-SY",
     stock: "en-stock",
-    photo: "/produits/pinceau-plat.webp",
+    photo: "produits/pinceau-plat.webp",
     photoAlt: "Pinceau plat de peintre sur fond uni",
   },
   {
@@ -48,7 +48,7 @@ export const produits: Produit[] = [
     categorie: "Protection",
     reference: "BP-450-100",
     stock: "en-stock",
-    photo: "/produits/bache-protection.webp",
+    photo: "produits/bache-protection.webp",
     photoAlt: "Cuisine protégée par des bâches plastique pendant des travaux",
   },
   {
@@ -60,7 +60,7 @@ export const produits: Produit[] = [
     categorie: "Préparation",
     reference: "EL-25-INT",
     stock: "reappro",
-    photo: "/produits/enduit-lissage.webp",
+    photo: "produits/enduit-lissage.webp",
     photoAlt: "Enduit appliqué au mur à la truelle",
     populaire: true,
   },
@@ -73,7 +73,7 @@ export const produits: Produit[] = [
     categorie: "Protection",
     reference: "RM-50-PRO",
     stock: "en-stock",
-    photo: "/produits/ruban-masquage.webp",
+    photo: "produits/ruban-masquage.webp",
     photoAlt: "Rouleau de ruban de masquage sur fond jaune",
   },
   {
@@ -85,7 +85,7 @@ export const produits: Produit[] = [
     categorie: "Accessoires",
     reference: "GE-UNI",
     stock: "en-stock",
-    photo: "/produits/grille-essorage.webp",
+    photo: "produits/grille-essorage.webp",
     photoAlt: "Rouleau chargé de peinture dans son bac",
   },
 ]
@@ -93,22 +93,22 @@ export const produits: Produit[] = [
 export const categories = [
   {
     titre: "Application",
-    photo: "/produits/categorie-application.webp",
+    photo: "produits/categorie-application.webp",
     alt: "Rouleaux à peinture de couleurs vives",
   },
   {
     titre: "Préparation",
-    photo: "/produits/categorie-preparation.webp",
+    photo: "produits/categorie-preparation.webp",
     alt: "Mur fraîchement enduit",
   },
   {
     titre: "Protection",
-    photo: "/produits/categorie-protection.webp",
+    photo: "produits/categorie-protection.webp",
     alt: "Bâche de protection drapée",
   },
   {
     titre: "Accessoires",
-    photo: "/produits/categorie-accessoires.webp",
+    photo: "produits/categorie-accessoires.webp",
     alt: "Pots de peinture vus de dessus",
   },
 ]

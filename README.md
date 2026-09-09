@@ -95,6 +95,29 @@ npm run dev
 
 Build de production : `npm run build`, puis `npm run preview`.
 
+## Mettre en ligne
+
+Le site est entièrement statique : `dist/` se sert tel quel, sans back-end.
+
+**GitHub Pages** — le dépôt embarque le workflow
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml). Après avoir poussé
+sur GitHub, activer Pages dans *Settings → Pages → Source : GitHub Actions* ;
+chaque push sur `main` republie. Le workflow passe `BASE_PATH` au build, car
+Pages sert sur `/<nom-du-depot>/`.
+
+**Netlify ou Vercel** — importer le dépôt, commande de build `npm run build`,
+dossier publié `dist`. Rien d'autre à régler : ces hébergeurs servent à la
+racine, et `base` vaut `/` par défaut.
+
+Le chemin de déploiement est piloté par la variable `BASE_PATH`, lue dans
+`vite.config.ts`. Les fichiers de `public/` sont résolus au travers de
+`asset()` ([`src/lib/utils.ts`](src/lib/utils.ts)), pour que le site fonctionne
+aussi bien à la racine que dans un sous-chemin :
+
+```bash
+BASE_PATH=/mon-depot/ npm run build
+```
+
 ## Structure
 
 ```

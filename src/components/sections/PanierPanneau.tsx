@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { usePanier } from "@/panier/PanierContext"
 import { formatRemise } from "@/lib/tarifs"
-import { formatPrix } from "@/lib/utils"
+import { asset, formatPrix } from "@/lib/utils"
 
 export function PanierPanneau() {
   const {
@@ -58,7 +58,7 @@ export function PanierPanneau() {
               {lignes.map((ligne) => (
                 <li key={ligne.id} className="flex gap-4 p-5">
                   <img
-                    src={ligne.photo}
+                    src={asset(ligne.photo)}
                     alt={ligne.photoAlt}
                     className="size-20 shrink-0 rounded-md border border-border object-cover"
                   />
