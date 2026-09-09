@@ -40,7 +40,32 @@ const BANDEAU = 44
 /**
  * `prepare` s'exécute dans la page avant la capture, pour les vues qui
  * demandent une interaction (le panier n'existe qu'une fois rempli).
+ *
+ * Un panier à 12 unités : la remise Artisan est déclenchée et la jauge vers le
+ * palier grossiste est visible. Partagé par les deux vues du panier, pour
+ * qu'elles montrent le même contenu à deux largeurs.
  */
+const remplirPanier = async () => {
+  const attendre = (ms) => new Promise((r) => setTimeout(r, ms))
+  const ajouter = [...document.querySelectorAll("button")].filter(
+    (b) => b.textContent.trim() === "Ajouter",
+  )
+  ajouter[0].click()
+  await attendre(400)
+  ajouter[3].click()
+  await attendre(400)
+  const plus = [...document.querySelectorAll("[role=dialog] button")].filter(
+    (b) => b.getAttribute("aria-label")?.startsWith("Ajouter une unité"),
+  )
+  for (let i = 0; i < 10; i++) {
+    plus[0].click()
+    await attendre(40)
+  }
+  // Sinon le dernier bouton cliqué garde son anneau de focus sur l'image.
+  document.activeElement?.blur()
+  await attendre(400)
+}
+
 const vues = [
   { nom: "01-hero.webp", selecteur: null, largeur: 1280, hauteur: 900 },
   // 980 et non 900 : la note sur les cartes a rallongé la première rangée,
@@ -98,28 +123,15 @@ const vues = [
     selecteur: null,
     largeur: 1280,
     hauteur: 900,
-    // Un panier à 12 unités : la remise Artisan est déclenchée et la jauge
-    // vers le palier grossiste est visible.
-    prepare: async () => {
-      const attendre = (ms) => new Promise((r) => setTimeout(r, ms))
-      const ajouter = [...document.querySelectorAll("button")].filter(
-        (b) => b.textContent.trim() === "Ajouter",
-      )
-      ajouter[0].click()
-      await attendre(400)
-      ajouter[3].click()
-      await attendre(400)
-      const plus = [...document.querySelectorAll("[role=dialog] button")].filter(
-        (b) => b.getAttribute("aria-label")?.startsWith("Ajouter une unité"),
-      )
-      for (let i = 0; i < 10; i++) {
-        plus[0].click()
-        await attendre(40)
-      }
-      // Sinon le dernier bouton cliqué garde son anneau de focus sur l'image.
-      document.activeElement?.blur()
-      await attendre(400)
-    },
+    prepare: remplirPanier,
+  },
+  {
+    // Le même panier en 420 px : le panneau latéral y occupe tout l'écran.
+    nom: "11-panier-mobile.webp",
+    selecteur: null,
+    largeur: 420,
+    hauteur: 860,
+    prepare: remplirPanier,
   },
 ]
 
