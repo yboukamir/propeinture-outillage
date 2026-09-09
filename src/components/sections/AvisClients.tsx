@@ -21,7 +21,13 @@ const dateLongue = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 })
 
-type TriAvis = "recent" | "ancien" | "note-desc" | "note-asc" | "utiles"
+type TriAvis =
+  | "recent"
+  | "ancien"
+  | "note-desc"
+  | "note-asc"
+  | "utiles"
+  | "repondus"
 
 /** Cinq avis par page : au-delà, la fiche devient un mur de texte. */
 const PAR_PAGE = 5
@@ -30,6 +36,9 @@ const TRIS_AVIS: { valeur: TriAvis; libelle: string }[] = [
   { valeur: "recent", libelle: "Plus récents" },
   { valeur: "ancien", libelle: "Plus anciens" },
   { valeur: "utiles", libelle: "Les plus utiles" },
+  // La boutique répond au plus une fois par avis : trier par nombre de
+  // réponses revient à remonter ceux qui en ont une, et le libellé le dit.
+  { valeur: "repondus", libelle: "Avec réponse d'abord" },
   { valeur: "note-desc", libelle: "Meilleures notes" },
   { valeur: "note-asc", libelle: "Notes les plus basses" },
 ]
@@ -52,9 +61,11 @@ function trier(
     const ecart =
       tri === "utiles"
         ? utilite(b) - utilite(a)
-        : tri === "note-desc"
-          ? b.note - a.note
-          : a.note - b.note
+        : tri === "repondus"
+          ? Number(Boolean(b.reponse)) - Number(Boolean(a.reponse))
+          : tri === "note-desc"
+            ? b.note - a.note
+            : a.note - b.note
     return ecart || b.date.localeCompare(a.date)
   })
 }
@@ -248,7 +259,12 @@ export function AvisClients({
             }}
             className="h-9 rounded-full border border-border bg-card px-3 text-sm text-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            {TRIS_AVIS.map((option) => (
+            {TRIS_AVIS.filter(
+              // Sur une fiche sans aucune réponse, ce tri ne bougerait rien :
+              // autant ne pas proposer un choix sans effet.
+              (option) =>
+                option.valeur !== "repondus" || tous.some((a) => a.reponse),
+            ).map((option) => (
               <option key={option.valeur} value={option.valeur}>
                 {option.libelle}
               </option>

@@ -174,6 +174,12 @@ stable. Les données arrivant déjà de la plus récente à la plus ancienne, ce
 deux tris-là ne trient rien : l'un les laisse en place, l'autre les renverse.
 Le tri par utilité porte sur le compteur tel qu'il s'affiche, vote du visiteur
 compris : sinon l'ordre contredirait les chiffres sous les yeux du lecteur.
+
+Un dernier tri remonte les avis auxquels la boutique a répondu. Il est libellé
+« Avec réponse d'abord » et non « par nombre de réponses » : la boutique répond
+au plus une fois par avis, le nombre vaut zéro ou un, et le tri est donc un
+regroupement. L'option disparaît des fiches où personne n'a répondu, où elle ne
+ferait rien.
 Ce tri-là reste en état local, contrairement à celui du catalogue : la règle
 suivie est que l'URL porte ce qu'on regarde — fiche, filtre, recherche, ordre
 du catalogue — et l'état local la façon de le lire à l'intérieur d'une vue.
