@@ -23,8 +23,12 @@ porte sa photo en plein cadre, son état de stock, sa référence et son prix à
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.webp)
 
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
-à chaque palier, en euros plutôt qu'en pourcentage, et porte les avis en bas
-de page.
+à chaque palier, en euros plutôt qu'en pourcentage.
+
+![Section avis : moyenne en étoiles, mention d'avis fictifs, sélecteur de tri, deux avis et le formulaire de dépôt](docs/captures/09-avis.webp)
+
+Les avis, en bas de fiche. La mention d'avis fictifs est en clair au-dessus de
+la liste, et le formulaire annonce avant la saisie que rien n'est envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 

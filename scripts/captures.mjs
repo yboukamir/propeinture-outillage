@@ -61,6 +61,15 @@ const vues = [
     hauteur: 820,
   },
   {
+    // Une référence à deux avis : la liste et le formulaire tiennent dans le
+    // même cadre, ce qui n'est pas le cas des fiches à trois avis.
+    nom: "09-avis.webp",
+    url: `${URL_SITE}?produit=enduit-lissage-25`,
+    selecteur: "#titre-avis",
+    largeur: 1280,
+    hauteur: 1250,
+  },
+  {
     // Page servie par l'hébergeur : elle vit hors de l'application, d'où
     // l'URL directe vers le fichier.
     nom: "08-404.webp",
