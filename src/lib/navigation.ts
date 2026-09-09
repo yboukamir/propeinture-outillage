@@ -26,13 +26,14 @@ export function lienAccueil() {
  * qu'un lien ouvert à froid défile jusqu'à la grille — voir
  * `useDefilementVersAncre`.
  */
-export type Tri = "catalogue" | "prix-asc" | "prix-desc"
+export type Tri = "catalogue" | "prix-asc" | "prix-desc" | "note-desc"
 
 /** `catalogue` est l'ordre par défaut : il n'apparaît pas dans l'URL. */
 export const TRIS: { valeur: Tri; libelle: string }[] = [
   { valeur: "catalogue", libelle: "Ordre du catalogue" },
   { valeur: "prix-asc", libelle: "Prix croissant" },
   { valeur: "prix-desc", libelle: "Prix décroissant" },
+  { valeur: "note-desc", libelle: "Mieux notés" },
 ]
 
 export function urlCatalogue({
@@ -114,11 +115,20 @@ export function useCategorieAffichee(): string | null {
   return new URLSearchParams(parametres).get("categorie")
 }
 
+/**
+ * Lit un tri depuis l'URL. Validé contre `TRIS` et non contre une liste
+ * recopiée : ajouter une option sans repasser ici laisserait l'URL comprise à
+ * moitié — c'est exactement ce qui est arrivé au tri par note. Une valeur
+ * inconnue retombe sur l'ordre par défaut plutôt que de casser.
+ */
+export function triDepuis(valeur: string | null): Tri {
+  const connu = TRIS.find((option) => option.valeur === valeur)
+  return connu ? connu.valeur : "catalogue"
+}
+
 export function useTri(): Tri {
   const parametres = React.useSyncExternalStore(souscrire, instantane, () => "")
-  const valeur = new URLSearchParams(parametres).get("tri")
-  // Une valeur inconnue retombe sur l'ordre par défaut plutôt que de casser.
-  return valeur === "prix-asc" || valeur === "prix-desc" ? valeur : "catalogue"
+  return triDepuis(new URLSearchParams(parametres).get("tri"))
 }
 
 /** Terme de recherche présent dans l'URL au chargement. */

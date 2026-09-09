@@ -15,10 +15,11 @@ Le hero et sa barre de navigation. Le panneau charbon et l'encoche claire du
 header donnent le contraste ; les quatre vignettes de catégories suivent juste
 en dessous.
 
-![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.webp)
+![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, note moyenne et prix à l'unité](docs/captures/02-catalogue.webp)
 
 Le catalogue, sa recherche, son tri et ses filtres par catégorie. Chaque carte
-porte sa photo en plein cadre, son état de stock, sa référence et son prix à l'unité.
+porte sa photo en plein cadre, son état de stock, sa note moyenne, sa référence
+et son prix à l'unité.
 
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.webp)
 
@@ -111,6 +112,25 @@ l'affichage. L'état du panier est un `useReducer` exposé par
 Le panneau annonce en continu ce qui manque pour le palier suivant, et la
 section tarifs marque « Votre palier » sur celui qui s'applique. Le bouton
 « Commander » est volontairement désactivé : il n'y a ni back-end ni paiement.
+
+## La note sur les cartes
+
+Le travail sur les avis ne se voyait que sur la fiche produit ; la vitrine
+l'ignorait. Chaque carte du catalogue porte donc sa note moyenne et son nombre
+d'avis, et le catalogue se trie par « Mieux notés ».
+
+Une référence sans avis affiche « Pas encore d'avis » plutôt qu'un « 0 avis »
+qui ressemblerait à une mauvaise note — même formulation que sur la fiche. Au
+tri, elle passe derrière les notées : la ranger comme un zéro la ferait passer
+pour mauvaise, la ranger comme un cinq la mettrait en tête sans rien avoir
+prouvé. À égalité de moyenne, le plus grand nombre d'avis l'emporte : 4,5 sur
+dix retours pèse plus lourd que 4,5 sur deux.
+
+Ce tri a révélé un défaut : `useTri` validait l'URL contre une liste de
+valeurs recopiée à la main, si bien que `?tri=note-desc` retombait
+silencieusement sur l'ordre du catalogue. La validation se fait maintenant
+contre `TRIS`, la liste même des options affichées, et un test le vérifie
+pour chacune.
 
 ## Les avis
 

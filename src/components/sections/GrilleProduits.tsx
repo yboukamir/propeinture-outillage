@@ -3,6 +3,7 @@ import { Search, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/ui/product-card"
+import { avisPour, noteMoyenne } from "@/data/avis"
 import { categories, produits, type Produit } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
 import {
@@ -69,9 +70,23 @@ export function GrilleProduits() {
   const visibles =
     tri === "catalogue"
       ? correspondants
-      : [...correspondants].sort((a, b) =>
-          tri === "prix-asc" ? a.prix - b.prix : b.prix - a.prix,
-        )
+      : [...correspondants].sort((a, b) => {
+          if (tri === "prix-asc") return a.prix - b.prix
+          if (tri === "prix-desc") return b.prix - a.prix
+          /*
+           * Une référence sans avis passe derrière les notées : la ranger
+           * comme un zéro la ferait passer pour mal notée, la ranger comme un
+           * cinq la mettrait en tête sans rien avoir prouvé. À égalité, le
+           * plus grand nombre d'avis l'emporte — une moyenne tirée de dix
+           * retours pèse plus lourd que la même tirée de deux.
+           */
+          const na = noteMoyenne(a.id)
+          const nb = noteMoyenne(b.id)
+          if (na === null || nb === null) {
+            return na === nb ? 0 : na === null ? 1 : -1
+          }
+          return nb - na || avisPour(b.id).length - avisPour(a.id).length
+        })
 
   return (
     <section
@@ -214,6 +229,8 @@ export function GrilleProduits() {
                 reference={produit.reference}
                 categorie={produit.categorie}
                 enStock={produit.stock === "en-stock"}
+                note={noteMoyenne(produit.id)}
+                nombreAvis={avisPour(produit.id).length}
                 badge={produit.populaire ? "Best-seller" : undefined}
                 onAjouter={() => ajouter(produit)}
                 href={lienProduit(produit.id)}

@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { asset, cn, formatPrix } from "@/lib/utils"
+import { Etoiles } from "@/components/Etoiles"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -10,7 +11,7 @@ import { Button } from "@/components/ui/button"
  *
  * Modifications : formatage roupies → euros (`formatPrix`, locale fr-FR), prix
  * barré / texte d'offre remplacés par le prix à l'unité, la référence et l'état
- * de stock, ajout d'un bouton d'ajout au panier. Le `whileHover` framer-motion
+ * de stock, ajout d'un bouton d'ajout au panier et de la note moyenne. Le `whileHover` framer-motion
  * d'origine est rendu en transition CSS. La photo passe en pleine largeur au
  * lieu d'être contenue avec marge : c'est ce qui donne l'allure de vitrine dans
  * les previews du catalogue.
@@ -27,6 +28,9 @@ export interface ProductCardProps
   reference: string
   categorie: string
   enStock: boolean
+  /** Moyenne des avis, `null` quand la référence n'en a aucun. */
+  note?: number | null
+  nombreAvis?: number
   badge?: string
   onAjouter?: () => void
   /** Lien vers la fiche produit : vrai `href`, pour garder clic droit et
@@ -48,6 +52,8 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       reference,
       categorie,
       enStock,
+      note = null,
+      nombreAvis = 0,
       badge,
       onAjouter,
       href,
@@ -118,6 +124,25 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             </a>
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+          {/* Une phrase plutôt qu'un « 0 avis » : le chiffre ressemblerait à
+              une mauvaise note, alors que la référence n'a rien reçu. Même
+              formulation que sur la fiche produit. */}
+          {note === null ? (
+            <p className="mt-2.5 text-sm text-muted-foreground">
+              Pas encore d'avis
+            </p>
+          ) : (
+            <p className="mt-2.5 flex items-center gap-1.5 text-sm">
+              <Etoiles note={note} taille="petite" muet />
+              <span className="font-semibold tabular-nums">
+                {note.toLocaleString("fr-FR")}
+              </span>
+              <span className="text-muted-foreground">
+                <span className="sr-only">{" sur 5, "}</span>
+                {nombreAvis} avis
+              </span>
+            </p>
+          )}
           <p className="mt-auto pt-3 text-xs text-muted-foreground/70">
             Réf. {reference}
           </p>

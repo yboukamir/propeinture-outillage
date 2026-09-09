@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { lienCategorie, lienProduit, urlCatalogue } from "@/lib/navigation"
+import {
+  lienCategorie,
+  lienProduit,
+  triDepuis,
+  TRIS,
+  urlCatalogue,
+} from "@/lib/navigation"
 
 /*
  * L'URL est l'état partageable du site : ce qui compte ici est qu'elle reste
@@ -63,5 +69,34 @@ describe("lienCategorie", () => {
 
   it("revient au catalogue entier avec `null`", () => {
     expect(lienCategorie(null)).toBe("/#catalogue")
+  })
+})
+
+describe("le tri du catalogue", () => {
+  it("expose chaque valeur du type une fois, l'ordre par défaut en tête", () => {
+    expect(TRIS.map((o) => o.valeur)).toEqual([
+      "catalogue",
+      "prix-asc",
+      "prix-desc",
+      "note-desc",
+    ])
+  })
+
+  it("porte le tri par note dans l'URL comme les autres", () => {
+    expect(urlCatalogue({ tri: "note-desc" })).toBe("/?tri=note-desc#catalogue")
+  })
+})
+
+describe("triDepuis", () => {
+  it("accepte toutes les valeurs proposées à l'écran", () => {
+    for (const option of TRIS) {
+      expect(triDepuis(option.valeur)).toBe(option.valeur)
+    }
+  })
+
+  it("retombe sur l'ordre du catalogue pour une valeur inconnue ou absente", () => {
+    expect(triDepuis(null)).toBe("catalogue")
+    expect(triDepuis("")).toBe("catalogue")
+    expect(triDepuis("prix-croissant")).toBe("catalogue")
   })
 })

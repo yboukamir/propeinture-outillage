@@ -43,7 +43,9 @@ const BANDEAU = 44
  */
 const vues = [
   { nom: "01-hero.webp", selecteur: null, largeur: 1280, hauteur: 900 },
-  { nom: "02-catalogue.webp", selecteur: "#catalogue", largeur: 1280, hauteur: 900 },
+  // 980 et non 900 : la note sur les cartes a rallongé la première rangée,
+  // dont le prix et le bouton se retrouvaient coupés.
+  { nom: "02-catalogue.webp", selecteur: "#catalogue", largeur: 1280, hauteur: 980 },
   { nom: "03-tarifs.webp", selecteur: "#tarifs", largeur: 1280, hauteur: 900 },
   { nom: "04-mobile.webp", selecteur: null, largeur: 420, hauteur: 860 },
   {
