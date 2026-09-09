@@ -46,6 +46,8 @@ export interface CommerceHeroProps {
   }[]
   telephone: string
   vignettes: Vignette[]
+  /** Compteur et ouverture du panneau panier, câblés sur les icônes du header. */
+  panier: { nombre: number; ouvrir: () => void }
 }
 
 export function CommerceHero({
@@ -58,6 +60,7 @@ export function CommerceHero({
   reassurance,
   telephone,
   vignettes,
+  panier,
 }: CommerceHeroProps) {
   return (
     <div className="relative mx-auto w-full max-w-7xl px-2 pb-16 sm:px-4">
@@ -93,10 +96,16 @@ export function CommerceHero({
               <Button
                 variant="ghost"
                 size="icon"
-                aria-label="Panier"
-                className="cursor-pointer transition-colors hover:text-primary"
+                aria-label={`Panier, ${panier.nombre} unité${panier.nombre > 1 ? "s" : ""}`}
+                onClick={panier.ouvrir}
+                className="relative cursor-pointer transition-colors hover:text-primary"
               >
                 <ShoppingBasket className="h-5 w-5" />
+                {panier.nombre > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground tabular-nums">
+                    {panier.nombre}
+                  </span>
+                )}
               </Button>
             </nav>
 
@@ -141,12 +150,13 @@ export function CommerceHero({
                   </Button>
                   <Button
                     variant="outline"
+                    onClick={panier.ouvrir}
                     className="relative h-12 justify-start gap-2 transition-colors hover:bg-muted"
                   >
                     <ShoppingBasket className="h-4 w-4" />
                     Panier
-                    <span className="absolute right-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                      0
+                    <span className="absolute right-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground tabular-nums">
+                      {panier.nombre}
                     </span>
                   </Button>
                 </div>

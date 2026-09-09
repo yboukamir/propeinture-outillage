@@ -40,6 +40,8 @@ export interface PricingSectionProps {
   note?: string
   id?: string
   className?: string
+  /** Palier réellement atteint par le panier, signalé sur la carte concernée. */
+  palierActifId?: string
 }
 
 export function PricingSection({
@@ -50,6 +52,7 @@ export function PricingSection({
   note,
   id = "tarifs",
   className,
+  palierActifId,
 }: PricingSectionProps) {
   return (
     <section className={cn("py-16 sm:py-20 lg:py-24", className)} id={id}>
@@ -69,22 +72,33 @@ export function PricingSection({
         </header>
 
         <div className="grid items-start gap-6 lg:grid-cols-3 lg:gap-8">
-          {paliers.map((palier) => (
+          {paliers.map((palier) => {
+            const actif = palier.id === palierActifId
+            return (
             <Card
               key={palier.id}
-              className={cn("flex h-full flex-col overflow-hidden py-6", {
-                // Le palier mis en avant bascule en charbon : c'est plus net
-                // qu'une simple bordure colorée, et ça rappelle le hero.
-                "border-transparent bg-secondary text-secondary-foreground shadow-[0_30px_60px_-30px_rgba(23,19,15,0.6)] lg:-mt-4 lg:pt-9 lg:pb-9":
-                  palier.populaire,
-              })}
+              className={cn(
+                "relative flex h-full flex-col overflow-hidden py-6",
+                {
+                  // Le palier mis en avant bascule en charbon : c'est plus net
+                  // qu'une simple bordure colorée, et ça rappelle le hero.
+                  "border-transparent bg-secondary text-secondary-foreground shadow-[0_30px_60px_-30px_rgba(23,19,15,0.6)] lg:-mt-4 lg:pt-9 lg:pb-9":
+                    palier.populaire,
+                  // Palier atteint par le panier en cours.
+                  "ring-2 ring-primary ring-offset-2 ring-offset-plaster": actif,
+                },
+              )}
             >
               <CardHeader className="px-6">
                 <div className="flex items-center justify-between gap-4">
                   <CardTitle className="text-xl font-bold lg:text-2xl">
                     {palier.nom}
                   </CardTitle>
-                  {palier.populaire ? (
+                  {actif ? (
+                    <Badge className="rounded-full px-2.5 py-0.5 font-semibold">
+                      Votre palier
+                    </Badge>
+                  ) : palier.populaire ? (
                     <Badge
                       variant="accent"
                       className="rounded-full px-2.5 py-0.5 font-semibold"
@@ -162,7 +176,8 @@ export function PricingSection({
                 </Button>
               </CardFooter>
             </Card>
-          ))}
+            )
+          })}
         </div>
 
         {note && (

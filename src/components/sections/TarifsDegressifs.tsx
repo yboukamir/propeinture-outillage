@@ -2,6 +2,7 @@ import {
   PricingSection,
   type PalierTarifaire,
 } from "@/components/ui/pricing-section"
+import { usePanier } from "@/panier/PanierContext"
 
 const paliers: PalierTarifaire[] = [
   {
@@ -50,6 +51,8 @@ const paliers: PalierTarifaire[] = [
 ]
 
 export function TarifsDegressifs() {
+  const { totaux } = usePanier()
+
   return (
     <PricingSection
       className="border-b border-border bg-plaster bg-tarp"
@@ -58,6 +61,7 @@ export function TarifsDegressifs() {
       intro="La remise s'applique au panier, toutes références confondues. Pas d'abonnement, pas d'engagement : seule la quantité commandée compte."
       paliers={paliers}
       note="Prix hors taxes. Remises non cumulables avec une offre promotionnelle en cours."
+      palierActifId={totaux.quantite > 0 ? totaux.palier.id : undefined}
     />
   )
 }

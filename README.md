@@ -18,9 +18,16 @@ en dessous.
 Le catalogue. Chaque carte porte sa photo en plein cadre, son état de stock, sa
 référence et son prix à l'unité.
 
+![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.png)
+
+Le panier, seule partie réellement fonctionnelle du concept : la remise se
+recalcule à chaque changement de quantité et la jauge annonce ce qui manque
+pour atteindre le palier suivant.
+
 ![Trois paliers tarifaires, celui du milieu en charbon avec la remise en jaune](docs/captures/03-tarifs.png)
 
-Les tarifs dégressifs, palier « Artisan » mis en avant.
+Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
+« Votre palier ».
 
 <img src="docs/captures/04-mobile.png" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="360">
 
@@ -59,6 +66,26 @@ français, palette du projet.
 Les adaptations sont documentées en tête de chaque fichier dans
 `src/components/ui/`.
 
+## Le panier et les remises
+
+C'est le seul comportement réel du projet, et le cœur du concept : la remise
+dépend du **nombre total d'unités du panier, toutes références confondues**.
+
+| Palier | À partir de | Remise |
+|---|---|---|
+| Particulier | 1 unité | prix catalogue |
+| Artisan | 10 unités | −12 % |
+| Chantier / Grossiste | 50 unités | −22 % |
+
+Le barème et les calculs vivent dans [`src/lib/tarifs.ts`](src/lib/tarifs.ts),
+en fonctions pures et sans dépendance à React — le reste n'en est que
+l'affichage. L'état du panier est un `useReducer` exposé par
+[`src/panier/PanierContext.tsx`](src/panier/PanierContext.tsx).
+
+Le panneau annonce en continu ce qui manque pour le palier suivant, et la
+section tarifs marque « Votre palier » sur celui qui s'applique. Le bouton
+« Commander » est volontairement désactivé : il n'y a ni back-end ni paiement.
+
 ## Démarrer
 
 ```bash
@@ -81,7 +108,9 @@ src/
                       alimentent les composants ui/ en contenu français
     Marque.tsx        le logo, partagé header / footer
   data/produits.ts    les 6 références du catalogue + les 4 catégories
-  lib/utils.ts        cn(), formatage des prix en euros (fr-FR), imageUrl()
+  lib/tarifs.ts       le barème dégressif, en fonctions pures
+  lib/utils.ts        cn() et formatage des prix en euros (fr-FR)
+  panier/             l'état du panier (useReducer + contexte)
   index.css           palette, polices et thème Tailwind v4
 ```
 

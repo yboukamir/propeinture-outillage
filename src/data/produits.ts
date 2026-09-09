@@ -49,7 +49,7 @@ export const produits: Produit[] = [
     reference: "BP-450-100",
     stock: "en-stock",
     photo: "/produits/bache-protection.webp",
-    photoAlt: "Bâche plastique translucide tendue en protection",
+    photoAlt: "Cuisine protégée par des bâches plastique pendant des travaux",
   },
   {
     id: "enduit-lissage-25",

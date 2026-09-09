@@ -28,6 +28,7 @@ export interface ProductCardProps
   categorie: string
   enStock: boolean
   badge?: string
+  onAjouter?: () => void
 }
 
 const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
@@ -44,6 +45,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       categorie,
       enStock,
       badge,
+      onAjouter,
       ...props
     },
     ref,
@@ -110,7 +112,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             </span>
             <span className="text-sm text-muted-foreground">/{unite}</span>
           </p>
-          <Button size="sm" type="button">
+          <Button size="sm" type="button" onClick={onAjouter}>
             Ajouter
           </Button>
         </div>

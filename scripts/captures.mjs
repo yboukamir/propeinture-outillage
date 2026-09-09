@@ -37,11 +37,43 @@ if (!executablePath) {
 /** Hauteur du bandeau de démonstration, qui reste collé en haut. */
 const BANDEAU = 44
 
+/**
+ * `prepare` s'exécute dans la page avant la capture, pour les vues qui
+ * demandent une interaction (le panier n'existe qu'une fois rempli).
+ */
 const vues = [
   { nom: "01-hero.png", selecteur: null, largeur: 1280, hauteur: 900 },
   { nom: "02-catalogue.png", selecteur: "#catalogue", largeur: 1280, hauteur: 900 },
   { nom: "03-tarifs.png", selecteur: "#tarifs", largeur: 1280, hauteur: 900 },
   { nom: "04-mobile.png", selecteur: null, largeur: 420, hauteur: 860 },
+  {
+    nom: "05-panier.png",
+    selecteur: null,
+    largeur: 1280,
+    hauteur: 900,
+    // Un panier à 12 unités : la remise Artisan est déclenchée et la jauge
+    // vers le palier grossiste est visible.
+    prepare: async () => {
+      const attendre = (ms) => new Promise((r) => setTimeout(r, ms))
+      const ajouter = [...document.querySelectorAll("button")].filter(
+        (b) => b.textContent.trim() === "Ajouter",
+      )
+      ajouter[0].click()
+      await attendre(400)
+      ajouter[3].click()
+      await attendre(400)
+      const plus = [...document.querySelectorAll("[role=dialog] button")].filter(
+        (b) => b.getAttribute("aria-label")?.startsWith("Ajouter une unité"),
+      )
+      for (let i = 0; i < 10; i++) {
+        plus[0].click()
+        await attendre(40)
+      }
+      // Sinon le dernier bouton cliqué garde son anneau de focus sur l'image.
+      document.activeElement?.blur()
+      await attendre(400)
+    },
+  },
 ]
 
 await mkdir(DOSSIER, { recursive: true })
@@ -76,6 +108,11 @@ try {
 
     // Laisse les apparitions CSS (600 ms + cascade) se terminer.
     await new Promise((r) => setTimeout(r, 1200))
+
+    if (vue.prepare) {
+      await page.evaluate(vue.prepare)
+      await new Promise((r) => setTimeout(r, 600))
+    }
 
     const fichier = path.join(DOSSIER, vue.nom)
     await page.screenshot({ path: fichier })

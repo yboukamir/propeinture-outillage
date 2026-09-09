@@ -3,6 +3,7 @@ import { CreditCard, ShieldCheck, Truck } from "lucide-react"
 import { CommerceHero } from "@/components/ui/commerce-hero"
 import { Marque } from "@/components/Marque"
 import { categories } from "@/data/produits"
+import { usePanier } from "@/panier/PanierContext"
 
 const navigation = [
   { name: "Catalogue", href: "#catalogue" },
@@ -25,6 +26,8 @@ const vignettes = categories.map((categorie) => ({
 }))
 
 export function Hero() {
+  const { totaux, ouvrir } = usePanier()
+
   return (
     <CommerceHero
       marque={<Marque />}
@@ -42,6 +45,7 @@ export function Hero() {
       ctaSecondaire={{ label: "Tarifs vente en gros", href: "#tarifs" }}
       reassurance={reassurance}
       vignettes={vignettes}
+      panier={{ nombre: totaux.quantite, ouvrir }}
     />
   )
 }

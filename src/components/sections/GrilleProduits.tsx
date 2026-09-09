@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/ui/product-card"
 import { produits } from "@/data/produits"
+import { usePanier } from "@/panier/PanierContext"
 
 export function GrilleProduits() {
+  const { ajouter } = usePanier()
+
   return (
     <section
       id="catalogue"
@@ -48,6 +51,7 @@ export function GrilleProduits() {
                 categorie={produit.categorie}
                 enStock={produit.stock === "en-stock"}
                 badge={produit.populaire ? "Best-seller" : undefined}
+                onAjouter={() => ajouter(produit)}
               />
             </div>
           ))}

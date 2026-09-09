@@ -11,7 +11,7 @@ rognés à l'affichage par `object-fit`.
 |---|---|
 | `rouleau-laqueur.webp` | `photo-1516962080544-eac695c93791` |
 | `pinceau-plat.webp` | `photo-1643312918957-9ccb79b08881` |
-| `bache-protection.webp` | `photo-1763888786556-4f8524c1cab2` |
+| `bache-protection.webp` | `photo-1618832515490-e181c4794a45` |
 | `enduit-lissage.webp` | `photo-1768839725085-829e6ac7ac26` |
 | `ruban-masquage.webp` | `photo-1536356915696-c6bf1c01da46` |
 | `grille-essorage.webp` | `photo-1652829069862-87874e119527` |
