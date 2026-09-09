@@ -17,8 +17,8 @@ en dessous.
 
 ![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.png)
 
-Le catalogue. Chaque carte porte sa photo en plein cadre, son état de stock, sa
-référence et son prix à l'unité.
+Le catalogue et ses filtres par catégorie. Chaque carte porte sa photo en plein
+cadre, son état de stock, sa référence et son prix à l'unité.
 
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.png)
 
@@ -95,14 +95,23 @@ section tarifs marque « Votre palier » sur celui qui s'applique. Le bouton
 
 ## Navigation
 
-Cliquer une carte ouvre la fiche produit. Elle est pilotée par la query string
-(`?produit=<id>`) dans [`src/lib/navigation.ts`](src/lib/navigation.ts), sans
-routeur : le site est servi en sous-chemin sur GitHub Pages, où des URL en
-segments renverraient un 404 sans page de repli, et sa navigation repose sur des
-ancres (`#catalogue`) qu'un routeur à hash confisquerait. Les liens restent
-partageables, le bouton retour du navigateur fonctionne, et un identifiant
-inconnu retombe sur l'accueil. Passer à react-router ne toucherait que ce
-fichier et `App.tsx`.
+Deux états vivent dans l'URL, gérés par
+[`src/lib/navigation.ts`](src/lib/navigation.ts) :
+
+- `?produit=<id>` — la fiche produit, ouverte en cliquant une carte ;
+- `?categorie=<nom>` — le filtre du catalogue.
+
+Pas de routeur : le site est servi en sous-chemin sur GitHub Pages, où des URL
+en segments renverraient un 404 sans page de repli, et sa navigation repose sur
+des ancres (`#catalogue`) qu'un routeur à hash confisquerait. Les liens restent
+partageables, le bouton retour du navigateur défait le filtre comme la fiche, et
+une valeur inconnue dégrade proprement — un produit introuvable retombe sur
+l'accueil, une catégorie vide affiche un message. Passer à react-router ne
+toucherait que ce fichier et `App.tsx`.
+
+Les filtres sont de vrais liens plutôt que des boutons, et les quatre vignettes
+de catégories du hero pointent sur le filtre correspondant : elles se
+contentaient jusque-là de faire défiler vers le catalogue.
 
 ## Démarrer
 

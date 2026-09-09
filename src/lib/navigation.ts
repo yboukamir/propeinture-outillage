@@ -21,10 +21,36 @@ export function lienAccueil() {
   return import.meta.env.BASE_URL
 }
 
-export function naviguer(url: string) {
+/** `#catalogue` reste dans l'URL pour qu'un lien ouvert à froid y défile. */
+export function lienCategorie(categorie: string | null) {
+  const base = import.meta.env.BASE_URL
+  return categorie
+    ? `${base}?categorie=${encodeURIComponent(categorie)}#catalogue`
+    : `${base}#catalogue`
+}
+
+type OptionsNavigation = {
+  /** Section vers laquelle défiler, au lieu de remonter en haut. */
+  ancre?: string
+  /** Faux pour un changement qui ne doit pas bouger la page (un filtre). */
+  defilerEnHaut?: boolean
+}
+
+export function naviguer(
+  url: string,
+  { ancre, defilerEnHaut = true }: OptionsNavigation = {},
+) {
   window.history.pushState({}, "", url)
   window.dispatchEvent(new Event(EVENEMENT_NAVIGATION))
-  window.scrollTo({ top: 0 })
+
+  if (ancre) {
+    // Laisse React rendre la nouvelle vue avant de chercher la cible.
+    requestAnimationFrame(() => {
+      document.getElementById(ancre)?.scrollIntoView({ behavior: "smooth" })
+    })
+  } else if (defilerEnHaut) {
+    window.scrollTo({ top: 0 })
+  }
 }
 
 function souscrire(rappel: () => void) {
@@ -43,4 +69,9 @@ const instantane = () => window.location.search
 export function useProduitAffiche(): string | null {
   const recherche = React.useSyncExternalStore(souscrire, instantane, () => "")
   return new URLSearchParams(recherche).get("produit")
+}
+
+export function useCategorieAffichee(): string | null {
+  const recherche = React.useSyncExternalStore(souscrire, instantane, () => "")
+  return new URLSearchParams(recherche).get("categorie")
 }

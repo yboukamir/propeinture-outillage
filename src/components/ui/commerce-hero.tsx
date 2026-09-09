@@ -32,6 +32,7 @@ export type Vignette = {
   href: string
   photo: string
   alt: string
+  onClick?: (evenement: React.MouseEvent) => void
 }
 
 export interface CommerceHeroProps {
@@ -264,7 +265,11 @@ export function CommerceHero({
                 photo est claire. */}
             <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/45 to-secondary/5" />
 
-            <a href={vignette.href} className="absolute inset-0 z-20">
+            <a
+              href={vignette.href}
+              onClick={vignette.onClick}
+              className="absolute inset-0 z-20"
+            >
               <span className="sr-only">Voir la catégorie {vignette.title}</span>
             </a>
 

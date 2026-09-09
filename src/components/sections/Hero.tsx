@@ -1,9 +1,11 @@
+import type * as React from "react"
 import { CreditCard, ShieldCheck, Truck } from "lucide-react"
 
 import { CommerceHero } from "@/components/ui/commerce-hero"
 import { Marque } from "@/components/Marque"
 import { categories } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
+import { lienCategorie, naviguer } from "@/lib/navigation"
 
 const navigation = [
   { name: "Catalogue", href: "#catalogue" },
@@ -18,11 +20,17 @@ const reassurance = [
   { icone: Truck, texte: "Livraison chantier 48 h" },
 ]
 
+/* Les vignettes filtrent réellement le catalogue au lieu de s'y contenter d'y
+   faire défiler. */
 const vignettes = categories.map((categorie) => ({
   title: categorie.titre,
-  href: "#catalogue",
+  href: lienCategorie(categorie.titre),
   photo: categorie.photo,
   alt: categorie.alt,
+  onClick: (evenement: React.MouseEvent) => {
+    evenement.preventDefault()
+    naviguer(lienCategorie(categorie.titre), { ancre: "catalogue" })
+  },
 }))
 
 export function Hero() {
