@@ -121,6 +121,11 @@ lecteur d'écran annonce « 4,7 sur 5 » au lieu d'énumérer cinq icônes. Là 
 valeur est déjà écrite à côté, ce texte est muselé pour ne pas être annoncé
 deux fois.
 
+Les avis se trient par date ou par note, à note égale le plus récent d'abord.
+Ce tri-là reste en état local, contrairement à celui du catalogue : la règle
+suivie est que l'URL porte ce qu'on regarde — fiche, filtre, recherche, ordre
+du catalogue — et l'état local la façon de le lire à l'intérieur d'une vue.
+
 ## Navigation
 
 Quatre états vivent dans l'URL, gérés par

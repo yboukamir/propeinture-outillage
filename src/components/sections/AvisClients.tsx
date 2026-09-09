@@ -1,8 +1,9 @@
+import * as React from "react"
 import { Info, MessageSquareOff } from "lucide-react"
 
 import { Etoiles } from "@/components/Etoiles"
 import { Separator } from "@/components/ui/separator"
-import { avisPour, noteMoyenne } from "@/data/avis"
+import { avisPour, noteMoyenne, type Avis } from "@/data/avis"
 
 const dateLongue = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -10,8 +11,35 @@ const dateLongue = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 })
 
+type TriAvis = "recent" | "note-desc" | "note-asc"
+
+const TRIS_AVIS: { valeur: TriAvis; libelle: string }[] = [
+  { valeur: "recent", libelle: "Plus récents" },
+  { valeur: "note-desc", libelle: "Meilleures notes" },
+  { valeur: "note-asc", libelle: "Notes les plus basses" },
+]
+
+/** À note égale, le plus récent d'abord — la liste reste stable et lisible. */
+function trier(liste: Avis[], tri: TriAvis) {
+  if (tri === "recent") return liste
+  return [...liste].sort(
+    (a, b) =>
+      (tri === "note-desc" ? b.note - a.note : a.note - b.note) ||
+      b.date.localeCompare(a.date),
+  )
+}
+
 export function AvisClients({ produitId }: { produitId: string }) {
-  const liste = avisPour(produitId)
+  /*
+   * En état local et non dans l'URL, contrairement au tri du catalogue. La
+   * règle qu'on suit : l'URL porte ce qu'on regarde — fiche, filtre, recherche,
+   * ordre du catalogue —, l'état local porte la façon de le lire à l'intérieur
+   * d'une vue. Personne ne partage un lien vers « cette fiche, avis triés par
+   * note croissante ».
+   */
+  const [tri, setTri] = React.useState<TriAvis>("recent")
+
+  const liste = trier(avisPour(produitId), tri)
   const moyenne = noteMoyenne(produitId)
 
   return (
@@ -42,13 +70,30 @@ export function AvisClients({ produitId }: { produitId: string }) {
         boutique n'existent.
       </p>
 
+      {liste.length > 1 && (
+        <label className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="shrink-0">Trier les avis</span>
+          <select
+            value={tri}
+            onChange={(e) => setTri(e.target.value as TriAvis)}
+            className="h-9 rounded-full border border-border bg-card px-3 text-sm text-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {TRIS_AVIS.map((option) => (
+              <option key={option.valeur} value={option.valeur}>
+                {option.libelle}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+
       {liste.length === 0 ? (
         <p className="mt-6 flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-8 text-sm text-muted-foreground">
           <MessageSquareOff className="size-4 shrink-0" aria-hidden="true" />
           Cette référence n'a pas encore d'avis.
         </p>
       ) : (
-        <ul className="mt-6 flex flex-col gap-4">
+        <ul className="mt-4 flex flex-col gap-4">
           {liste.map((avis) => (
             <li
               key={avis.id}
