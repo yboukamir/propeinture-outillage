@@ -27,9 +27,9 @@ La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 
 ![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité et de signalement dont un suivi d'une réponse du vendeur, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
 
-Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri,
-liste avec boutons d'utilité et de signalement, réponses du vendeur,
-pagination et formulaire de dépôt. La mention d'avis fictifs est en clair
+Les avis, en bas de fiche : panneau de filtres — histogramme des notes et
+avis répondus —, tri, liste avec boutons d'utilité et de signalement,
+réponses du vendeur, pagination et formulaire de dépôt. La mention d'avis fictifs est en clair
 au-dessus, et le formulaire annonce avant la saisie que rien n'est envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
@@ -163,8 +163,14 @@ Un histogramme des notes sert aussi de filtre : chaque barre montre combien
 d'avis portent cette note et s'active au clic, un second clic la désactivant —
 pas besoin d'un bouton « tout » à côté. Les notes sans avis sont désactivées,
 et déposer un avis lève le filtre en cours, sans quoi le nouvel avis serait
-invisible s'il tombait hors du filtre. Déposer remet aussi le tri sur « Plus
-récents », pour la même raison : daté du jour, l'avis serait dernier sous
+invisible s'il tombait hors du filtre. Une bascule « Avec réponse du vendeur »
+complète le panneau, absente des fiches où personne n'a répondu. Les deux
+critères se cumulent, et leur croisement peut ne rien donner : une note sur
+laquelle la boutique n'a jamais répondu affiche alors « Aucun avis ne
+correspond à ces filtres » et le lien qui les lève. Les compteurs de
+l'histogramme restent ceux de l'ensemble, comme la moyenne au-dessus : ils
+décrivent la référence, pas la sélection en cours. Déposer remet aussi le tri
+sur « Plus récents », pour la même raison : daté du jour, l'avis serait dernier sous
 « Plus anciens » et perdu au milieu sous un tri par note. La moyenne et le
 total en tête portent toujours sur l'ensemble : ils doivent parler du même lot.
 

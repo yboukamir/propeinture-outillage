@@ -5,6 +5,7 @@ import {
   Flag,
   Info,
   MessageSquareOff,
+  MessageSquareReply,
   ThumbsUp,
 } from "lucide-react"
 
@@ -89,6 +90,8 @@ export function AvisClients({
   const [tri, setTri] = React.useState<TriAvis>("recent")
   /** Note sélectionnée dans l'histogramme, `null` quand tout est affiché. */
   const [filtreNote, setFiltreNote] = React.useState<number | null>(null)
+  /** Ne garder que les avis auxquels la boutique a répondu. */
+  const [avecReponse, setAvecReponse] = React.useState(false)
   /** Avis que le visiteur a marqués utiles. Rien n'est envoyé, comme le reste. */
   const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
   /** Avis signalés. Aucune modération derrière : la page le dit à l'écran. */
@@ -134,10 +137,23 @@ export function AvisClients({
     nombre: tous.filter((a) => a.note === note).length,
   }))
 
-  const filtres = filtreNote
-    ? tous.filter((a) => a.note === filtreNote)
-    : tous
+  const nombreReponses = tous.filter((a) => a.reponse).length
+  const filtreActif = filtreNote !== null || avecReponse
+  // Les deux critères se cumulent, et leur croisement peut ne rien donner :
+  // la liste vide est un état à afficher, pas un cas impossible.
+  const filtres = tous.filter(
+    (a) =>
+      (filtreNote === null || a.note === filtreNote) &&
+      (!avecReponse || a.reponse),
+  )
   const liste = trier(filtres, tri, utilite)
+
+  /** Repart d'une liste entière, quel que soit le critère qui la réduisait. */
+  function toutAfficher() {
+    setFiltreNote(null)
+    setAvecReponse(false)
+    setPage(1)
+  }
 
   const pages = Math.max(1, Math.ceil(liste.length / PAR_PAGE))
   /*
@@ -181,7 +197,7 @@ export function AvisClients({
 
       {tous.length > 0 && (
         <div className="mt-6 rounded-lg border border-border bg-card p-4">
-          <h3 className="text-sm font-semibold">Filtrer par note</h3>
+          <h3 className="text-sm font-semibold">Filtrer les avis</h3>
           <ul className="mt-3 flex flex-col gap-1.5">
             {distribution.map(({ note, nombre }) => {
               const actif = filtreNote === note
@@ -227,7 +243,29 @@ export function AvisClients({
             })}
           </ul>
 
-          {filtreNote !== null && (
+          {/* Absente des fiches sans réponse : elle n'y filtrerait rien. */}
+          {nombreReponses > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setAvecReponse(!avecReponse)
+                setPage(1)
+              }}
+              aria-pressed={avecReponse}
+              className={cn(
+                "mt-3 flex w-full items-center gap-3 rounded-md border-t border-border px-2 pb-1.5 pt-3 text-left text-sm transition-colors hover:bg-muted",
+                avecReponse && "bg-muted",
+              )}
+            >
+              <MessageSquareReply className="size-4 shrink-0" aria-hidden="true" />
+              <span className="flex-1">Avec réponse du vendeur</span>
+              <span className="w-6 shrink-0 text-right tabular-nums text-muted-foreground">
+                {nombreReponses}
+              </span>
+            </button>
+          )}
+
+          {filtreActif && (
             <p className="mt-3 flex flex-wrap items-center gap-2 border-t border-border pt-3 text-sm text-muted-foreground">
               <span aria-live="polite">
                 {liste.length} avis sur {tous.length} affiché
@@ -235,10 +273,7 @@ export function AvisClients({
               </span>
               <button
                 type="button"
-                onClick={() => {
-                  setFiltreNote(null)
-                  setPage(1)
-                }}
+                onClick={toutAfficher}
                 className="font-medium text-primary underline underline-offset-4"
               >
                 Voir tous les avis
@@ -277,6 +312,20 @@ export function AvisClients({
         <p className="mt-6 flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-8 text-sm text-muted-foreground">
           <MessageSquareOff className="size-4 shrink-0" aria-hidden="true" />
           Cette référence n'a pas encore d'avis.
+        </p>
+      ) : liste.length === 0 ? (
+        // Possible depuis que deux critères se croisent : une note sur
+        // laquelle la boutique n'a jamais répondu ne donne aucun avis.
+        <p className="mt-6 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card px-5 py-8 text-sm text-muted-foreground">
+          <MessageSquareOff className="size-4 shrink-0" aria-hidden="true" />
+          Aucun avis ne correspond à ces filtres.
+          <button
+            type="button"
+            onClick={toutAfficher}
+            className="font-medium text-primary underline underline-offset-4"
+          >
+            Voir tous les avis
+          </button>
         </p>
       ) : (
         <>
@@ -464,9 +513,10 @@ export function AvisClients({
 
       <FormulaireAvis
         onAjout={(nouveau) => {
-          // Sans ça, un avis déposé avec une autre note serait invisible :
-          // il tomberait hors du filtre actif.
+          // Sans ça, un avis déposé serait invisible : il tomberait hors du
+          // filtre par note, et il n'a évidemment pas de réponse du vendeur.
           setFiltreNote(null)
+          setAvecReponse(false)
           // Même raison : il est daté d'aujourd'hui, donc dernier de la liste
           // sous « Plus anciens » et introuvable sous les tris par note.
           setTri("recent")
