@@ -40,14 +40,18 @@ Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
 
 En mobile, la navigation se replie dans un panneau latéral.
 
-Les captures se régénèrent avec le serveur de dev lancé :
+Les captures ci-dessus sont en thème clair ; `docs/captures/` contient les
+mêmes en sombre, suffixées `-sombre`. Elles se régénèrent toutes, dans les deux
+thèmes, avec le serveur de dev lancé :
 
 ```bash
 npm run captures
 ```
 
 Le script utilise le Chrome installé sur la machine, sans télécharger de
-navigateur (`CHROME_PATH=...` pour en désigner un autre).
+navigateur (`CHROME_PATH=...` pour en désigner un autre). Le thème est obtenu
+en émulant la préférence système, chaque passe dans un contexte de navigation
+neuf.
 
 ## Stack
 
@@ -203,6 +207,10 @@ courant en **Inter**, les deux chargées depuis Google Fonts dans `index.html`.
 Tout le thème passant par des jetons sémantiques (`--background`, `--primary`…),
 le mode sombre se résume à redéfinir leurs valeurs sous
 `:root[data-theme="dark"]` : aucun composant n'a à connaître le mode.
+
+| Clair | Sombre |
+|---|---|
+| ![Catalogue en thème clair](docs/captures/02-catalogue.png) | ![Catalogue en thème sombre](docs/captures/02-catalogue-sombre.png) |
 
 La bascule est dans les deux en-têtes. Sans choix explicite, la préférence
 système est suivie et continue de l'être si elle change ; un clic enregistre un

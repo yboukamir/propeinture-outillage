@@ -91,9 +91,25 @@ const navigateur = await puppeteer.launch({
   args: ["--hide-scrollbars", "--disable-gpu"],
 })
 
+/**
+ * Le thème se choisit en émulant la préférence système : le script de
+ * index.html la résout au chargement, aucun stockage à préparer. Chaque thème
+ * tourne dans un contexte neuf pour qu'un `localStorage` laissé par le
+ * précédent ne vienne pas l'écraser.
+ */
+const themes = [
+  { nom: "clair", media: "light", suffixe: "" },
+  { nom: "sombre", media: "dark", suffixe: "-sombre" },
+]
+
 try {
+  for (const theme of themes) {
+  const contexte = await navigateur.createBrowserContext()
   for (const vue of vues) {
-    const page = await navigateur.newPage()
+    const page = await contexte.newPage()
+    await page.emulateMediaFeatures([
+      { name: "prefers-color-scheme", value: theme.media },
+    ])
     await page.setViewport({ width: vue.largeur, height: vue.hauteur })
     await page.goto(vue.url ?? URL_SITE, { waitUntil: "networkidle0" })
 
@@ -121,10 +137,12 @@ try {
       await new Promise((r) => setTimeout(r, 600))
     }
 
-    const fichier = path.join(DOSSIER, vue.nom)
-    await page.screenshot({ path: fichier })
-    console.log(`${vue.nom}  ${vue.largeur}×${vue.hauteur}`)
+    const nom = vue.nom.replace(/\.png$/, `${theme.suffixe}.png`)
+    await page.screenshot({ path: path.join(DOSSIER, nom) })
+    console.log(`${nom}  ${vue.largeur}×${vue.hauteur}`)
     await page.close()
+  }
+  await contexte.close()
   }
 } finally {
   await navigateur.close()
