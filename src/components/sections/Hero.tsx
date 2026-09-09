@@ -3,6 +3,7 @@ import { CreditCard, ShieldCheck, Truck } from "lucide-react"
 
 import { CommerceHero } from "@/components/ui/commerce-hero"
 import { Marque } from "@/components/Marque"
+import { BasculeTheme } from "@/components/BasculeTheme"
 import { categories } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
 import { focaliserRecherche, lienCategorie, naviguer } from "@/lib/navigation"
@@ -55,6 +56,7 @@ export function Hero() {
       vignettes={vignettes}
       panier={{ nombre: totaux.quantite, ouvrir }}
       onRechercher={focaliserRecherche}
+      basculeTheme={<BasculeTheme />}
     />
   )
 }

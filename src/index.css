@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* `data-theme` est toujours posé explicitement par le script de index.html :
+   la variante n'a donc pas à gérer le cas « préférence système ». */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /*
   Palette "atelier / chantier" — chaux, charbon, brique brûlée, jaune balisage.
   Volontairement à l'écart du bleu/violet SaaS.
@@ -48,6 +52,49 @@
   --surface-plaster: #eae2d3;
   /* Bordure discrète à l'intérieur des sections charbon. */
   --border-dark: #2e2720;
+}
+
+/*
+  Mode sombre. Tout le thème passant par ces jetons, aucun composant n'a à
+  connaître le mode : seules les valeurs changent. `data-theme` est posé sur
+  <html> par le script de index.html avant le premier rendu, en résolvant la
+  préférence système, ce qui évite le flash clair au chargement.
+
+  La brique s'éclaircit : à sa valeur claire, elle passait sous le seuil de
+  lisibilité en texte sur fond sombre.
+*/
+:root[data-theme="dark"] {
+  --background: #14110e;
+  --foreground: #f4efe6;
+
+  --card: #1f1a15;
+  --card-foreground: #f4efe6;
+
+  --popover: #1f1a15;
+  --popover-foreground: #f4efe6;
+
+  --primary: #e2653a;
+  --primary-foreground: #1a0d06;
+
+  /* Plus clair que le fond, sinon le panneau du hero s'y confond. */
+  --secondary: #241f19;
+  --secondary-foreground: #f4efe6;
+
+  --muted: #2a241d;
+  --muted-foreground: #b3a894;
+
+  --accent: #f2ae2a;
+  --accent-foreground: #1d1608;
+
+  --destructive: #e0664f;
+  --destructive-foreground: #1a0d06;
+
+  --border: #332c24;
+  --input: #332c24;
+  --ring: #e2653a;
+
+  --surface-plaster: #1a1611;
+  --border-dark: #3b332a;
 }
 
 @theme inline {

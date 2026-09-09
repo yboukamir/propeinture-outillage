@@ -16,6 +16,22 @@
       content="ProPeinture Outillage — projet de démonstration : concept de boutique d'outillage et matériel pour peintres professionnels."
     />
     <title>ProPeinture Outillage — Démo</title>
+    <script>
+      // Avant le premier rendu, sinon la page apparaît en clair puis bascule.
+      // Volontairement en ligne et sans dépendance : ce script doit s'exécuter
+      // avant la feuille de styles et le bundle.
+      ;(function () {
+        try {
+          var choix = localStorage.getItem("propeinture-theme")
+          var sombre = choix
+            ? choix === "sombre"
+            : matchMedia("(prefers-color-scheme: dark)").matches
+          document.documentElement.dataset.theme = sombre ? "dark" : "light"
+        } catch (e) {
+          document.documentElement.dataset.theme = "light"
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

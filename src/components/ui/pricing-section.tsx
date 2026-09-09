@@ -81,8 +81,10 @@ export function PricingSection({
                 "relative flex h-full flex-col overflow-hidden py-6",
                 {
                   // Le palier mis en avant bascule en charbon : c'est plus net
-                  // qu'une simple bordure colorée, et ça rappelle le hero.
-                  "border-transparent bg-secondary text-secondary-foreground shadow-[0_30px_60px_-30px_rgba(23,19,15,0.6)] lg:-mt-4 lg:pt-9 lg:pb-9":
+                  // qu'une simple bordure colorée, et ça rappelle le hero. En
+                  // mode sombre ce contraste disparaît — toutes les cartes sont
+                  // déjà sombres —, un liseré d'accent prend le relais.
+                  "border-transparent bg-secondary text-secondary-foreground shadow-[0_30px_60px_-30px_rgba(23,19,15,0.6)] lg:-mt-4 lg:pt-9 lg:pb-9 dark:border-accent/40 dark:shadow-none":
                     palier.populaire,
                   // Palier atteint par le panier en cours.
                   "ring-2 ring-primary ring-offset-2 ring-offset-plaster": actif,

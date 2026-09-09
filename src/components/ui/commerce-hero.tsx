@@ -52,6 +52,9 @@ export interface CommerceHeroProps {
   panier: { nombre: number; ouvrir: () => void }
   /** Amène le focus sur le champ de recherche du catalogue. */
   onRechercher: () => void
+  /** Bascule clair / sombre, fournie par la page pour garder ce composant
+   *  purement présentationnel. */
+  basculeTheme?: React.ReactNode
 }
 
 export function CommerceHero({
@@ -66,6 +69,7 @@ export function CommerceHero({
   vignettes,
   panier,
   onRechercher,
+  basculeTheme,
 }: CommerceHeroProps) {
   return (
     <div className="relative mx-auto w-full max-w-7xl px-2 pb-16 sm:px-4">
@@ -113,10 +117,17 @@ export function CommerceHero({
                   </span>
                 )}
               </Button>
+              {basculeTheme}
             </nav>
 
+            {/* En dessous de `lg` la nav est repliée : la bascule reste
+                accessible à côté du bouton de menu. */}
+            <div className="ml-auto flex items-center lg:hidden">
+              {basculeTheme}
+            </div>
+
             <Sheet>
-              <SheetTrigger asChild className="ml-auto lg:hidden">
+              <SheetTrigger asChild className="lg:hidden">
                 <Button
                   variant="ghost"
                   size="icon"

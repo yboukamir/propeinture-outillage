@@ -17,8 +17,8 @@ en dessous.
 
 ![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.png)
 
-Le catalogue, sa recherche, son tri et ses filtres par catégorie. Chaque carte porte sa
-photo en plein cadre, son état de stock, sa référence et son prix à l'unité.
+Le catalogue, sa recherche, son tri et ses filtres par catégorie. Chaque carte
+porte sa photo en plein cadre, son état de stock, sa référence et son prix à l'unité.
 
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.png)
 
@@ -95,7 +95,7 @@ section tarifs marque « Votre palier » sur celui qui s'applique. Le bouton
 
 ## Navigation
 
-Deux états vivent dans l'URL, gérés par
+Quatre états vivent dans l'URL, gérés par
 [`src/lib/navigation.ts`](src/lib/navigation.ts) :
 
 - `?produit=<id>` — la fiche produit, ouverte en cliquant une carte ;
@@ -174,10 +174,12 @@ src/
                       de fines enveloppes qui alimentent les composants ui/
                       en contenu français
     Marque.tsx        le logo, partagé header / footer
+    BasculeTheme.tsx  le bouton clair / sombre
     EnTeteProduit.tsx en-tête sobre de la fiche produit
   data/produits.ts    les 6 références du catalogue + les 4 catégories
   lib/navigation.ts   fiche produit, filtre et recherche dans l'URL
   lib/tarifs.ts       le barème dégressif, en fonctions pures
+  lib/theme.ts        clair / sombre, avec suivi de la préférence système
   lib/utils.ts        cn(), prix en euros (fr-FR), normalisation pour la recherche
   panier/             l'état du panier (useReducer + contexte)
   index.css           palette, polices et thème Tailwind v4
@@ -195,6 +197,26 @@ façon bâche) et `bg-hazard` (liseré de balisage).
 
 Titres et marque en **Barlow Semi Condensed** (police de signalétique), texte
 courant en **Inter**, les deux chargées depuis Google Fonts dans `index.html`.
+
+## Mode sombre
+
+Tout le thème passant par des jetons sémantiques (`--background`, `--primary`…),
+le mode sombre se résume à redéfinir leurs valeurs sous
+`:root[data-theme="dark"]` : aucun composant n'a à connaître le mode.
+
+La bascule est dans les deux en-têtes. Sans choix explicite, la préférence
+système est suivie et continue de l'être si elle change ; un clic enregistre un
+choix dans `localStorage` qui prend alors le dessus. Un script en ligne dans
+`index.html` pose `data-theme` avant la feuille de styles, sinon la page
+apparaîtrait en clair avant de basculer.
+
+Deux ajustements ont été nécessaires, le reste suivant tout seul : la brique
+s'éclaircit — à sa valeur claire elle passait sous le seuil de lisibilité en
+texte sur fond sombre — et le palier tarifaire mis en avant reçoit un liseré
+d'accent, son fond charbon ne le distinguant plus quand toutes les cartes sont
+déjà sombres. Les contrastes des deux thèmes ont été mesurés dans le
+navigateur : tous au-dessus du seuil AA (le plus bas, le libellé de catégorie
+en brique sur carte, est à 5,06 en sombre et 5,91 en clair).
 
 ## Photos
 

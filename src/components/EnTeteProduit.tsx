@@ -2,6 +2,7 @@ import { ArrowLeft, ShoppingBasket } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Marque } from "@/components/Marque"
+import { BasculeTheme } from "@/components/BasculeTheme"
 import { lienAccueil, naviguer } from "@/lib/navigation"
 import { usePanier } from "@/panier/PanierContext"
 
@@ -31,6 +32,8 @@ export function EnTeteProduit() {
           <Marque />
         </a>
 
+        <div className="flex items-center gap-2">
+        <BasculeTheme />
         <Button
           variant="outline"
           onClick={ouvrir}
@@ -45,6 +48,7 @@ export function EnTeteProduit() {
             </span>
           )}
         </Button>
+        </div>
       </div>
     </header>
   )
