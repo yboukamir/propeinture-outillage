@@ -92,9 +92,11 @@ describe("formatRemise", () => {
     expect(formatRemise(0)).toBe("Prix catalogue")
   })
 
-  it("écrit les remises avec le signe moins typographique", () => {
-    expect(formatRemise(0.12)).toBe("−12 %")
-    expect(formatRemise(0.22)).toBe("−22 %")
+  it("écrit les remises avec le signe moins et une espace insécable", () => {
+    // L'espace est un U+00A0 : en colonne étroite, une espace ordinaire
+    // laissait « −22 % » se couper entre le nombre et le signe.
+    expect(formatRemise(0.12)).toBe("−12\u00a0%")
+    expect(formatRemise(0.22)).toBe("−22\u00a0%")
   })
 })
 

@@ -81,6 +81,19 @@ const vues = [
     hauteur: 780,
   },
   {
+    /*
+     * La même fiche qu'en 1280 px, à 420 : tout passe en une colonne et le
+     * tableau des paliers se réempile. La hauteur descend jusqu'au bas de ce
+     * tableau — mesuré à 1145 px —, qui est ce que la largeur mobile met le
+     * plus à l'épreuve.
+     */
+    nom: "12-produit-mobile.webp",
+    url: `${URL_SITE}?produit=enduit-lissage-25`,
+    selecteur: null,
+    largeur: 420,
+    hauteur: 1180,
+  },
+  {
     nom: "07-introuvable.webp",
     url: `${URL_SITE}?produit=reference-supprimee`,
     selecteur: null,

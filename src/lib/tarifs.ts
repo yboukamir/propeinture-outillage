@@ -64,7 +64,13 @@ export function calculerTotaux(
   }
 }
 
-/** « −12 % », ou « Prix catalogue » quand aucune remise ne s'applique. */
+/**
+ * « −12 % », ou « Prix catalogue » quand aucune remise ne s'applique.
+ * L'espace avant le pourcent est insécable, comme celle qu'`Intl` met devant
+ * l'euro : sans elle, « −22 % » se coupe en deux en colonne étroite.
+ */
 export function formatRemise(remise: number) {
-  return remise === 0 ? "Prix catalogue" : `−${Math.round(remise * 100)} %`
+  return remise === 0
+    ? "Prix catalogue"
+    : `−${Math.round(remise * 100)} %`
 }

@@ -48,14 +48,19 @@ pour atteindre le palier suivant.
 Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
 « Votre palier ».
 
-| L'accueil | Le panier |
-|---|---|
-| <img src="docs/captures/04-mobile.webp" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="300"> | <img src="docs/captures/11-panier-mobile.webp" alt="Le panier en 420 px : il occupe tout l'écran, deux lignes avec sélecteur de quantité, jauge, remise et total" width="300"> |
+| L'accueil | La fiche produit | Le panier |
+|---|---|---|
+| <img src="docs/captures/04-mobile.webp" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="240"> | <img src="docs/captures/12-produit-mobile.webp" alt="La fiche produit en 420 px : photo, note, prix, quantité et tableau des paliers réempilés en une colonne" width="240"> | <img src="docs/captures/11-panier-mobile.webp" alt="Le panier en 420 px : il occupe tout l'écran, deux lignes avec sélecteur de quantité, jauge, remise et total" width="240"> |
 
 En mobile, la navigation se replie dans un panneau latéral et le panier passe
-en plein écran. C'est le même panier que la capture précédente, à 420 px : les
-douze unités, la remise artisan et la jauge vers le palier grossiste y sont
-identiques, seule la mise en page change.
+en plein écran. Ce sont les mêmes pages qu'au-dessus, à 420 px : même fiche,
+même panier à douze unités avec sa remise artisan — seule la mise en page
+change.
+
+La fiche mobile a d'ailleurs révélé un défaut de typographie : le tableau des
+paliers y est assez étroit pour que « −22 % » se coupe entre le nombre et le
+signe. L'espace de `formatRemise` est devenue insécable, comme celle qu'`Intl`
+place déjà devant l'euro, et le test le vérifie.
 
 Les deux façons d'échouer, volontairement distinctes :
 
