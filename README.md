@@ -9,34 +9,34 @@ haut de page.
 
 ## Aperçu
 
-![Header et hero : panneau charbon, titre en Barlow Semi Condensed, double appel à l'action et ligne de réassurance](docs/captures/01-hero.png)
+![Header et hero : panneau charbon, titre en Barlow Semi Condensed, double appel à l'action et ligne de réassurance](docs/captures/01-hero.webp)
 
 Le hero et sa barre de navigation. Le panneau charbon et l'encoche claire du
 header donnent le contraste ; les quatre vignettes de catégories suivent juste
 en dessous.
 
-![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.png)
+![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.webp)
 
 Le catalogue, sa recherche, son tri et ses filtres par catégorie. Chaque carte
 porte sa photo en plein cadre, son état de stock, sa référence et son prix à l'unité.
 
-![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.png)
+![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.webp)
 
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 à chaque palier, en euros plutôt qu'en pourcentage.
 
-![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.png)
+![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
 Le panier, seule partie réellement fonctionnelle du concept : la remise se
 recalcule à chaque changement de quantité et la jauge annonce ce qui manque
 pour atteindre le palier suivant.
 
-![Trois paliers tarifaires, celui du milieu en charbon avec la remise en jaune](docs/captures/03-tarifs.png)
+![Trois paliers tarifaires, celui du milieu en charbon avec la remise en jaune](docs/captures/03-tarifs.webp)
 
 Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
 « Votre palier ».
 
-<img src="docs/captures/04-mobile.png" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="360">
+<img src="docs/captures/04-mobile.webp" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="360">
 
 En mobile, la navigation se replie dans un panneau latéral.
 
@@ -168,7 +168,7 @@ BASE_PATH=/mon-depot/ npm run build
 ## Structure
 
 ```
-docs/captures/       les images de l'aperçu ci-dessus
+docs/captures/       les images de l'aperçu (WebP, clair et sombre)
 scripts/captures.mjs le script qui les régénère
 src/
   components/
@@ -210,7 +210,7 @@ le mode sombre se résume à redéfinir leurs valeurs sous
 
 | Clair | Sombre |
 |---|---|
-| ![Catalogue en thème clair](docs/captures/02-catalogue.png) | ![Catalogue en thème sombre](docs/captures/02-catalogue-sombre.png) |
+| ![Catalogue en thème clair](docs/captures/02-catalogue.webp) | ![Catalogue en thème sombre](docs/captures/02-catalogue-sombre.webp) |
 
 La bascule est dans les deux en-têtes. Sans choix explicite, la préférence
 système est suivie et continue de l'être si elle change ; un clic enregistre un

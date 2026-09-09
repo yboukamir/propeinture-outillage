@@ -42,19 +42,19 @@ const BANDEAU = 44
  * demandent une interaction (le panier n'existe qu'une fois rempli).
  */
 const vues = [
-  { nom: "01-hero.png", selecteur: null, largeur: 1280, hauteur: 900 },
-  { nom: "02-catalogue.png", selecteur: "#catalogue", largeur: 1280, hauteur: 900 },
-  { nom: "03-tarifs.png", selecteur: "#tarifs", largeur: 1280, hauteur: 900 },
-  { nom: "04-mobile.png", selecteur: null, largeur: 420, hauteur: 860 },
+  { nom: "01-hero.webp", selecteur: null, largeur: 1280, hauteur: 900 },
+  { nom: "02-catalogue.webp", selecteur: "#catalogue", largeur: 1280, hauteur: 900 },
+  { nom: "03-tarifs.webp", selecteur: "#tarifs", largeur: 1280, hauteur: 900 },
+  { nom: "04-mobile.webp", selecteur: null, largeur: 420, hauteur: 860 },
   {
-    nom: "06-produit.png",
+    nom: "06-produit.webp",
     url: `${URL_SITE}?produit=enduit-lissage-25`,
     selecteur: null,
     largeur: 1280,
     hauteur: 780,
   },
   {
-    nom: "05-panier.png",
+    nom: "05-panier.webp",
     selecteur: null,
     largeur: 1280,
     hauteur: 900,
@@ -137,8 +137,11 @@ try {
       await new Promise((r) => setTimeout(r, 600))
     }
 
-    const nom = vue.nom.replace(/\.png$/, `${theme.suffixe}.png`)
-    await page.screenshot({ path: path.join(DOSSIER, nom) })
+    const nom = vue.nom.replace(/\.webp$/, `${theme.suffixe}.webp`)
+    // WebP plutôt que PNG : environ six fois plus léger pour un dépôt qui
+    // versionne ses images. Qualité haute, le texte d'interface étant ce qui
+    // souffre le plus d'une compression avec pertes.
+    await page.screenshot({ path: path.join(DOSSIER, nom), type: "webp", quality: 92 })
     console.log(`${nom}  ${vue.largeur}×${vue.hauteur}`)
     await page.close()
   }
