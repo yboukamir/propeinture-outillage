@@ -23,7 +23,8 @@ porte sa photo en plein cadre, son état de stock, sa référence et son prix à
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.webp)
 
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
-à chaque palier, en euros plutôt qu'en pourcentage.
+à chaque palier, en euros plutôt qu'en pourcentage, et porte les avis en bas
+de page.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
@@ -103,6 +104,22 @@ l'affichage. L'état du panier est un `useReducer` exposé par
 Le panneau annonce en continu ce qui manque pour le palier suivant, et la
 section tarifs marque « Votre palier » sur celui qui s'applique. Le bouton
 « Commander » est volontairement désactivé : il n'y a ni back-end ni paiement.
+
+## Les avis
+
+Fictifs, comme la boutique et son catalogue — la section le dit explicitement,
+un avis inventé se prenant plus facilement au sérieux qu'un prix inventé. Ils
+vivent dans [`src/data/avis.ts`](src/data/avis.ts), avec la moyenne calculée à
+partir d'eux plutôt que saisie à la main.
+
+Quatre des six références en ont, les deux autres affichant l'absence d'avis :
+une vitrine réelle a toujours des fiches sans retour, autant que la maquette le
+montre.
+
+Les étoiles sont décoratives et la note est portée par un texte lisible — un
+lecteur d'écran annonce « 4,7 sur 5 » au lieu d'énumérer cinq icônes. Là où la
+valeur est déjà écrite à côté, ce texte est muselé pour ne pas être annoncé
+deux fois.
 
 ## Navigation
 
@@ -199,14 +216,17 @@ src/
   components/
     ui/               composants shadcn/ui + les 4 composants 21st adaptés
     sections/         BandeauDemo, Hero, GrilleProduits, TarifsDegressifs,
-                      BandeLivraison, Footer, PageProduit, ProduitIntrouvable,
+                      BandeLivraison, Footer, PageProduit, AvisClients,
+                      ProduitIntrouvable,
                       PanierPanneau —
                       de fines enveloppes qui alimentent les composants ui/
                       en contenu français
     Marque.tsx        le logo, partagé header / footer
     BasculeTheme.tsx  le bouton clair / sombre
+    Etoiles.tsx       la note en étoiles
     SuggestionsProduits.tsx  grille partagée fiche / introuvable
     EnTeteProduit.tsx en-tête sobre de la fiche produit
+  data/avis.ts        les avis fictifs et le calcul de la moyenne
   data/produits.ts    les 6 références du catalogue + les 4 catégories
   lib/navigation.ts   fiche produit, filtre et recherche dans l'URL
   lib/tarifs.ts       le barème dégressif, en fonctions pures

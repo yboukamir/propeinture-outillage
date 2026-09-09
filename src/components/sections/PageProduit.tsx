@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { EnTeteProduit } from "@/components/EnTeteProduit"
 import { SuggestionsProduits } from "@/components/SuggestionsProduits"
+import { AvisClients } from "@/components/sections/AvisClients"
+import { Etoiles } from "@/components/Etoiles"
+import { avisPour, noteMoyenne } from "@/data/avis"
 import { type Produit } from "@/data/produits"
 import { naviguer, urlCatalogue } from "@/lib/navigation"
 import { paliers, formatRemise } from "@/lib/tarifs"
@@ -15,6 +18,8 @@ import { usePanier } from "@/panier/PanierContext"
 export function PageProduit({ produit }: { produit: Produit }) {
   const { ajouter, definirQuantite, lignes } = usePanier()
   const [quantite, setQuantite] = React.useState(1)
+  const moyenne = noteMoyenne(produit.id)
+  const nombreAvis = avisPour(produit.id).length
 
   function ajouterAuPanier() {
     // `ajouter` incrémente d'une unité : on pose ensuite la quantité voulue,
@@ -58,6 +63,27 @@ export function PageProduit({ produit }: { produit: Produit }) {
             <p className="mt-2 text-base text-muted-foreground">
               {produit.detail}
             </p>
+
+            {moyenne !== null && (
+              <a
+                href="#titre-avis"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document
+                    .getElementById("titre-avis")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }}
+                className="mt-3 flex w-max items-center gap-2 rounded-sm text-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <Etoiles note={moyenne} muet />
+                <span className="font-medium">
+                  {moyenne.toLocaleString("fr-FR")}
+                </span>
+                <span className="text-muted-foreground underline underline-offset-4">
+                  {nombreAvis} avis
+                </span>
+              </a>
+            )}
 
             <div className="mt-5 flex items-baseline gap-2">
               <span className="font-display text-4xl font-bold tracking-tight">
@@ -126,6 +152,8 @@ export function PageProduit({ produit }: { produit: Produit }) {
             <PrixParPalier prix={produit.prix} unite={produit.unite} />
           </div>
         </div>
+
+        <AvisClients produitId={produit.id} />
 
         <SuggestionsProduits titre="Dans le même chantier" exclure={produit.id} />
       </main>
