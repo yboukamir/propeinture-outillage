@@ -61,13 +61,13 @@ const vues = [
     hauteur: 820,
   },
   {
-    // Une référence à deux avis : la liste et le formulaire tiennent dans le
-    // même cadre, ce qui n'est pas le cas des fiches à trois avis.
+    // La référence la plus commentée : c'est la seule dont la liste dépasse
+    // une page, donc la seule où la pagination se voit.
     nom: "09-avis.webp",
-    url: `${URL_SITE}?produit=enduit-lissage-25`,
+    url: `${URL_SITE}?produit=rouleau-laqueur-18`,
     selecteur: "#titre-avis",
     largeur: 1280,
-    hauteur: 1420,
+    hauteur: 2100,
   },
   {
     // Page servie par l'hébergeur : elle vit hors de l'application, d'où

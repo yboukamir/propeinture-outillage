@@ -120,6 +120,83 @@ export const avis: Avis[] = [
       "Bonne tenue sur support propre. Sur crépi il faut appuyer davantage, mais c'est vrai de tous les rubans.",
     utiles: 5,
   },
+  {
+    id: "av-10",
+    produit: "rouleau-laqueur-18",
+    auteur: "Fabrice T.",
+    metier: "Peintre, Angers",
+    note: 4,
+    date: "2026-07-08",
+    texte:
+      "Rendu impeccable sur portes isoplanes. Je retire une étoile parce que le rouleau boit beaucoup au premier chargement, il faut le préparer.",
+    utiles: 8,
+  },
+  {
+    id: "av-11",
+    produit: "rouleau-laqueur-18",
+    auteur: "Sonia G.",
+    metier: "Artisan, Metz",
+    note: 5,
+    date: "2026-06-15",
+    texte:
+      "Trois chantiers avec le même rouleau, la fibre ne s'est pas tassée. À neuf euros, je ne cherche pas plus loin.",
+    utiles: 12,
+  },
+  {
+    id: "av-12",
+    produit: "rouleau-laqueur-18",
+    auteur: "Bruno M.",
+    metier: "Peintre, Dijon",
+    note: 3,
+    date: "2026-06-02",
+    texte:
+      "Correct sans plus. Bien pour la laque, mais j'ai eu deux manches voilés sur un lot de dix.",
+    utiles: 7,
+  },
+  {
+    id: "av-13",
+    produit: "rouleau-laqueur-18",
+    auteur: "Aïcha R.",
+    metier: "Entreprise de peinture, Toulon",
+    note: 5,
+    date: "2026-05-22",
+    texte:
+      "On en commande par cartons pour l'équipe. Zéro peluche sur les finitions, c'est le seul critère qui compte chez nous.",
+    utiles: 19,
+  },
+  {
+    id: "av-14",
+    produit: "rouleau-laqueur-18",
+    auteur: "Damien C.",
+    metier: "Peintre, Amiens",
+    note: 4,
+    date: "2026-04-30",
+    texte:
+      "Bonne prise en main et nettoyage rapide à l'eau tiède. La largeur de 18 cm est idéale pour les huisseries.",
+    utiles: 5,
+  },
+  {
+    id: "av-15",
+    produit: "rouleau-laqueur-18",
+    auteur: "Léa P.",
+    metier: "Décoratrice, Tours",
+    note: 5,
+    date: "2026-04-11",
+    texte:
+      "Utilisé sur du mobilier repeint en laque satinée, aucune trace de reprise. Je le recommande sans réserve.",
+    utiles: 10,
+  },
+  {
+    id: "av-16",
+    produit: "rouleau-laqueur-18",
+    auteur: "Hervé N.",
+    metier: "Artisan peintre, Caen",
+    note: 2,
+    date: "2026-03-18",
+    texte:
+      "Déçu sur ce lot : la fibre s'est détachée dès le deuxième passage. Les précédents tenaient mieux, peut-être un mauvais tirage.",
+    utiles: 15,
+  },
 ]
 
 export function avisPour(produitId: string) {

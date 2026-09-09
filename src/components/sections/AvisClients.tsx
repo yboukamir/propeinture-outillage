@@ -1,7 +1,14 @@
 import * as React from "react"
-import { Info, MessageSquareOff, ThumbsUp } from "lucide-react"
+import {
+  ChevronLeft,
+  ChevronRight,
+  Info,
+  MessageSquareOff,
+  ThumbsUp,
+} from "lucide-react"
 
 import { Etoiles } from "@/components/Etoiles"
+import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { type Avis } from "@/data/avis"
@@ -14,6 +21,9 @@ const dateLongue = new Intl.DateTimeFormat("fr-FR", {
 })
 
 type TriAvis = "recent" | "note-desc" | "note-asc" | "utiles"
+
+/** Cinq avis par page : au-delà, la fiche devient un mur de texte. */
+const PAR_PAGE = 5
 
 const TRIS_AVIS: { valeur: TriAvis; libelle: string }[] = [
   { valeur: "recent", libelle: "Plus récents" },
@@ -65,9 +75,19 @@ export function AvisClients({
   const [filtreNote, setFiltreNote] = React.useState<number | null>(null)
   /** Avis que le visiteur a marqués utiles. Rien n'est envoyé, comme le reste. */
   const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
+  const [page, setPage] = React.useState(1)
+
+  /** Le repère de la liste, pour y ramener le lecteur au changement de page. */
+  const debutListe = React.useRef<HTMLDivElement>(null)
 
   /** Compteur tel qu'il s'affiche : base des données plus le vote du visiteur. */
   const utilite = (avis: Avis) => avis.utiles + (votes.has(avis.id) ? 1 : 0)
+
+  /** Change de page et ramène le lecteur en haut de la liste, pas de la page. */
+  function allerPage(numero: number) {
+    setPage(numero)
+    debutListe.current?.scrollIntoView({ block: "start" })
+  }
 
   function basculerVote(id: string) {
     setVotes((actuels) => {
@@ -87,6 +107,18 @@ export function AvisClients({
     ? tous.filter((a) => a.note === filtreNote)
     : tous
   const liste = trier(filtres, tri, utilite)
+
+  const pages = Math.max(1, Math.ceil(liste.length / PAR_PAGE))
+  /*
+   * La page est bornée à chaque rendu plutôt que corrigée par un effet :
+   * filtrer, trier ou déposer un avis peut raccourcir la liste sous la page
+   * courante, qui afficherait alors du vide le temps d'un rendu.
+   */
+  const pageCourante = Math.min(page, pages)
+  const visibles = liste.slice(
+    (pageCourante - 1) * PAR_PAGE,
+    pageCourante * PAR_PAGE,
+  )
 
   return (
     <section className="mt-16" aria-labelledby="titre-avis">
@@ -129,7 +161,10 @@ export function AvisClients({
                     type="button"
                     // Un clic sur la note active la retire : pas besoin d'un
                     // bouton « tout » séparé.
-                    onClick={() => setFiltreNote(actif ? null : note)}
+                    onClick={() => {
+                      setFiltreNote(actif ? null : note)
+                      setPage(1)
+                    }}
                     disabled={nombre === 0}
                     aria-pressed={actif}
                     className={cn(
@@ -169,7 +204,10 @@ export function AvisClients({
               </span>
               <button
                 type="button"
-                onClick={() => setFiltreNote(null)}
+                onClick={() => {
+                  setFiltreNote(null)
+                  setPage(1)
+                }}
                 className="font-medium text-primary underline underline-offset-4"
               >
                 Voir tous les avis
@@ -184,7 +222,10 @@ export function AvisClients({
           <span className="shrink-0">Trier les avis</span>
           <select
             value={tri}
-            onChange={(e) => setTri(e.target.value as TriAvis)}
+            onChange={(e) => {
+              setTri(e.target.value as TriAvis)
+              setPage(1)
+            }}
             className="h-9 rounded-full border border-border bg-card px-3 text-sm text-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {TRIS_AVIS.map((option) => (
@@ -202,71 +243,122 @@ export function AvisClients({
           Cette référence n'a pas encore d'avis.
         </p>
       ) : (
-        <ul className="mt-4 flex flex-col gap-4">
-          {liste.map((avis) => (
-            <li
-              key={avis.id}
-              className="rounded-lg border border-border bg-card p-5"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <p className="flex flex-wrap items-center gap-2 font-semibold">
-                    {avis.auteur}
-                    {avis.local && (
-                      <span className="rounded-full border border-border px-2 py-0.5 text-xs font-normal text-muted-foreground">
-                        Non enregistré
-                      </span>
-                    )}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {avis.metier}
-                  </p>
+        <>
+          <div ref={debutListe} className="scroll-mt-16" />
+          <ul className="mt-4 flex flex-col gap-4">
+            {visibles.map((avis) => (
+              <li
+                key={avis.id}
+                className="rounded-lg border border-border bg-card p-5"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <p className="flex flex-wrap items-center gap-2 font-semibold">
+                      {avis.auteur}
+                      {avis.local && (
+                        <span className="rounded-full border border-border px-2 py-0.5 text-xs font-normal text-muted-foreground">
+                          Non enregistré
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {avis.metier}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <Etoiles note={avis.note} taille="petite" />
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      <time dateTime={avis.date}>
+                        {dateLongue.format(new Date(avis.date))}
+                      </time>
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <Etoiles note={avis.note} taille="petite" />
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    <time dateTime={avis.date}>
-                      {dateLongue.format(new Date(avis.date))}
-                    </time>
-                  </p>
-                </div>
-              </div>
-              <Separator className="my-3" />
-              <p className="text-sm leading-relaxed">{avis.texte}</p>
+                <Separator className="my-3" />
+                <p className="text-sm leading-relaxed">{avis.texte}</p>
 
-              <div className="mt-4 flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => basculerVote(avis.id)}
-                  aria-pressed={votes.has(avis.id)}
-                  className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
-                    votes.has(avis.id)
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "border-border text-muted-foreground hover:border-primary hover:text-primary",
-                  )}
-                >
-                  <ThumbsUp
+                <div className="mt-4 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => basculerVote(avis.id)}
+                    aria-pressed={votes.has(avis.id)}
                     className={cn(
-                      "size-4",
-                      votes.has(avis.id) && "fill-primary/20",
+                      "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
+                      votes.has(avis.id)
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-primary hover:text-primary",
                     )}
-                    aria-hidden="true"
-                  />
-                  {votes.has(avis.id) ? "Avis utile" : "Cet avis est utile"}
-                  <span className="tabular-nums">
-                    {utilite(avis)}
-                  </span>
-                </button>
-                {votes.has(avis.id) && (
-                  <span className="text-xs text-muted-foreground">
-                    Compté seulement ici
-                  </span>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
+                  >
+                    <ThumbsUp
+                      className={cn(
+                        "size-4",
+                        votes.has(avis.id) && "fill-primary/20",
+                      )}
+                      aria-hidden="true"
+                    />
+                    {votes.has(avis.id) ? "Avis utile" : "Cet avis est utile"}
+                    <span className="tabular-nums">
+                      {utilite(avis)}
+                    </span>
+                  </button>
+                  {votes.has(avis.id) && (
+                    <span className="text-xs text-muted-foreground">
+                      Compté seulement ici
+                    </span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {pages > 1 && (
+            <nav
+              aria-label="Pagination des avis"
+              className="mt-6 flex flex-wrap items-center justify-center gap-2"
+            >
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={pageCourante === 1}
+                onClick={() => allerPage(pageCourante - 1)}
+              >
+                <ChevronLeft aria-hidden="true" />
+                Précédent
+              </Button>
+
+              <ul className="flex items-center gap-1">
+                {Array.from({ length: pages }, (_, i) => i + 1).map((numero) => (
+                  <li key={numero}>
+                    <button
+                      type="button"
+                      onClick={() => allerPage(numero)}
+                      aria-current={numero === pageCourante ? "page" : undefined}
+                      aria-label={`Page ${numero} sur ${pages}`}
+                      className={cn(
+                        "size-9 rounded-md text-sm font-medium tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        numero === pageCourante
+                          ? "bg-secondary text-secondary-foreground"
+                          : "border border-border hover:border-primary hover:text-primary",
+                      )}
+                    >
+                      {numero}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={pageCourante === pages}
+                onClick={() => allerPage(pageCourante + 1)}
+              >
+                Suivant
+                <ChevronRight aria-hidden="true" />
+              </Button>
+            </nav>
+          )}
+        </>
       )}
 
       <FormulaireAvis
@@ -274,6 +366,8 @@ export function AvisClients({
           // Sans ça, un avis déposé avec une autre note serait invisible :
           // il tomberait hors du filtre actif.
           setFiltreNote(null)
+          // L'avis part en tête de liste : la page 1 est la seule où le voir.
+          setPage(1)
           onAjout(nouveau)
         }}
       />

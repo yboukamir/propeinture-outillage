@@ -25,12 +25,12 @@ porte sa photo en plein cadre, son état de stock, sa référence et son prix à
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 à chaque palier, en euros plutôt qu'en pourcentage.
 
-![Section avis : moyenne en étoiles, mention d'avis fictifs, sélecteur de tri, deux avis et le formulaire de dépôt](docs/captures/09-avis.webp)
+![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
 
 Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri,
-liste avec bouton d'utilité, et formulaire de dépôt. La mention d'avis fictifs
-est en clair au-dessus, et le formulaire annonce avant la saisie que rien n'est
-envoyé.
+liste avec bouton d'utilité, pagination et formulaire de dépôt. La mention
+d'avis fictifs est en clair au-dessus, et le formulaire annonce avant la saisie
+que rien n'est envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
@@ -157,6 +157,13 @@ contredirait les chiffres sous les yeux du lecteur.
 Ce tri-là reste en état local, contrairement à celui du catalogue : la règle
 suivie est que l'URL porte ce qu'on regarde — fiche, filtre, recherche, ordre
 du catalogue — et l'état local la façon de le lire à l'intérieur d'une vue.
+
+La liste se pagine au-delà de cinq avis. La page courante est bornée au rendu
+plutôt que corrigée après coup : filtrer sur une note ou déposer un avis peut
+raccourcir la liste sous la page affichée, qui montrerait alors du vide le
+temps d'un rendu. Changer de page ramène le lecteur en haut de la liste et non
+en haut du document — il vient de choisir sa page, il veut la voir. Filtrer,
+trier ou déposer un avis renvoie en page 1, le nouvel avis partant en tête.
 
 ## Navigation
 
