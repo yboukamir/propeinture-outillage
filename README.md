@@ -40,6 +40,13 @@ Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
 
 En mobile, la navigation se replie dans un panneau latéral.
 
+Les deux façons d'échouer, volontairement distinctes :
+
+| Référence inconnue, dans l'appli | Chemin inconnu, servi par l'hébergeur |
+|---|---|
+| ![Vue « Référence introuvable » : l'identifiant demandé est affiché, avec deux sorties et des suggestions](docs/captures/07-introuvable.webp) | ![Page 404 : grand chiffre en brique, titre et deux liens de retour](docs/captures/08-404.webp) |
+| L'adresse est valide, son contenu manque : on garde l'en-tête, le panier et l'URL. | L'adresse n'existe pas : page autonome, hors application. |
+
 Les captures ci-dessus sont en thème clair ; `docs/captures/` contient les
 mêmes en sombre, suffixées `-sombre`. Elles se régénèrent toutes, dans les deux
 thèmes, avec le serveur de dev lancé :

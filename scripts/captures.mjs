@@ -54,6 +54,22 @@ const vues = [
     hauteur: 780,
   },
   {
+    nom: "07-introuvable.webp",
+    url: `${URL_SITE}?produit=reference-supprimee`,
+    selecteur: null,
+    largeur: 1280,
+    hauteur: 820,
+  },
+  {
+    // Page servie par l'hébergeur : elle vit hors de l'application, d'où
+    // l'URL directe vers le fichier.
+    nom: "08-404.webp",
+    url: `${URL_SITE}404.html`,
+    selecteur: null,
+    largeur: 1280,
+    hauteur: 720,
+  },
+  {
     nom: "05-panier.webp",
     selecteur: null,
     largeur: 1280,
