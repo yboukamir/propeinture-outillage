@@ -4,6 +4,7 @@ import {
   ChevronRight,
   Flag,
   Info,
+  Link2,
   MessageSquareOff,
   MessageSquareReply,
   ThumbsUp,
@@ -12,6 +13,7 @@ import {
 import { Etoiles } from "@/components/Etoiles"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { lienProduit } from "@/lib/navigation"
 import { cn } from "@/lib/utils"
 import { type Avis } from "@/data/avis"
 import { FormulaireAvis } from "@/components/sections/FormulaireAvis"
@@ -96,6 +98,13 @@ export function AvisClients({
   const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
   /** Avis signalés. Aucune modération derrière : la page le dit à l'écran. */
   const [signales, setSignales] = React.useState<ReadonlySet<string>>(new Set())
+  /** Dernier lien copié, pour la confirmation, et son issue. */
+  const [partage, setPartage] = React.useState<{
+    id: string
+    copie: boolean
+  } | null>(null)
+  /** Avis désigné par l'ancre du lien reçu, mis en évidence à l'arrivée. */
+  const [cible, setCible] = React.useState<string | null>(null)
   const [page, setPage] = React.useState(1)
 
   /** Le repère de la liste, pour y ramener le lecteur au changement de page. */
@@ -119,6 +128,67 @@ export function AvisClients({
   }
 
   /**
+   * Copie le lien profond vers l'avis. Le presse-papiers peut refuser — hors
+   * contexte sécurisé, ou permission retirée : on écrit alors l'ancre dans la
+   * barre d'adresse, que le visiteur peut copier à la main. Un partage qui
+   * échoue en silence serait pire que les deux.
+   */
+  async function partagerAvis(avis: Avis) {
+    const lien = new URL(
+      `${lienProduit(avis.produit)}#avis-${avis.id}`,
+      window.location.href,
+    ).href
+    try {
+      await navigator.clipboard.writeText(lien)
+      setPartage({ id: avis.id, copie: true })
+    } catch {
+      window.history.replaceState(null, "", lien)
+      setPartage({ id: avis.id, copie: false })
+    }
+  }
+
+  // La confirmation s'efface d'elle-même : elle n'a rien à dire passé le geste.
+  React.useEffect(() => {
+    if (!partage) return
+    const minuteur = window.setTimeout(() => setPartage(null), 5000)
+    return () => window.clearTimeout(minuteur)
+  }, [partage])
+
+  /*
+   * Un lien partagé vise un avis, pas une page : sans ça il tomberait sur la
+   * page 1 d'une liste où l'avis ne figure pas. On ouvre donc la bonne page,
+   * on y défile et on marque l'avis, sinon le lecteur arriverait devant cinq
+   * avis sans savoir lequel on lui montre. Aussi à chaque `hashchange` :
+   * suivre un lien vers la même fiche ne recharge rien, l'effet de montage
+   * ne se rejouerait pas.
+   */
+  React.useEffect(() => {
+    let image = 0
+    const viser = () => {
+      const ancre = window.location.hash
+      if (!ancre.startsWith("#avis-")) return
+      const id = decodeURIComponent(ancre.slice("#avis-".length))
+      const rang = listeRef.current.findIndex((a) => a.id === id)
+      if (rang === -1) return
+
+      setPage(Math.floor(rang / PAR_PAGE) + 1)
+      setCible(id)
+      image = requestAnimationFrame(() => {
+        document
+          .getElementById(`avis-${id}`)
+          ?.scrollIntoView({ block: "center" })
+      })
+    }
+
+    viser()
+    window.addEventListener("hashchange", viser)
+    return () => {
+      cancelAnimationFrame(image)
+      window.removeEventListener("hashchange", viser)
+    }
+  }, [])
+
+  /**
    * Le signalement est annulable, sur le même bouton dont le libellé change :
    * un signalement par erreur ne doit pas être une impasse, et remplacer le
    * bouton par un autre élément ferait perdre le focus au clavier.
@@ -137,6 +207,14 @@ export function AvisClients({
   const filtreActif = filtreNote !== null || avecReponse
   const filtres = tous.filter((a) => parNote(a) && parReponse(a))
   const liste = trier(filtres, tri, utilite)
+
+  /*
+   * Le rang de l'avis visé dépend du tri et des filtres du moment, que
+   * l'effet ne doit pas se réabonner pour suivre : une référence suffit.
+   */
+  const listeRef = React.useRef(liste)
+  listeRef.current = liste
+
 
   /*
    * Compteurs en facettes : chacun annonce ce que donnerait ce choix-là,
@@ -351,7 +429,13 @@ export function AvisClients({
             {visibles.map((avis) => (
               <li
                 key={avis.id}
-                className="rounded-lg border border-border bg-card p-5"
+                id={`avis-${avis.id}`}
+                className={cn(
+                  "scroll-mt-20 rounded-lg border border-border bg-card p-5",
+                  // Le lien a désigné celui-ci : sans marque, le lecteur
+                  // arriverait devant cinq avis sans savoir lequel.
+                  cible === avis.id && "ring-2 ring-primary",
+                )}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
@@ -438,6 +522,28 @@ export function AvisClients({
                       mention « Non enregistré » et on ne se dénonce pas. */}
                   {!avis.local && (
                     <div className="ms-auto flex flex-wrap items-center justify-end gap-2">
+                      {/* Région d'état montée en permanence : un lecteur
+                          d'écran annonce le texte qui y arrive, ce qu'il ne
+                          fait pas d'une région apparue en même temps que lui. */}
+                      <p
+                        role="status"
+                        className="text-xs text-muted-foreground"
+                      >
+                        {partage?.id === avis.id &&
+                          (partage.copie
+                            ? "Lien copié"
+                            : "Lien mis dans la barre d'adresse")}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => partagerAvis(avis)}
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                      >
+                        <Link2 className="size-3.5" aria-hidden="true" />
+                        <span className="underline underline-offset-4">
+                          Partager
+                        </span>
+                      </button>
                       {/* Région d'état montée en permanence : un lecteur
                           d'écran annonce le texte qui y arrive, ce qu'il ne
                           fait pas d'une région apparue en même temps que lui. */}
