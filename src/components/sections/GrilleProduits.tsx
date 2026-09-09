@@ -7,13 +7,15 @@ import { categories, produits, type Produit } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
 import {
   ID_CHAMP_RECHERCHE,
-  lienCategorie,
+  TRIS,
+  type Tri,
   lienProduit,
   naviguer,
   rechercheInitiale,
   remplacer,
   urlCatalogue,
   useCategorieAffichee,
+  useTri,
 } from "@/lib/navigation"
 import { cn, normaliser } from "@/lib/utils"
 
@@ -39,13 +41,19 @@ function correspond(produit: Produit, terme: string) {
 export function GrilleProduits() {
   const { ajouter } = usePanier()
   const categorieActive = useCategorieAffichee()
+  const tri = useTri()
   // L'URL n'alimente le champ qu'au montage : en faire la source de vérité
   // ferait sauter le curseur à chaque frappe au milieu du texte.
   const [recherche, setRecherche] = React.useState(rechercheInitiale)
 
+  /** Reconstruit l'URL depuis l'état courant : aucun critère n'est perdu en
+   *  route quand on n'en change qu'un seul. */
+  const url = (modifications: Parameters<typeof urlCatalogue>[0] = {}) =>
+    urlCatalogue({ categorie: categorieActive, recherche, tri, ...modifications })
+
   function changerRecherche(valeur: string) {
     setRecherche(valeur)
-    remplacer(urlCatalogue({ categorie: categorieActive, recherche: valeur }))
+    remplacer(url({ recherche: valeur }))
   }
 
   const parCategorie = categorieActive
@@ -57,7 +65,13 @@ export function GrilleProduits() {
       (p) => (!valeur || p.categorie === valeur) && correspond(p, recherche),
     ).length
 
-  const visibles = parCategorie.filter((p) => correspond(p, recherche))
+  const correspondants = parCategorie.filter((p) => correspond(p, recherche))
+  const visibles =
+    tri === "catalogue"
+      ? correspondants
+      : [...correspondants].sort((a, b) =>
+          tri === "prix-asc" ? a.prix - b.prix : b.prix - a.prix,
+        )
 
   return (
     <section
@@ -96,11 +110,11 @@ export function GrilleProduits() {
               return (
                 <li key={filtre.libelle}>
                   <a
-                    href={lienCategorie(filtre.valeur, recherche)}
+                    href={url({ categorie: filtre.valeur })}
                     aria-current={actif ? "true" : undefined}
                     onClick={(e) => {
                       e.preventDefault()
-                      naviguer(lienCategorie(filtre.valeur, recherche), {
+                      naviguer(url({ categorie: filtre.valeur }), {
                         defilerEnHaut: false,
                       })
                     }}
@@ -129,7 +143,29 @@ export function GrilleProduits() {
           </ul>
         </nav>
 
-        <div className="relative lg:w-80">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <label className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="shrink-0">Trier par</span>
+          {/* `select` natif : accessible au clavier et au lecteur d'écran sans
+              rien réimplémenter, et le menu reste celui du système. */}
+          <select
+            value={tri}
+            onChange={(e) =>
+              naviguer(url({ tri: e.target.value as Tri }), {
+                defilerEnHaut: false,
+              })
+            }
+            className="h-10 rounded-full border border-border bg-card px-3 text-sm text-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-plaster"
+          >
+            {TRIS.map((option) => (
+              <option key={option.valeur} value={option.valeur}>
+                {option.libelle}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div className="relative sm:w-72">
           <Search
             className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
             aria-hidden="true"
@@ -155,15 +191,16 @@ export function GrilleProduits() {
           )}
         </div>
         </div>
+        </div>
 
         {/* Cascade d'apparition en CSS : le délai porte sur l'enveloppe, la
             carte garde son propre `transform` pour le survol. */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {visibles.map((produit, index) => (
             <div
-              // La clé inclut la catégorie active : sans elle React réutilise
-              // les nœuds d'un filtre à l'autre et l'apparition ne rejoue pas.
-              key={`${categorieActive ?? "tout"}-${produit.id}`}
+              // La clé inclut la catégorie et le tri : sans eux React réutilise
+              // les nœuds d'un état à l'autre et l'apparition ne rejoue pas.
+              key={`${categorieActive ?? "tout"}-${tri}-${produit.id}`}
               className="animate-apparition"
               style={{ animationDelay: `${index * 100}ms` }}
             >

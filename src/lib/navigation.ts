@@ -26,13 +26,28 @@ export function lienAccueil() {
  * qu'un lien ouvert à froid défile jusqu'à la grille — voir
  * `useDefilementVersAncre`.
  */
+export type Tri = "catalogue" | "prix-asc" | "prix-desc"
+
+/** `catalogue` est l'ordre par défaut : il n'apparaît pas dans l'URL. */
+export const TRIS: { valeur: Tri; libelle: string }[] = [
+  { valeur: "catalogue", libelle: "Ordre du catalogue" },
+  { valeur: "prix-asc", libelle: "Prix croissant" },
+  { valeur: "prix-desc", libelle: "Prix décroissant" },
+]
+
 export function urlCatalogue({
   categorie = null,
   recherche = "",
-}: { categorie?: string | null; recherche?: string } = {}) {
+  tri = "catalogue",
+}: {
+  categorie?: string | null
+  recherche?: string
+  tri?: Tri
+} = {}) {
   const parametres = new URLSearchParams()
   if (categorie) parametres.set("categorie", categorie)
   if (recherche.trim()) parametres.set("recherche", recherche.trim())
+  if (tri !== "catalogue") parametres.set("tri", tri)
   const requete = parametres.toString()
   return `${import.meta.env.BASE_URL}${requete ? `?${requete}` : ""}#catalogue`
 }
@@ -97,6 +112,13 @@ export function useProduitAffiche(): string | null {
 export function useCategorieAffichee(): string | null {
   const parametres = React.useSyncExternalStore(souscrire, instantane, () => "")
   return new URLSearchParams(parametres).get("categorie")
+}
+
+export function useTri(): Tri {
+  const parametres = React.useSyncExternalStore(souscrire, instantane, () => "")
+  const valeur = new URLSearchParams(parametres).get("tri")
+  // Une valeur inconnue retombe sur l'ordre par défaut plutôt que de casser.
+  return valeur === "prix-asc" || valeur === "prix-desc" ? valeur : "catalogue"
 }
 
 /** Terme de recherche présent dans l'URL au chargement. */

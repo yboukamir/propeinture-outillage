@@ -17,7 +17,7 @@ en dessous.
 
 ![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.png)
 
-Le catalogue, sa recherche et ses filtres par catégorie. Chaque carte porte sa
+Le catalogue, sa recherche, son tri et ses filtres par catégorie. Chaque carte porte sa
 photo en plein cadre, son état de stock, sa référence et son prix à l'unité.
 
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.png)
@@ -100,15 +100,23 @@ Deux états vivent dans l'URL, gérés par
 
 - `?produit=<id>` — la fiche produit, ouverte en cliquant une carte ;
 - `?categorie=<nom>` — le filtre du catalogue ;
-- `?recherche=<terme>` — la recherche, qui se combine au filtre.
+- `?recherche=<terme>` — la recherche ;
+- `?tri=prix-asc|prix-desc` — le tri par prix.
+
+Les trois derniers se combinent librement : changer l'un préserve les autres,
+car toutes les URL du catalogue passent par un même constructeur.
 
 Pas de routeur : le site est servi en sous-chemin sur GitHub Pages, où des URL
 en segments renverraient un 404 sans page de repli, et sa navigation repose sur
 des ancres (`#catalogue`) qu'un routeur à hash confisquerait. Les liens restent
 partageables, le bouton retour du navigateur défait le filtre comme la fiche, et
 une valeur inconnue dégrade proprement — un produit introuvable retombe sur
-l'accueil, une catégorie vide affiche un message. Passer à react-router ne
-toucherait que ce fichier et `App.tsx`.
+l'accueil, une catégorie vide affiche un message, un tri non reconnu revient à
+l'ordre du catalogue. Passer à react-router ne toucherait que ce fichier et
+`App.tsx`.
+
+Le tri est un `<select>` natif : accessible au clavier et au lecteur d'écran
+sans rien réimplémenter, et le menu déroulant reste celui du système.
 
 Les filtres sont de vrais liens plutôt que des boutons, et les quatre vignettes
 de catégories du hero pointent sur le filtre correspondant : elles se
