@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { EnTeteProduit } from "@/components/EnTeteProduit"
 import { SuggestionsProduits } from "@/components/SuggestionsProduits"
 import { type Produit } from "@/data/produits"
-import { lienAccueil, naviguer } from "@/lib/navigation"
+import { naviguer, urlCatalogue } from "@/lib/navigation"
 import { paliers, formatRemise } from "@/lib/tarifs"
 import { asset, formatPrix } from "@/lib/utils"
 import { usePanier } from "@/panier/PanierContext"
@@ -31,22 +31,7 @@ export function PageProduit({ produit }: { produit: Produit }) {
       <EnTeteProduit />
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-        <nav aria-label="Fil d'Ariane" className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground">
-          <a
-            href={lienAccueil()}
-            onClick={(e) => {
-              e.preventDefault()
-              naviguer(lienAccueil())
-            }}
-            className="transition-colors hover:text-primary"
-          >
-            Catalogue
-          </a>
-          <ChevronRight className="size-3.5" aria-hidden="true" />
-          <span>{produit.categorie}</span>
-          <ChevronRight className="size-3.5" aria-hidden="true" />
-          <span className="text-foreground">{produit.nom}</span>
-        </nav>
+        <FilAriane produit={produit} />
 
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* `self-start` : sans lui la grille étire le cadre à la hauteur de
@@ -145,6 +130,50 @@ export function PageProduit({ produit }: { produit: Produit }) {
         <SuggestionsProduits titre="Dans le même chantier" exclure={produit.id} />
       </main>
     </div>
+  )
+}
+
+/**
+ * Fil d'Ariane. Une liste ordonnée plutôt qu'une suite de `span` : c'est la
+ * forme attendue d'un chemin de navigation, annoncée comme telle et avec sa
+ * longueur. Le dernier maillon porte `aria-current="page"` et n'est pas un
+ * lien — il désigne la page où l'on se trouve déjà.
+ */
+function FilAriane({ produit }: { produit: Produit }) {
+  const maillons = [
+    { libelle: "Catalogue", lien: urlCatalogue(), ancre: "catalogue" },
+    {
+      libelle: produit.categorie,
+      lien: urlCatalogue({ categorie: produit.categorie }),
+      ancre: "catalogue",
+    },
+  ]
+
+  return (
+    <nav aria-label="Fil d'Ariane" className="mb-6">
+      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+        {maillons.map((maillon) => (
+          <li key={maillon.libelle} className="flex items-center gap-1.5">
+            <a
+              href={maillon.lien}
+              onClick={(e) => {
+                e.preventDefault()
+                naviguer(maillon.lien, { ancre: maillon.ancre })
+              }}
+              className="rounded-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              {maillon.libelle}
+            </a>
+            <ChevronRight className="size-3.5 shrink-0" aria-hidden="true" />
+          </li>
+        ))}
+        <li>
+          <span aria-current="page" className="text-foreground">
+            {produit.nom}
+          </span>
+        </li>
+      </ol>
+    </nav>
   )
 }
 
