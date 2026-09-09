@@ -2,6 +2,7 @@ import * as React from "react"
 import {
   ChevronLeft,
   ChevronRight,
+  Flag,
   Info,
   MessageSquareOff,
   ThumbsUp,
@@ -75,6 +76,8 @@ export function AvisClients({
   const [filtreNote, setFiltreNote] = React.useState<number | null>(null)
   /** Avis que le visiteur a marqués utiles. Rien n'est envoyé, comme le reste. */
   const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
+  /** Avis signalés. Aucune modération derrière : la page le dit à l'écran. */
+  const [signales, setSignales] = React.useState<ReadonlySet<string>>(new Set())
   const [page, setPage] = React.useState(1)
 
   /** Le repère de la liste, pour y ramener le lecteur au changement de page. */
@@ -91,6 +94,19 @@ export function AvisClients({
 
   function basculerVote(id: string) {
     setVotes((actuels) => {
+      const suivants = new Set(actuels)
+      if (!suivants.delete(id)) suivants.add(id)
+      return suivants
+    })
+  }
+
+  /**
+   * Le signalement est annulable, sur le même bouton dont le libellé change :
+   * un signalement par erreur ne doit pas être une impasse, et remplacer le
+   * bouton par un autre élément ferait perdre le focus au clavier.
+   */
+  function basculerSignalement(id: string) {
+    setSignales((actuels) => {
       const suivants = new Set(actuels)
       if (!suivants.delete(id)) suivants.add(id)
       return suivants
@@ -277,7 +293,9 @@ export function AvisClients({
                 <Separator className="my-3" />
                 <p className="text-sm leading-relaxed">{avis.texte}</p>
 
-                <div className="mt-4 flex items-center gap-3">
+                {/* Passe à la ligne plutôt que de déborder : sur mobile,
+                    un avis à la fois voté et signalé ne tient pas sur une. */}
+                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
                   <button
                     type="button"
                     onClick={() => basculerVote(avis.id)}
@@ -305,6 +323,46 @@ export function AvisClients({
                     <span className="text-xs text-muted-foreground">
                       Compté seulement ici
                     </span>
+                  )}
+
+                  {/* Pas de signalement sur son propre avis : il porte déjà la
+                      mention « Non enregistré » et on ne se dénonce pas. */}
+                  {!avis.local && (
+                    <div className="ms-auto flex flex-wrap items-center justify-end gap-2">
+                      {/* Région d'état montée en permanence : un lecteur
+                          d'écran annonce le texte qui y arrive, ce qu'il ne
+                          fait pas d'une région apparue en même temps que lui. */}
+                      <p
+                        role="status"
+                        className="flex items-center gap-1.5 text-xs text-muted-foreground"
+                      >
+                        {signales.has(avis.id) && (
+                          <>
+                            <Flag
+                              className="size-3.5 fill-current"
+                              aria-hidden="true"
+                            />
+                            Signalé, rien n'a été envoyé
+                          </>
+                        )}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => basculerSignalement(avis.id)}
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                      >
+                        {!signales.has(avis.id) && (
+                          <Flag className="size-3.5" aria-hidden="true" />
+                        )}
+                        {/* Le soulignement est porté par le libellé : sur le
+                            conteneur flex, il n'atteindrait aucun enfant. */}
+                        <span className="underline underline-offset-4">
+                          {signales.has(avis.id)
+                            ? "Annuler le signalement"
+                            : "Signaler"}
+                        </span>
+                      </button>
+                    </div>
                   )}
                 </div>
               </li>

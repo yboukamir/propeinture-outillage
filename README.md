@@ -25,12 +25,12 @@ porte sa photo en plein cadre, son état de stock, sa référence et son prix à
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 à chaque palier, en euros plutôt qu'en pourcentage.
 
-![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
+![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité et de signalement, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
 
 Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri,
-liste avec bouton d'utilité, pagination et formulaire de dépôt. La mention
-d'avis fictifs est en clair au-dessus, et le formulaire annonce avant la saisie
-que rien n'est envoyé.
+liste avec boutons d'utilité et de signalement, pagination et formulaire de
+dépôt. La mention d'avis fictifs est en clair au-dessus, et le formulaire
+annonce avant la saisie que rien n'est envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
@@ -142,6 +142,15 @@ Chaque avis porte un bouton « Cet avis est utile » avec son compteur. Le vote
 bascule au second clic, incrémente le compteur affiché et signale « Compté
 seulement ici » — rien n'est envoyé, comme le reste de la maquette. Un avis
 déposé depuis la page démarre à zéro.
+
+Un lien « Signaler » discret, aligné à droite, complète la rangée. Il n'y a
+aucune modération derrière : l'avis reste affiché et la mention « Signalé, rien
+n'a été envoyé » le dit à côté. Le signalement est annulable sur le même
+bouton, dont seul le libellé change — un clic par erreur ne doit pas être une
+impasse, et remplacer le bouton par un autre élément ferait perdre le focus au
+clavier. Un avis déposé depuis la page n'en porte pas : on ne se signale pas
+soi-même. La rangée passe à la ligne sur mobile, où un avis à la fois voté et
+signalé ne tient pas sur une seule.
 
 Un histogramme des notes sert aussi de filtre : chaque barre montre combien
 d'avis portent cette note et s'active au clic, un second clic la désactivant —
