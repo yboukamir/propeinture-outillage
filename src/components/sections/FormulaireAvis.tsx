@@ -65,6 +65,7 @@ export function FormulaireAvis({
       note,
       date: new Date().toISOString().slice(0, 10),
       texte: texte.trim(),
+      utiles: 0,
       local: true,
     })
 

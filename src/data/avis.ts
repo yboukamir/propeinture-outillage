@@ -14,6 +14,8 @@ export type Avis = {
   /** Format ISO, affiché en toutes lettres. */
   date: string
   texte: string
+  /** Nombre de personnes ayant trouvé l'avis utile. Fictif lui aussi. */
+  utiles: number
   /** Déposé depuis la page, jamais enregistré : signalé comme tel à l'écran. */
   local?: boolean
 }
@@ -28,6 +30,7 @@ export const avis: Avis[] = [
     date: "2026-07-14",
     texte:
       "La fibre courte tient bien la laque, pas de peluche sur les portes. J'en prends dix à chaque commande, à ce prix-là je ne les lave même plus entre deux chantiers.",
+    utiles: 14,
   },
   {
     id: "av-2",
@@ -38,6 +41,7 @@ export const avis: Avis[] = [
     date: "2026-06-28",
     texte:
       "Bon rendu sur boiseries, rien à dire. Le manche plie un peu quand on appuie fort sur un plafond, mais pour du laquage c'est parfait.",
+    utiles: 6,
   },
   {
     id: "av-3",
@@ -48,6 +52,7 @@ export const avis: Avis[] = [
     date: "2026-05-09",
     texte:
       "Commandé par cinquante pour l'équipe. Qualité constante d'un lot à l'autre, ce qui n'est pas le cas partout.",
+    utiles: 9,
   },
   {
     id: "av-4",
@@ -58,6 +63,7 @@ export const avis: Avis[] = [
     date: "2026-07-02",
     texte:
       "Soie bien garnie, la coupe reste nette après une dizaine de chantiers. Il perd deux ou trois poils les premiers jours, ensuite plus rien.",
+    utiles: 11,
   },
   {
     id: "av-5",
@@ -68,6 +74,7 @@ export const avis: Avis[] = [
     date: "2026-04-21",
     texte:
       "Parfait pour les angles et les plinthes. Se nettoie facilement à l'eau tant qu'on ne le laisse pas sécher.",
+    utiles: 4,
   },
   {
     id: "av-6",
@@ -78,6 +85,7 @@ export const avis: Avis[] = [
     date: "2026-06-11",
     texte:
       "Se gâche sans grumeaux et reste travaillable une bonne demi-heure. Ponçage minimal derrière, c'est ce que je demande à un enduit de lissage.",
+    utiles: 17,
   },
   {
     id: "av-7",
@@ -88,6 +96,7 @@ export const avis: Avis[] = [
     date: "2026-03-30",
     texte:
       "Le produit est bon mais les sacs arrivent parfois éventrés. À voir avec le transporteur, ce n'est pas la faute de l'enduit.",
+    utiles: 3,
   },
   {
     id: "av-8",
@@ -98,6 +107,7 @@ export const avis: Avis[] = [
     date: "2026-07-19",
     texte:
       "Arêtes franches sur laque comme sur mat, et il se retire sans arracher, même après deux jours en place. Je ne reviens pas au ruban de grande surface.",
+    utiles: 21,
   },
   {
     id: "av-9",
@@ -108,6 +118,7 @@ export const avis: Avis[] = [
     date: "2026-05-25",
     texte:
       "Bonne tenue sur support propre. Sur crépi il faut appuyer davantage, mais c'est vrai de tous les rubans.",
+    utiles: 5,
   },
 ]
 

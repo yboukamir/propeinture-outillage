@@ -27,9 +27,10 @@ La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 
 ![Section avis : moyenne en étoiles, mention d'avis fictifs, sélecteur de tri, deux avis et le formulaire de dépôt](docs/captures/09-avis.webp)
 
-Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri, liste
-et formulaire. La mention d'avis fictifs est en clair au-dessus, et le
-formulaire annonce avant la saisie que rien n'est envoyé.
+Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri,
+liste avec bouton d'utilité, et formulaire de dépôt. La mention d'avis fictifs
+est en clair au-dessus, et le formulaire annonce avant la saisie que rien n'est
+envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
@@ -136,6 +137,11 @@ le formulaire annonce avant la saisie.
 Les avis déposés vivent dans `PageProduit` et non dans la section, pour que le
 résumé sous le titre et la liste ne puissent pas afficher deux chiffres
 différents. Une clé sur la fiche les remet à zéro d'un produit à l'autre.
+
+Chaque avis porte un bouton « Cet avis est utile » avec son compteur. Le vote
+bascule au second clic, incrémente le compteur affiché et signale « Compté
+seulement ici » — rien n'est envoyé, comme le reste de la maquette. Un avis
+déposé depuis la page démarre à zéro.
 
 Un histogramme des notes sert aussi de filtre : chaque barre montre combien
 d'avis portent cette note et s'active au clic, un second clic la désactivant —

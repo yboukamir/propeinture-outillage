@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Info, MessageSquareOff } from "lucide-react"
+import { Info, MessageSquareOff, ThumbsUp } from "lucide-react"
 
 import { Etoiles } from "@/components/Etoiles"
 import { Separator } from "@/components/ui/separator"
@@ -50,6 +50,16 @@ export function AvisClients({
   const [tri, setTri] = React.useState<TriAvis>("recent")
   /** Note sélectionnée dans l'histogramme, `null` quand tout est affiché. */
   const [filtreNote, setFiltreNote] = React.useState<number | null>(null)
+  /** Avis que le visiteur a marqués utiles. Rien n'est envoyé, comme le reste. */
+  const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
+
+  function basculerVote(id: string) {
+    setVotes((actuels) => {
+      const suivants = new Set(actuels)
+      if (!suivants.delete(id)) suivants.add(id)
+      return suivants
+    })
+  }
 
   // De 5 à 1 : c'est l'ordre attendu d'un histogramme d'avis.
   const distribution = [5, 4, 3, 2, 1].map((note) => ({
@@ -207,6 +217,37 @@ export function AvisClients({
               </div>
               <Separator className="my-3" />
               <p className="text-sm leading-relaxed">{avis.texte}</p>
+
+              <div className="mt-4 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => basculerVote(avis.id)}
+                  aria-pressed={votes.has(avis.id)}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
+                    votes.has(avis.id)
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground hover:border-primary hover:text-primary",
+                  )}
+                >
+                  <ThumbsUp
+                    className={cn(
+                      "size-4",
+                      votes.has(avis.id) && "fill-primary/20",
+                    )}
+                    aria-hidden="true"
+                  />
+                  {votes.has(avis.id) ? "Avis utile" : "Cet avis est utile"}
+                  <span className="tabular-nums">
+                    {avis.utiles + (votes.has(avis.id) ? 1 : 0)}
+                  </span>
+                </button>
+                {votes.has(avis.id) && (
+                  <span className="text-xs text-muted-foreground">
+                    Compté seulement ici
+                  </span>
+                )}
+              </div>
             </li>
           ))}
         </ul>
