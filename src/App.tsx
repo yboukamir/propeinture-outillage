@@ -4,6 +4,7 @@ import { Footer } from "@/components/sections/Footer"
 import { GrilleProduits } from "@/components/sections/GrilleProduits"
 import { Hero } from "@/components/sections/Hero"
 import { PageProduit } from "@/components/sections/PageProduit"
+import { ProduitIntrouvable } from "@/components/sections/ProduitIntrouvable"
 import { PanierPanneau } from "@/components/sections/PanierPanneau"
 import { TarifsDegressifs } from "@/components/sections/TarifsDegressifs"
 import { produits } from "@/data/produits"
@@ -25,8 +26,7 @@ function Contenu() {
     ? produits.find((p) => p.id === produitId)
     : undefined
 
-  // Un identifiant inconnu retombe sur l'accueil plutôt que sur une page vide.
-  if (produit) {
+  if (produitId) {
     return (
       <>
         {/* Le bandeau reste visible sur la fiche produit : c'est une maquette
@@ -34,7 +34,13 @@ function Contenu() {
         <div className="sticky top-0 z-50">
           <BandeauDemo />
         </div>
-        <PageProduit produit={produit} />
+        {produit ? (
+          <PageProduit produit={produit} />
+        ) : (
+          // L'adresse est valide, seul son contenu manque : on le dit plutôt
+          // que de renvoyer silencieusement sur l'accueil.
+          <ProduitIntrouvable identifiant={produitId} />
+        )}
       </>
     )
   }

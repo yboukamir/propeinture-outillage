@@ -114,10 +114,10 @@ Pas de routeur : le site est servi en sous-chemin sur GitHub Pages, où des URL
 en segments renverraient un 404 sans page de repli, et sa navigation repose sur
 des ancres (`#catalogue`) qu'un routeur à hash confisquerait. Les liens restent
 partageables, le bouton retour du navigateur défait le filtre comme la fiche, et
-une valeur inconnue dégrade proprement — un produit introuvable retombe sur
-l'accueil, une catégorie vide affiche un message, un tri non reconnu revient à
-l'ordre du catalogue. Passer à react-router ne toucherait que ce fichier et
-`App.tsx`.
+une valeur inconnue dégrade proprement — une référence inconnue affiche une vue
+« Référence introuvable », une catégorie vide un message, un tri non reconnu
+revient à l'ordre du catalogue. Passer à react-router ne toucherait que ce
+fichier et `App.tsx`.
 
 Le tri est un `<select>` natif : accessible au clavier et au lecteur d'écran
 sans rien réimplémenter, et le menu déroulant reste celui du système.
@@ -146,8 +146,9 @@ entrée reçoit la substitution de `%BASE_URL%`. Sans ça, ses liens de retour
 pointeraient la racine du domaine au lieu de celle du déploiement — cassés sur
 GitHub Pages, qui sert en sous-chemin.
 
-À ne pas confondre avec le repli applicatif : un `?produit=` inconnu reste sur
-l'accueil plutôt que d'afficher cette page, l'adresse étant valide.
+À ne pas confondre avec la vue « Référence introuvable » : là, l'adresse est
+valide et seul son contenu manque, donc on reste dans l'application — en-tête,
+panier et suggestions intacts — au lieu de servir cette page-ci.
 
 ## Démarrer
 
@@ -191,11 +192,13 @@ src/
   components/
     ui/               composants shadcn/ui + les 4 composants 21st adaptés
     sections/         BandeauDemo, Hero, GrilleProduits, TarifsDegressifs,
-                      BandeLivraison, Footer, PageProduit, PanierPanneau —
+                      BandeLivraison, Footer, PageProduit, ProduitIntrouvable,
+                      PanierPanneau —
                       de fines enveloppes qui alimentent les composants ui/
                       en contenu français
     Marque.tsx        le logo, partagé header / footer
     BasculeTheme.tsx  le bouton clair / sombre
+    SuggestionsProduits.tsx  grille partagée fiche / introuvable
     EnTeteProduit.tsx en-tête sobre de la fiche produit
   data/produits.ts    les 6 références du catalogue + les 4 catégories
   lib/navigation.ts   fiche produit, filtre et recherche dans l'URL

@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { EnTeteProduit } from "@/components/EnTeteProduit"
-import { produits, type Produit } from "@/data/produits"
-import { lienAccueil, lienProduit, naviguer } from "@/lib/navigation"
+import { SuggestionsProduits } from "@/components/SuggestionsProduits"
+import { type Produit } from "@/data/produits"
+import { lienAccueil, naviguer } from "@/lib/navigation"
 import { paliers, formatRemise } from "@/lib/tarifs"
 import { asset, formatPrix } from "@/lib/utils"
 import { usePanier } from "@/panier/PanierContext"
@@ -14,10 +15,6 @@ import { usePanier } from "@/panier/PanierContext"
 export function PageProduit({ produit }: { produit: Produit }) {
   const { ajouter, definirQuantite, lignes } = usePanier()
   const [quantite, setQuantite] = React.useState(1)
-
-  const suggestions = produits
-    .filter((p) => p.id !== produit.id)
-    .slice(0, 3)
 
   function ajouterAuPanier() {
     // `ajouter` incrémente d'une unité : on pose ensuite la quantité voulue,
@@ -145,40 +142,7 @@ export function PageProduit({ produit }: { produit: Produit }) {
           </div>
         </div>
 
-        <section className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Dans le même chantier
-          </h2>
-          <ul className="mt-6 grid gap-5 sm:grid-cols-3">
-            {suggestions.map((autre) => (
-              <li key={autre.id}>
-                <a
-                  href={lienProduit(autre.id)}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    naviguer(lienProduit(autre.id))
-                  }}
-                  className="group block overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
-                >
-                  <img
-                    src={asset(autre.photo)}
-                    alt={autre.photoAlt}
-                    loading="lazy"
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                  <div className="p-4">
-                    <p className="text-sm font-semibold leading-snug">
-                      {autre.nom}
-                    </p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {formatPrix(autre.prix)} /{autre.unite}
-                    </p>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <SuggestionsProduits titre="Dans le même chantier" exclure={produit.id} />
       </main>
     </div>
   )
