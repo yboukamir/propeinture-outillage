@@ -145,7 +145,11 @@ seulement ici » — rien n'est envoyé, comme le reste de la maquette. Un avis
 déposé depuis la page démarre à zéro.
 
 Quatre avis portent une réponse publique de la boutique, décalée sous l'avis
-auquel elle répond et signée d'un badge « Vendeur ». Le champ est facultatif :
+auquel elle répond et signée d'un badge « Vendeur ». Elle a son propre
+signalement : on peut trouver la réponse déplacée sans rien reprocher à
+l'avis. Son libellé nomme ce qu'il vise — « Signaler la réponse », « Annuler
+le signalement de la réponse » —, sans quoi deux boutons homonymes se
+suivraient dans la même carte. Le champ est facultatif :
 un vendeur ne répond pas à tout, et une réponse sous chaque avis sonnerait
 faux. Ce sont les avis mitigés qui en reçoivent une, comme sur une vraie
 vitrine, avec une date forcément postérieure à celle de l'avis. La rangée

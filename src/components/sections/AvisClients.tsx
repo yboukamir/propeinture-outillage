@@ -96,7 +96,10 @@ export function AvisClients({
   const [avecReponse, setAvecReponse] = React.useState(false)
   /** Avis que le visiteur a marqués utiles. Rien n'est envoyé, comme le reste. */
   const [votes, setVotes] = React.useState<ReadonlySet<string>>(new Set())
-  /** Avis signalés. Aucune modération derrière : la page le dit à l'écran. */
+  /**
+   * Signalements en cours, par clé : l'identifiant de l'avis, ou celui de sa
+   * réponse. Aucune modération derrière : la page le dit à l'écran.
+   */
   const [signales, setSignales] = React.useState<ReadonlySet<string>>(new Set())
   /** Dernier lien copié, pour la confirmation, et son issue. */
   const [partage, setPartage] = React.useState<{
@@ -193,13 +196,16 @@ export function AvisClients({
    * un signalement par erreur ne doit pas être une impasse, et remplacer le
    * bouton par un autre élément ferait perdre le focus au clavier.
    */
-  function basculerSignalement(id: string) {
+  function basculerSignalement(cle: string) {
     setSignales((actuels) => {
       const suivants = new Set(actuels)
-      if (!suivants.delete(id)) suivants.add(id)
+      if (!suivants.delete(cle)) suivants.add(cle)
       return suivants
     })
   }
+
+  /** La réponse se signale à part de l'avis : deux paroles, deux clés. */
+  const cleReponse = (avis: Avis) => `reponse-${avis.id}`
 
   const parNote = (a: Avis) => filtreNote === null || a.note === filtreNote
   const parReponse = (a: Avis) => !avecReponse || Boolean(a.reponse)
@@ -483,6 +489,41 @@ export function AvisClients({
                     <p className="mt-2 text-sm leading-relaxed">
                       {avis.reponse.texte}
                     </p>
+
+                    {/* Son propre signalement : on peut trouver la réponse
+                        déplacée sans rien reprocher à l'avis. Le libellé le
+                        dit, sinon deux boutons « Signaler » se suivraient
+                        dans la même carte sans qu'on sache lequel vise quoi. */}
+                    <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
+                      <p
+                        role="status"
+                        className="flex items-center gap-1.5 text-xs text-muted-foreground"
+                      >
+                        {signales.has(cleReponse(avis)) && (
+                          <>
+                            <Flag
+                              className="size-3.5 fill-current"
+                              aria-hidden="true"
+                            />
+                            Signalée, rien n'a été envoyé
+                          </>
+                        )}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => basculerSignalement(cleReponse(avis))}
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                      >
+                        {!signales.has(cleReponse(avis)) && (
+                          <Flag className="size-3.5" aria-hidden="true" />
+                        )}
+                        <span className="underline underline-offset-4">
+                          {signales.has(cleReponse(avis))
+                            ? "Annuler le signalement de la réponse"
+                            : "Signaler la réponse"}
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 )}
 

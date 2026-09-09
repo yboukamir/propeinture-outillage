@@ -67,7 +67,7 @@ const vues = [
     url: `${URL_SITE}?produit=rouleau-laqueur-18`,
     selecteur: "#titre-avis",
     largeur: 1280,
-    hauteur: 2260,
+    hauteur: 2300,
   },
   {
     // Page servie par l'hébergeur : elle vit hors de l'application, d'où
