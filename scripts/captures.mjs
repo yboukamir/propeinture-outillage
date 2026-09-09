@@ -67,7 +67,7 @@ const vues = [
     url: `${URL_SITE}?produit=enduit-lissage-25`,
     selecteur: "#titre-avis",
     largeur: 1280,
-    hauteur: 1250,
+    hauteur: 1420,
   },
   {
     // Page servie par l'hébergeur : elle vit hors de l'application, d'où

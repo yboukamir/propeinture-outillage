@@ -3,6 +3,7 @@ import { Info, MessageSquareOff } from "lucide-react"
 
 import { Etoiles } from "@/components/Etoiles"
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
 import { type Avis } from "@/data/avis"
 import { FormulaireAvis } from "@/components/sections/FormulaireAvis"
 
@@ -47,8 +48,19 @@ export function AvisClients({
    * note croissante ».
    */
   const [tri, setTri] = React.useState<TriAvis>("recent")
+  /** Note sélectionnée dans l'histogramme, `null` quand tout est affiché. */
+  const [filtreNote, setFiltreNote] = React.useState<number | null>(null)
 
-  const liste = trier(tous, tri)
+  // De 5 à 1 : c'est l'ordre attendu d'un histogramme d'avis.
+  const distribution = [5, 4, 3, 2, 1].map((note) => ({
+    note,
+    nombre: tous.filter((a) => a.note === note).length,
+  }))
+
+  const filtres = filtreNote
+    ? tous.filter((a) => a.note === filtreNote)
+    : tous
+  const liste = trier(filtres, tri)
 
   return (
     <section className="mt-16" aria-labelledby="titre-avis">
@@ -62,9 +74,9 @@ export function AvisClients({
             <span className="font-semibold">
               {moyenne.toLocaleString("fr-FR")} sur 5
             </span>
-            <span className="text-muted-foreground">
-              · {liste.length} avis
-            </span>
+            {/* Le total, pas le nombre filtré : la moyenne à côté porte sur
+                l'ensemble, les deux chiffres doivent parler du même lot. */}
+            <span className="text-muted-foreground">· {tous.length} avis</span>
           </p>
         )}
       </div>
@@ -78,8 +90,71 @@ export function AvisClients({
         boutique n'existent.
       </p>
 
+      {tous.length > 0 && (
+        <div className="mt-6 rounded-lg border border-border bg-card p-4">
+          <h3 className="text-sm font-semibold">Filtrer par note</h3>
+          <ul className="mt-3 flex flex-col gap-1.5">
+            {distribution.map(({ note, nombre }) => {
+              const actif = filtreNote === note
+              const part = tous.length === 0 ? 0 : (nombre / tous.length) * 100
+              return (
+                <li key={note}>
+                  <button
+                    type="button"
+                    // Un clic sur la note active la retire : pas besoin d'un
+                    // bouton « tout » séparé.
+                    onClick={() => setFiltreNote(actif ? null : note)}
+                    disabled={nombre === 0}
+                    aria-pressed={actif}
+                    className={cn(
+                      "flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-sm transition-colors",
+                      nombre === 0
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:bg-muted",
+                      actif && "bg-muted",
+                    )}
+                  >
+                    <span className="w-16 shrink-0 tabular-nums">
+                      {note} étoile{note > 1 ? "s" : ""}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="h-2 flex-1 overflow-hidden rounded-full bg-foreground/10"
+                    >
+                      <span
+                        className="block h-full rounded-full bg-accent transition-[width] duration-300"
+                        style={{ width: `${part}%` }}
+                      />
+                    </span>
+                    <span className="w-6 shrink-0 text-right tabular-nums text-muted-foreground">
+                      {nombre}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+
+          {filtreNote !== null && (
+            <p className="mt-3 flex flex-wrap items-center gap-2 border-t border-border pt-3 text-sm text-muted-foreground">
+              <span aria-live="polite">
+                {liste.length} avis sur {tous.length} affiché
+                {liste.length > 1 ? "s" : ""}.
+              </span>
+              <button
+                type="button"
+                onClick={() => setFiltreNote(null)}
+                className="font-medium text-primary underline underline-offset-4"
+              >
+                Voir tous les avis
+              </button>
+            </p>
+          )}
+        </div>
+      )}
+
       {liste.length > 1 && (
-        <label className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
+        <label className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
           <span className="shrink-0">Trier les avis</span>
           <select
             value={tri}
@@ -95,7 +170,7 @@ export function AvisClients({
         </label>
       )}
 
-      {liste.length === 0 ? (
+      {tous.length === 0 ? (
         <p className="mt-6 flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-8 text-sm text-muted-foreground">
           <MessageSquareOff className="size-4 shrink-0" aria-hidden="true" />
           Cette référence n'a pas encore d'avis.
@@ -137,7 +212,14 @@ export function AvisClients({
         </ul>
       )}
 
-      <FormulaireAvis onAjout={onAjout} />
+      <FormulaireAvis
+        onAjout={(nouveau) => {
+          // Sans ça, un avis déposé avec une autre note serait invisible :
+          // il tomberait hors du filtre actif.
+          setFiltreNote(null)
+          onAjout(nouveau)
+        }}
+      />
     </section>
   )
 }

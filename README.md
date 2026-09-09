@@ -27,8 +27,9 @@ La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 
 ![Section avis : moyenne en étoiles, mention d'avis fictifs, sélecteur de tri, deux avis et le formulaire de dépôt](docs/captures/09-avis.webp)
 
-Les avis, en bas de fiche. La mention d'avis fictifs est en clair au-dessus de
-la liste, et le formulaire annonce avant la saisie que rien n'est envoyé.
+Les avis, en bas de fiche : histogramme des notes qui sert de filtre, tri, liste
+et formulaire. La mention d'avis fictifs est en clair au-dessus, et le
+formulaire annonce avant la saisie que rien n'est envoyé.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 
@@ -135,6 +136,13 @@ le formulaire annonce avant la saisie.
 Les avis déposés vivent dans `PageProduit` et non dans la section, pour que le
 résumé sous le titre et la liste ne puissent pas afficher deux chiffres
 différents. Une clé sur la fiche les remet à zéro d'un produit à l'autre.
+
+Un histogramme des notes sert aussi de filtre : chaque barre montre combien
+d'avis portent cette note et s'active au clic, un second clic la désactivant —
+pas besoin d'un bouton « tout » à côté. Les notes sans avis sont désactivées,
+et déposer un avis lève le filtre en cours, sans quoi le nouvel avis serait
+invisible s'il tombait hors du filtre. La moyenne et le total en tête portent
+toujours sur l'ensemble : ils doivent parler du même lot.
 
 Les avis se trient par date ou par note, à note égale le plus récent d'abord.
 Ce tri-là reste en état local, contrairement à celui du catalogue : la règle
