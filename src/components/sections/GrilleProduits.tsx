@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/ui/product-card"
 import { produits } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
+import { lienProduit, naviguer } from "@/lib/navigation"
 
 export function GrilleProduits() {
   const { ajouter } = usePanier()
@@ -52,6 +53,11 @@ export function GrilleProduits() {
                 enStock={produit.stock === "en-stock"}
                 badge={produit.populaire ? "Best-seller" : undefined}
                 onAjouter={() => ajouter(produit)}
+                href={lienProduit(produit.id)}
+                onOuvrir={(e) => {
+                  e.preventDefault()
+                  naviguer(lienProduit(produit.id))
+                }}
               />
             </div>
           ))}

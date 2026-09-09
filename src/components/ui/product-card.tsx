@@ -29,6 +29,10 @@ export interface ProductCardProps
   enStock: boolean
   badge?: string
   onAjouter?: () => void
+  /** Lien vers la fiche produit : vrai `href`, pour garder clic droit et
+   *  ouverture dans un nouvel onglet. */
+  href?: string
+  onOuvrir?: (evenement: React.MouseEvent) => void
 }
 
 const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
@@ -46,6 +50,8 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       enStock,
       badge,
       onAjouter,
+      href,
+      onOuvrir,
       ...props
     },
     ref,
@@ -98,14 +104,26 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
             {categorie}
           </span>
-          <h3 className="mt-1.5 text-lg font-semibold leading-snug">{nom}</h3>
+          {/* Lien étiré : le titre porte le lien — focusable et annoncé
+              correctement — et son pseudo-élément couvre toute la carte, ce
+              qui la rend cliquable sans recouvrement en dur. Le pied de carte
+              repasse au-dessus pour garder le bouton « Ajouter » utilisable. */}
+          <h3 className="mt-1.5 text-lg font-semibold leading-snug">
+            <a
+              href={href ?? "#"}
+              onClick={onOuvrir}
+              className="rounded-sm after:absolute after:inset-0 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              {nom}
+            </a>
+          </h3>
           <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
           <p className="mt-auto pt-3 text-xs text-muted-foreground/70">
             Réf. {reference}
           </p>
         </div>
 
-        <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-4">
+        <div className="relative z-10 flex items-center justify-between gap-3 border-t border-border px-5 py-4">
           <p className="flex items-baseline gap-1">
             <span className="font-display text-2xl font-bold tracking-tight">
               {formatPrix(prix)}

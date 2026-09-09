@@ -47,6 +47,13 @@ const vues = [
   { nom: "03-tarifs.png", selecteur: "#tarifs", largeur: 1280, hauteur: 900 },
   { nom: "04-mobile.png", selecteur: null, largeur: 420, hauteur: 860 },
   {
+    nom: "06-produit.png",
+    url: `${URL_SITE}?produit=enduit-lissage-25`,
+    selecteur: null,
+    largeur: 1280,
+    hauteur: 780,
+  },
+  {
     nom: "05-panier.png",
     selecteur: null,
     largeur: 1280,
@@ -88,7 +95,7 @@ try {
   for (const vue of vues) {
     const page = await navigateur.newPage()
     await page.setViewport({ width: vue.largeur, height: vue.hauteur })
-    await page.goto(URL_SITE, { waitUntil: "networkidle0" })
+    await page.goto(vue.url ?? URL_SITE, { waitUntil: "networkidle0" })
 
     if (vue.selecteur) {
       // scrollIntoView puis correction du bandeau collé, sinon il recouvre le

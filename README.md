@@ -20,6 +20,11 @@ en dessous.
 Le catalogue. Chaque carte porte sa photo en plein cadre, son état de stock, sa
 référence et son prix à l'unité.
 
+![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.png)
+
+La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
+à chaque palier, en euros plutôt qu'en pourcentage.
+
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.png)
 
 Le panier, seule partie réellement fonctionnelle du concept : la remise se
@@ -88,6 +93,17 @@ Le panneau annonce en continu ce qui manque pour le palier suivant, et la
 section tarifs marque « Votre palier » sur celui qui s'applique. Le bouton
 « Commander » est volontairement désactivé : il n'y a ni back-end ni paiement.
 
+## Navigation
+
+Cliquer une carte ouvre la fiche produit. Elle est pilotée par la query string
+(`?produit=<id>`) dans [`src/lib/navigation.ts`](src/lib/navigation.ts), sans
+routeur : le site est servi en sous-chemin sur GitHub Pages, où des URL en
+segments renverraient un 404 sans page de repli, et sa navigation repose sur des
+ancres (`#catalogue`) qu'un routeur à hash confisquerait. Les liens restent
+partageables, le bouton retour du navigateur fonctionne, et un identifiant
+inconnu retombe sur l'accueil. Passer à react-router ne toucherait que ce
+fichier et `App.tsx`.
+
 ## Démarrer
 
 ```bash
@@ -129,10 +145,13 @@ src/
   components/
     ui/               composants shadcn/ui + les 4 composants 21st adaptés
     sections/         BandeauDemo, Hero, GrilleProduits, TarifsDegressifs,
-                      BandeLivraison, Footer — de fines enveloppes qui
-                      alimentent les composants ui/ en contenu français
+                      BandeLivraison, Footer, PageProduit, PanierPanneau —
+                      de fines enveloppes qui alimentent les composants ui/
+                      en contenu français
     Marque.tsx        le logo, partagé header / footer
+    EnTeteProduit.tsx en-tête sobre de la fiche produit
   data/produits.ts    les 6 références du catalogue + les 4 catégories
+  lib/navigation.ts   la fiche produit, pilotée par la query string
   lib/tarifs.ts       le barème dégressif, en fonctions pures
   lib/utils.ts        cn() et formatage des prix en euros (fr-FR)
   panier/             l'état du panier (useReducer + contexte)
