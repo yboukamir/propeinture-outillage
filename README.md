@@ -283,6 +283,34 @@ npm run dev
 
 Build de production : `npm run build`, puis `npm run preview`.
 
+Tests : `npm test`, ou `npm run test:suivi` pour les rejouer à chaque
+enregistrement.
+
+## Les tests
+
+Vitest, sur les modules purs — barème, URL, tri des avis, intégrité des
+données. Rien qui imite un navigateur : ce qui touche à l'écran est vérifié
+dans un vrai Chrome, piloté par Puppeteer, pas dans un DOM de synthèse qui
+donnerait une confiance que sa fidélité ne justifie pas.
+
+Ce qui est couvert et pourquoi :
+
+| Fichier | Ce que ça protège |
+| --- | --- |
+| [`lib/tarifs.test.ts`](src/lib/tarifs.test.ts) | Le seul calcul métier du projet. Les tests visent les bornes des paliers — 9, 10, 49, 50 —, là où un `>` mis pour un `>=` se voit, et vérifient que la remise porte sur le panier entier. |
+| [`lib/navigation.test.ts`](src/lib/navigation.test.ts) | L'URL, qui est l'état partageable du site : valeurs par défaut omises, saisie échappée, ancre en fin d'URL. |
+| [`lib/tri-avis.test.ts`](src/lib/tri-avis.test.ts) | L'ordre des avis, départage compris, et le fait que le tri ne modifie pas le tableau reçu. |
+| [`lib/utils.test.ts`](src/lib/utils.test.ts) | Le format des prix, espaces insécables compris, et la normalisation qui rapproche « bâche » de « bache ». |
+| [`data/avis.test.ts`](src/data/avis.test.ts) | Les avis, écrits à la main : identifiants uniques, notes entre 1 et 5, réponse jamais antérieure à l'avis qu'elle commente. |
+
+La suite a été éprouvée en cassant volontairement le code : borne de palier
+déplacée, départage inversé, note à 6 dans les données. Huit tests sont
+tombés, aux bons endroits. Une suite qui ne passe jamais au rouge ne prouve
+rien.
+
+Le workflow les joue avant le build : un déploiement ne part pas sur un
+barème faux.
+
 ## Mettre en ligne
 
 Le site est entièrement statique : `dist/` se sert tel quel, sans back-end.
@@ -331,6 +359,8 @@ src/
   data/produits.ts    les 6 références du catalogue + les 4 catégories
   lib/navigation.ts   fiche produit, filtre et recherche dans l'URL
   lib/tarifs.ts       le barème dégressif, en fonctions pures
+  lib/tri-avis.ts     l'ordre des avis, hors du composant pour être testable
+  **/*.test.ts        les tests Vitest, à côté du module qu'ils couvrent
   lib/theme.ts        clair / sombre, avec suivi de la préférence système
   lib/utils.ts        cn(), prix en euros (fr-FR), normalisation pour la recherche
   panier/             l'état du panier (useReducer + contexte)

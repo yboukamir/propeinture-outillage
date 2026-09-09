@@ -30,6 +30,10 @@ jobs:
 
       - run: npm ci
 
+      # Avant le build : un déploiement ne doit pas partir sur un barème faux.
+      - name: Tests
+        run: npm test
+
       - name: Build
         # Pages sert le site sur /<nom-du-depot>/ : sans cette base, les
         # fichiers de public/ sont cherchés à la racine du domaine.

@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import path from "node:path"
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
@@ -15,6 +16,15 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  /*
+   * Les tests portent sur les modules purs — barème, URL, tri et intégrité
+   * des données. Pas d'environnement DOM : ce qui touche à l'écran est
+   * vérifié dans un vrai navigateur, pas dans une imitation.
+   */
+  test: {
+    environment: "node",
+    include: ["src/**/*.test.ts"],
   },
   build: {
     rollupOptions: {
