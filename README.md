@@ -25,10 +25,11 @@ porte sa photo en plein cadre, son état de stock, sa référence et son prix à
 La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 à chaque palier, en euros plutôt qu'en pourcentage.
 
-![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité et de signalement dont un suivi d'une réponse du vendeur, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
+![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité, de partage et de signalement dont un suivi d'une réponse du vendeur, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
 
 Les avis, en bas de fiche : panneau de filtres — histogramme des notes et
-avis répondus —, tri, liste avec boutons d'utilité et de signalement,
+avis répondus —, tri, liste avec boutons d'utilité, de partage et de
+signalement,
 réponses du vendeur, pagination et formulaire de dépôt. La mention d'avis fictifs est en clair
 au-dessus, et le formulaire annonce avant la saisie que rien n'est envoyé.
 
@@ -149,6 +150,17 @@ un vendeur ne répond pas à tout, et une réponse sous chaque avis sonnerait
 faux. Ce sont les avis mitigés qui en reçoivent une, comme sur une vraie
 vitrine, avec une date forcément postérieure à celle de l'avis. La rangée
 d'actions reste sous la réponse : elle porte sur l'avis, pas sur elle.
+
+Un bouton « Partager » copie un lien profond vers l'avis, de la forme
+`?produit=rouleau-laqueur-18#avis-av-16`. Le lien vise un avis et non une
+page : à l'ouverture, la fiche cherche cet avis dans la liste, ouvre la page
+qui le contient, y défile et le marque d'un liseré — sans quoi le lecteur
+arriverait devant cinq avis sans savoir lequel on lui montre. L'ancre est
+relue au `hashchange` : suivre un lien vers la même fiche ne recharge rien,
+l'effet de montage ne se rejouerait pas. Si le presse-papiers refuse — hors
+contexte sécurisé, permission retirée —, le lien part dans la barre d'adresse
+et la confirmation le dit : un partage qui échoue en silence serait pire que
+les deux.
 
 Un lien « Signaler » discret, aligné à droite, complète la rangée. Il n'y a
 aucune modération derrière : l'avis reste affiché et la mention « Signalé, rien
