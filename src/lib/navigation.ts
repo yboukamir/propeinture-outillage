@@ -21,12 +21,35 @@ export function lienAccueil() {
   return import.meta.env.BASE_URL
 }
 
-/** `#catalogue` reste dans l'URL pour qu'un lien ouvert à froid y défile. */
-export function lienCategorie(categorie: string | null) {
-  const base = import.meta.env.BASE_URL
-  return categorie
-    ? `${base}?categorie=${encodeURIComponent(categorie)}#catalogue`
-    : `${base}#catalogue`
+/**
+ * URL du catalogue avec son état de consultation. `#catalogue` y reste pour
+ * qu'un lien ouvert à froid défile jusqu'à la grille — voir
+ * `useDefilementVersAncre`.
+ */
+export function urlCatalogue({
+  categorie = null,
+  recherche = "",
+}: { categorie?: string | null; recherche?: string } = {}) {
+  const parametres = new URLSearchParams()
+  if (categorie) parametres.set("categorie", categorie)
+  if (recherche.trim()) parametres.set("recherche", recherche.trim())
+  const requete = parametres.toString()
+  return `${import.meta.env.BASE_URL}${requete ? `?${requete}` : ""}#catalogue`
+}
+
+/** Raccourci pour les filtres, qui ne touchent qu'à la catégorie. */
+export function lienCategorie(categorie: string | null, recherche = "") {
+  return urlCatalogue({ categorie, recherche })
+}
+
+/**
+ * `replaceState` et non `pushState` : la recherche se tape lettre par lettre,
+ * l'empiler dans l'historique obligerait à autant de retours en arrière pour
+ * en sortir. L'URL reste copiable, sans polluer la navigation.
+ */
+export function remplacer(url: string) {
+  window.history.replaceState({}, "", url)
+  window.dispatchEvent(new Event(EVENEMENT_NAVIGATION))
 }
 
 type OptionsNavigation = {
@@ -72,8 +95,23 @@ export function useProduitAffiche(): string | null {
 }
 
 export function useCategorieAffichee(): string | null {
-  const recherche = React.useSyncExternalStore(souscrire, instantane, () => "")
-  return new URLSearchParams(recherche).get("categorie")
+  const parametres = React.useSyncExternalStore(souscrire, instantane, () => "")
+  return new URLSearchParams(parametres).get("categorie")
+}
+
+/** Terme de recherche présent dans l'URL au chargement. */
+export function rechercheInitiale() {
+  if (typeof window === "undefined") return ""
+  return new URLSearchParams(window.location.search).get("recherche") ?? ""
+}
+
+/** Identifiant du champ de recherche, pour que le header puisse l'atteindre. */
+export const ID_CHAMP_RECHERCHE = "recherche-catalogue"
+
+export function focaliserRecherche() {
+  const champ = document.getElementById(ID_CHAMP_RECHERCHE)
+  // `focus()` amène l'élément dans la vue : pas besoin de défiler à part.
+  if (champ instanceof HTMLInputElement) champ.focus()
 }
 
 /**

@@ -17,8 +17,8 @@ en dessous.
 
 ![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, prix à l'unité](docs/captures/02-catalogue.png)
 
-Le catalogue et ses filtres par catégorie. Chaque carte porte sa photo en plein
-cadre, son état de stock, sa référence et son prix à l'unité.
+Le catalogue, sa recherche et ses filtres par catégorie. Chaque carte porte sa
+photo en plein cadre, son état de stock, sa référence et son prix à l'unité.
 
 ![Fiche produit : grande photo, prix, sélecteur de quantité et tableau du prix unitaire à chaque palier](docs/captures/06-produit.png)
 
@@ -99,7 +99,8 @@ Deux états vivent dans l'URL, gérés par
 [`src/lib/navigation.ts`](src/lib/navigation.ts) :
 
 - `?produit=<id>` — la fiche produit, ouverte en cliquant une carte ;
-- `?categorie=<nom>` — le filtre du catalogue.
+- `?categorie=<nom>` — le filtre du catalogue ;
+- `?recherche=<terme>` — la recherche, qui se combine au filtre.
 
 Pas de routeur : le site est servi en sous-chemin sur GitHub Pages, où des URL
 en segments renverraient un 404 sans page de repli, et sa navigation repose sur
@@ -111,7 +112,14 @@ toucherait que ce fichier et `App.tsx`.
 
 Les filtres sont de vrais liens plutôt que des boutons, et les quatre vignettes
 de catégories du hero pointent sur le filtre correspondant : elles se
-contentaient jusque-là de faire défiler vers le catalogue.
+contentaient jusque-là de faire défiler vers le catalogue. Le bouton loupe du
+header, jusque-là inerte lui aussi, donne le focus au champ de recherche.
+
+La recherche porte sur le nom, le descriptif, la référence et la catégorie.
+Les accents sont ignorés — « bache » trouve « Bâche » — et chaque mot saisi
+doit apparaître, si bien que « rouleau 18 » isole le rouleau 18 cm. Elle
+s'écrit dans l'URL avec `replaceState` et non `pushState` : taper dix lettres
+n'ajoute pas dix entrées à l'historique, mais le lien reste copiable.
 
 ## Démarrer
 
@@ -160,9 +168,9 @@ src/
     Marque.tsx        le logo, partagé header / footer
     EnTeteProduit.tsx en-tête sobre de la fiche produit
   data/produits.ts    les 6 références du catalogue + les 4 catégories
-  lib/navigation.ts   la fiche produit, pilotée par la query string
+  lib/navigation.ts   fiche produit, filtre et recherche dans l'URL
   lib/tarifs.ts       le barème dégressif, en fonctions pures
-  lib/utils.ts        cn() et formatage des prix en euros (fr-FR)
+  lib/utils.ts        cn(), prix en euros (fr-FR), normalisation pour la recherche
   panier/             l'état du panier (useReducer + contexte)
   index.css           palette, polices et thème Tailwind v4
 ```

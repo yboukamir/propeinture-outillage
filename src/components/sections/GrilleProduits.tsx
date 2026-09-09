@@ -1,14 +1,21 @@
+import * as React from "react"
+import { Search, X } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/ui/product-card"
-import { categories, produits } from "@/data/produits"
+import { categories, produits, type Produit } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
 import {
+  ID_CHAMP_RECHERCHE,
   lienCategorie,
   lienProduit,
   naviguer,
+  rechercheInitiale,
+  remplacer,
+  urlCatalogue,
   useCategorieAffichee,
 } from "@/lib/navigation"
-import { cn } from "@/lib/utils"
+import { cn, normaliser } from "@/lib/utils"
 
 /** « Tout » d'abord, puis les catégories dans l'ordre du catalogue. */
 const filtres = [
@@ -16,16 +23,41 @@ const filtres = [
   ...categories.map((c) => ({ libelle: c.titre, valeur: c.titre })),
 ]
 
+/** Recherche sur tout ce qui identifie une référence, accents ignorés. */
+function correspond(produit: Produit, terme: string) {
+  if (!terme.trim()) return true
+  const cible = normaliser(
+    [produit.nom, produit.detail, produit.reference, produit.categorie].join(" "),
+  )
+  // Chaque mot saisi doit apparaître : « rouleau 18 » trouve le rouleau 18 cm.
+  return normaliser(terme)
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((mot) => cible.includes(mot))
+}
+
 export function GrilleProduits() {
   const { ajouter } = usePanier()
   const categorieActive = useCategorieAffichee()
+  // L'URL n'alimente le champ qu'au montage : en faire la source de vérité
+  // ferait sauter le curseur à chaque frappe au milieu du texte.
+  const [recherche, setRecherche] = React.useState(rechercheInitiale)
 
-  const compte = (valeur: string | null) =>
-    valeur ? produits.filter((p) => p.categorie === valeur).length : produits.length
+  function changerRecherche(valeur: string) {
+    setRecherche(valeur)
+    remplacer(urlCatalogue({ categorie: categorieActive, recherche: valeur }))
+  }
 
-  const visibles = categorieActive
+  const parCategorie = categorieActive
     ? produits.filter((p) => p.categorie === categorieActive)
     : produits
+
+  const compte = (valeur: string | null) =>
+    produits.filter(
+      (p) => (!valeur || p.categorie === valeur) && correspond(p, recherche),
+    ).length
+
+  const visibles = parCategorie.filter((p) => correspond(p, recherche))
 
   return (
     <section
@@ -56,18 +88,19 @@ export function GrilleProduits() {
           Vrais liens plutôt que boutons : le filtre vit dans l'URL, il reste
           donc partageable et le bouton retour du navigateur le défait.
         */}
-        <nav aria-label="Filtrer par catégorie" className="mt-8 mb-10">
+        <div className="mt-8 mb-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <nav aria-label="Filtrer par catégorie">
           <ul className="flex flex-wrap gap-2">
             {filtres.map((filtre) => {
               const actif = categorieActive === filtre.valeur
               return (
                 <li key={filtre.libelle}>
                   <a
-                    href={lienCategorie(filtre.valeur)}
+                    href={lienCategorie(filtre.valeur, recherche)}
                     aria-current={actif ? "true" : undefined}
                     onClick={(e) => {
                       e.preventDefault()
-                      naviguer(lienCategorie(filtre.valeur), {
+                      naviguer(lienCategorie(filtre.valeur, recherche), {
                         defilerEnHaut: false,
                       })
                     }}
@@ -95,6 +128,33 @@ export function GrilleProduits() {
             })}
           </ul>
         </nav>
+
+        <div className="relative lg:w-80">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <input
+            id={ID_CHAMP_RECHERCHE}
+            type="search"
+            value={recherche}
+            onChange={(e) => changerRecherche(e.target.value)}
+            placeholder="Rechercher une référence…"
+            aria-label="Rechercher dans le catalogue"
+            className="h-10 w-full rounded-full border border-border bg-card pl-9 pr-9 text-sm placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-plaster"
+          />
+          {recherche && (
+            <button
+              type="button"
+              onClick={() => changerRecherche("")}
+              aria-label="Effacer la recherche"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-primary"
+            >
+              <X className="size-4" />
+            </button>
+          )}
+        </div>
+        </div>
 
         {/* Cascade d'apparition en CSS : le délai porte sur l'enveloppe, la
             carte garde son propre `transform` pour le survol. */}
@@ -130,21 +190,44 @@ export function GrilleProduits() {
         </div>
 
         {visibles.length === 0 && (
-          <p className="rounded-lg border border-border bg-card px-5 py-8 text-center text-sm text-muted-foreground">
-            Aucune référence dans cette catégorie pour le moment.
-          </p>
+          <div className="rounded-lg border border-border bg-card px-5 py-10 text-center">
+            <p className="text-sm text-muted-foreground">
+              {recherche.trim()
+                ? `Aucune référence ne correspond à « ${recherche.trim()} »`
+                : "Aucune référence dans cette catégorie pour le moment."}
+              {recherche.trim() && categorieActive && ` en « ${categorieActive} »`}
+              .
+            </p>
+            {recherche.trim() && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                onClick={() => {
+                  changerRecherche("")
+                  naviguer(urlCatalogue(), { defilerEnHaut: false })
+                }}
+              >
+                Réinitialiser la recherche
+              </Button>
+            )}
+          </div>
         )}
 
-        <p className="mt-8 text-sm text-muted-foreground">
-          {categorieActive ? (
+        {/* `aria-live` : le nombre de résultats change sans rechargement, un
+            lecteur d'écran doit l'entendre. */}
+        <p className="mt-8 text-sm text-muted-foreground" aria-live="polite">
+          {recherche.trim() || categorieActive ? (
             <>
-              {visibles.length} référence{visibles.length > 1 ? "s" : ""} en «{" "}
-              {categorieActive} ».{" "}
+              {visibles.length} référence{visibles.length > 1 ? "s" : ""}
+              {categorieActive && ` en « ${categorieActive} »`}
+              {recherche.trim() && ` pour « ${recherche.trim()} »`}.{" "}
               <a
-                href={lienCategorie(null)}
+                href={urlCatalogue()}
                 onClick={(e) => {
                   e.preventDefault()
-                  naviguer(lienCategorie(null), { defilerEnHaut: false })
+                  changerRecherche("")
+                  naviguer(urlCatalogue(), { defilerEnHaut: false })
                 }}
                 className="font-medium text-primary underline underline-offset-4"
               >

@@ -5,7 +5,7 @@ import { CommerceHero } from "@/components/ui/commerce-hero"
 import { Marque } from "@/components/Marque"
 import { categories } from "@/data/produits"
 import { usePanier } from "@/panier/PanierContext"
-import { lienCategorie, naviguer } from "@/lib/navigation"
+import { focaliserRecherche, lienCategorie, naviguer } from "@/lib/navigation"
 
 const navigation = [
   { name: "Catalogue", href: "#catalogue" },
@@ -54,6 +54,7 @@ export function Hero() {
       reassurance={reassurance}
       vignettes={vignettes}
       panier={{ nombre: totaux.quantite, ouvrir }}
+      onRechercher={focaliserRecherche}
     />
   )
 }

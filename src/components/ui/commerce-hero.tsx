@@ -50,6 +50,8 @@ export interface CommerceHeroProps {
   vignettes: Vignette[]
   /** Compteur et ouverture du panneau panier, câblés sur les icônes du header. */
   panier: { nombre: number; ouvrir: () => void }
+  /** Amène le focus sur le champ de recherche du catalogue. */
+  onRechercher: () => void
 }
 
 export function CommerceHero({
@@ -63,6 +65,7 @@ export function CommerceHero({
   telephone,
   vignettes,
   panier,
+  onRechercher,
 }: CommerceHeroProps) {
   return (
     <div className="relative mx-auto w-full max-w-7xl px-2 pb-16 sm:px-4">
@@ -91,6 +94,7 @@ export function CommerceHero({
                 variant="ghost"
                 size="icon"
                 aria-label="Rechercher une référence"
+                onClick={onRechercher}
                 className="cursor-pointer transition-colors hover:text-primary"
               >
                 <Search className="h-5 w-5" />
@@ -145,6 +149,7 @@ export function CommerceHero({
                 <div className="flex flex-col gap-4 p-6">
                   <Button
                     variant="outline"
+                    onClick={onRechercher}
                     className="h-12 justify-start gap-2 transition-colors hover:bg-muted"
                   >
                     <Search className="h-4 w-4" />

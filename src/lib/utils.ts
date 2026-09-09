@@ -24,3 +24,14 @@ export function formatPrix(valeur: number) {
 export function asset(chemin: string) {
   return import.meta.env.BASE_URL + chemin
 }
+
+/**
+ * Minuscules sans accents, pour comparer « bâche » et « bache ». Sur un
+ * catalogue français, exiger les accents à la saisie serait pénible.
+ */
+export function normaliser(texte: string) {
+  return texte
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+}
