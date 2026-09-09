@@ -48,14 +48,17 @@ pour atteindre le palier suivant.
 Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
 « Votre palier ».
 
-| L'accueil | La fiche produit | Le panier |
-|---|---|---|
-| <img src="docs/captures/04-mobile.webp" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="240"> | <img src="docs/captures/12-produit-mobile.webp" alt="La fiche produit en 420 px : photo, note, prix, quantité et tableau des paliers réempilés en une colonne" width="240"> | <img src="docs/captures/11-panier-mobile.webp" alt="Le panier en 420 px : il occupe tout l'écran, deux lignes avec sélecteur de quantité, jauge, remise et total" width="240"> |
+| L'accueil | Le catalogue |
+|---|---|
+| <img src="docs/captures/04-mobile.webp" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="300"> | <img src="docs/captures/13-catalogue-mobile.webp" alt="Le catalogue en 420 px : filtres par catégorie sur deux rangées, tri et recherche empilés, une carte par rangée" width="300"> |
+| **La fiche produit** | **Le panier** |
+| <img src="docs/captures/12-produit-mobile.webp" alt="La fiche produit en 420 px : photo, note, prix, quantité et tableau des paliers réempilés en une colonne" width="300"> | <img src="docs/captures/11-panier-mobile.webp" alt="Le panier en 420 px : il occupe tout l'écran, deux lignes avec sélecteur de quantité, jauge, remise et total" width="300"> |
 
-En mobile, la navigation se replie dans un panneau latéral et le panier passe
-en plein écran. Ce sont les mêmes pages qu'au-dessus, à 420 px : même fiche,
-même panier à douze unités avec sa remise artisan — seule la mise en page
-change.
+En mobile, la navigation se replie dans un panneau latéral, les filtres du
+catalogue passent à la ligne, les cartes descendent en une colonne et le
+panier occupe tout l'écran. Ce sont les mêmes pages qu'au-dessus, à 420 px :
+même fiche, même panier à douze unités avec sa remise artisan — seule la mise
+en page change.
 
 La fiche mobile a d'ailleurs révélé un défaut de typographie : le tableau des
 paliers y est assez étroit pour que « −22 % » se coupe entre le nombre et le

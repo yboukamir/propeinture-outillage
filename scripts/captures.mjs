@@ -74,6 +74,18 @@ const vues = [
   { nom: "03-tarifs.webp", selecteur: "#tarifs", largeur: 1280, hauteur: 900 },
   { nom: "04-mobile.webp", selecteur: null, largeur: 420, hauteur: 860 },
   {
+    /*
+     * Le catalogue en 420 px : filtres qui passent à la ligne, tri et
+     * recherche empilés, une carte par rangée. La hauteur s'arrête au bas de
+     * la première carte — 1135 px sous le haut de section, plus le bandeau —
+     * pour ne pas laisser dépasser un liseré de la suivante.
+     */
+    nom: "13-catalogue-mobile.webp",
+    selecteur: "#catalogue",
+    largeur: 420,
+    hauteur: 1180,
+  },
+  {
     nom: "06-produit.webp",
     url: `${URL_SITE}?produit=enduit-lissage-25`,
     selecteur: null,
