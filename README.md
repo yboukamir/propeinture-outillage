@@ -5,6 +5,8 @@ et de matériel pour peintres professionnels. **Aucune commande réelle**, aucun
 société derrière, aucun paiement branché — un bandeau permanent le rappelle en
 haut de page.
 
+**Démo en ligne : https://yboukamir.github.io/propeinture-outillage/**
+
 ## Aperçu
 
 ![Header et hero : panneau charbon, titre en Barlow Semi Condensed, double appel à l'action et ligne de réassurance](docs/captures/01-hero.png)
