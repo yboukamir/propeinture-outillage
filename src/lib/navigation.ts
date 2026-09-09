@@ -75,3 +75,21 @@ export function useCategorieAffichee(): string | null {
   const recherche = React.useSyncExternalStore(souscrire, instantane, () => "")
   return new URLSearchParams(recherche).get("categorie")
 }
+
+/**
+ * Rejoue l'ancre de l'URL au premier rendu. Le navigateur la traite au
+ * chargement du document, quand React n'a encore rien monté : la section
+ * n'existe pas et le défilement n'a pas lieu. Sans ça, un lien vers
+ * `?categorie=Protection#catalogue` ouvre la page en haut.
+ */
+export function useDefilementVersAncre() {
+  React.useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (!id) return
+
+    const image = requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView()
+    })
+    return () => cancelAnimationFrame(image)
+  }, [])
+}

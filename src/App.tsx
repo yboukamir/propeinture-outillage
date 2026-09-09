@@ -7,7 +7,7 @@ import { PageProduit } from "@/components/sections/PageProduit"
 import { PanierPanneau } from "@/components/sections/PanierPanneau"
 import { TarifsDegressifs } from "@/components/sections/TarifsDegressifs"
 import { produits } from "@/data/produits"
-import { useProduitAffiche } from "@/lib/navigation"
+import { useDefilementVersAncre, useProduitAffiche } from "@/lib/navigation"
 import { PanierProvider } from "@/panier/PanierContext"
 
 export default function App() {
@@ -38,6 +38,12 @@ function Contenu() {
       </>
     )
   }
+
+  return <Accueil />
+}
+
+function Accueil() {
+  useDefilementVersAncre()
 
   return (
     <div className="min-h-screen bg-background">
