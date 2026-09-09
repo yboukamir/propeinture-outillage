@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Github } from "lucide-react"
 
 /**
  * Adapté de « Minimal Footer » par efferd (21st.dev)
@@ -8,7 +9,8 @@ import * as React from "react"
  * (elles étaient codées en dur), icônes de réseaux sociaux remplacées par les
  * coordonnées de contact — une maquette n'a pas de comptes à pointer —,
  * largeur portée de `max-w-4xl` à `max-w-6xl` pour s'aligner sur le reste de
- * la page, et ligne de rappel « projet de démonstration » ajoutée en pied.
+ * la page, ligne de rappel « projet de démonstration » et lien vers le dépôt
+ * ajoutés en pied.
  */
 
 export type ColonneFooter = {
@@ -21,6 +23,8 @@ export type ContactFooter = {
   texte: string
 }
 
+export type DepotFooter = { href: string; libelle: string }
+
 export interface MinimalFooterProps {
   marque: React.ReactNode
   accroche: string
@@ -28,6 +32,8 @@ export interface MinimalFooterProps {
   colonnes: ColonneFooter[]
   mentions: string
   rappel: string
+  /** Lien vers le code, en pied : il parle de la maquette, pas de la boutique. */
+  depot?: DepotFooter
   id?: string
 }
 
@@ -38,6 +44,7 @@ export function MinimalFooter({
   colonnes,
   mentions,
   rappel,
+  depot,
   id = "contact",
 }: MinimalFooterProps) {
   const annee = new Date().getFullYear()
@@ -94,6 +101,22 @@ export function MinimalFooter({
           <p className="text-center text-sm text-secondary-foreground/60">
             © {annee} {mentions}
           </p>
+          {depot && (
+            <p className="text-center text-sm">
+              <a
+                href={depot.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-secondary-foreground/80 underline underline-offset-4 duration-200 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-secondary"
+              >
+                <Github className="size-4 shrink-0" aria-hidden="true" />
+                {depot.libelle}
+                {/* Le changement d'onglet s'annonce : rien à l'écran ne le
+                    laisse deviner. */}
+                <span className="sr-only"> (nouvel onglet)</span>
+              </a>
+            </p>
+          )}
           <p className="text-center text-xs font-medium text-accent">
             {rappel}
           </p>

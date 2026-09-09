@@ -7,6 +7,9 @@ haut de page.
 
 **Démo en ligne : https://yboukamir.github.io/propeinture-outillage/**
 
+Le pied de page du site renvoie ici : le lien parle de la maquette et non de
+la boutique, il vit donc avec les mentions, pas dans les colonnes du magasin.
+
 ## Aperçu
 
 ![Header et hero : panneau charbon, titre en Barlow Semi Condensed, double appel à l'action et ligne de réassurance](docs/captures/01-hero.webp)
@@ -434,8 +437,11 @@ boutique, remplacer les fichiers en gardant les mêmes noms.
 
 ## Notes
 
-- Tous les boutons sont inertes : c'est une maquette de style, pas une
-  boutique. Aucun panier, aucun back-end, aucun moyen de paiement branché.
+- C'est une maquette de style, pas une boutique : aucun back-end, aucun moyen
+  de paiement branché. Le panier, lui, fonctionne pour de bon — il calcule les
+  remises —, mais « Commander » est volontairement désactivé. Les avis déposés,
+  les votes d'utilité et les signalements vivent dans la page et disparaissent
+  au rechargement, ce que l'interface dit à chaque fois.
 - Les apparitions et les effets de survol sont en CSS pur, sans librairie
   d'animation. L'utilitaire `animate-apparition` (défini dans `index.css`) monte
   en `animation-fill-mode: both`, donc l'élément finit toujours visible ; la

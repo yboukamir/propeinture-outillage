@@ -38,6 +38,10 @@ export function Footer() {
       contacts={contacts}
       colonnes={colonnes}
       mentions="ProPeinture Outillage — maquette fictive, société inexistante."
+      depot={{
+        href: "https://github.com/yboukamir/propeinture-outillage",
+        libelle: "Code source sur GitHub",
+      }}
       rappel="Projet de démonstration — aucune commande réelle"
     />
   )
