@@ -133,6 +133,22 @@ doit apparaître, si bien que « rouleau 18 » isole le rouleau 18 cm. Elle
 s'écrit dans l'URL avec `replaceState` et non `pushState` : taper dix lettres
 n'ajoute pas dix entrées à l'historique, mais le lien reste copiable.
 
+### Page 404
+
+`404.html` est servie par l'hébergeur pour les chemins inconnus, hors de toute
+navigation applicative : elle est donc entièrement autonome — styles en ligne,
+ni React ni bundle — et duplique à dessein le petit script de thème, n'ayant
+rien à quoi se raccrocher.
+
+Elle est déclarée en entrée de build dans `vite.config.ts` plutôt que déposée
+dans `public/` : les fichiers de `public/` sont copiés tels quels, alors qu'une
+entrée reçoit la substitution de `%BASE_URL%`. Sans ça, ses liens de retour
+pointeraient la racine du domaine au lieu de celle du déploiement — cassés sur
+GitHub Pages, qui sert en sous-chemin.
+
+À ne pas confondre avec le repli applicatif : un `?produit=` inconnu reste sur
+l'accueil plutôt que d'afficher cette page, l'adresse étant valide.
+
 ## Démarrer
 
 ```bash
@@ -168,6 +184,7 @@ BASE_PATH=/mon-depot/ npm run build
 ## Structure
 
 ```
+404.html             la page d'erreur, autonome et sans bundle
 docs/captures/       les images de l'aperçu (WebP, clair et sombre)
 scripts/captures.mjs le script qui les régénère
 src/
