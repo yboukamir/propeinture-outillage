@@ -21,13 +21,14 @@ const dateLongue = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 })
 
-type TriAvis = "recent" | "note-desc" | "note-asc" | "utiles"
+type TriAvis = "recent" | "ancien" | "note-desc" | "note-asc" | "utiles"
 
 /** Cinq avis par page : au-delà, la fiche devient un mur de texte. */
 const PAR_PAGE = 5
 
 const TRIS_AVIS: { valeur: TriAvis; libelle: string }[] = [
   { valeur: "recent", libelle: "Plus récents" },
+  { valeur: "ancien", libelle: "Plus anciens" },
   { valeur: "utiles", libelle: "Les plus utiles" },
   { valeur: "note-desc", libelle: "Meilleures notes" },
   { valeur: "note-asc", libelle: "Notes les plus basses" },
@@ -43,7 +44,10 @@ function trier(
   tri: TriAvis,
   utilite: (avis: Avis) => number,
 ) {
+  // Les données arrivent déjà triées de la plus récente à la plus ancienne :
+  // « Plus récents » n'a rien à faire, « Plus anciens » les renverse.
   if (tri === "recent") return liste
+  if (tri === "ancien") return [...liste].reverse()
   return [...liste].sort((a, b) => {
     const ecart =
       tri === "utiles"
@@ -424,6 +428,9 @@ export function AvisClients({
           // Sans ça, un avis déposé avec une autre note serait invisible :
           // il tomberait hors du filtre actif.
           setFiltreNote(null)
+          // Même raison : il est daté d'aujourd'hui, donc dernier de la liste
+          // sous « Plus anciens » et introuvable sous les tris par note.
+          setTri("recent")
           // L'avis part en tête de liste : la page 1 est la seule où le voir.
           setPage(1)
           onAjout(nouveau)
