@@ -164,13 +164,21 @@ d'avis portent cette note et s'active au clic, un second clic la désactivant �
 pas besoin d'un bouton « tout » à côté. Les notes sans avis sont désactivées,
 et déposer un avis lève le filtre en cours, sans quoi le nouvel avis serait
 invisible s'il tombait hors du filtre. Une bascule « Avec réponse du vendeur »
-complète le panneau, absente des fiches où personne n'a répondu. Les deux
-critères se cumulent, et leur croisement peut ne rien donner : une note sur
-laquelle la boutique n'a jamais répondu affiche alors « Aucun avis ne
-correspond à ces filtres » et le lien qui les lève. Les compteurs de
-l'histogramme restent ceux de l'ensemble, comme la moyenne au-dessus : ils
-décrivent la référence, pas la sélection en cours. Déposer remet aussi le tri
-sur « Plus récents », pour la même raison : daté du jour, l'avis serait dernier sous
+complète le panneau, absente des fiches où personne n'a répondu.
+
+Les deux critères se cumulent et leurs compteurs sont des facettes : chacun
+annonce ce que donnerait ce choix-là, l'autre critère appliqué mais pas le
+sien — sans cette exclusion, sélectionner une note mettrait toutes les autres
+lignes à zéro. Les barres se rebasent sur le lot que l'autre critère laisse.
+Un compteur à zéro éteint son critère, si bien qu'aucun croisement vide n'est
+atteignable : le panneau ne propose jamais un clic qui ne donnerait rien. La
+bascule est éteinte, pas masquée, quand c'est la note choisie qui ne laisse
+aucune réponse — un contrôle qui disparaît sous le doigt est pire qu'un
+contrôle grisé. Le code garde malgré tout un état « aucun avis ne correspond »,
+en filet : une liste vide sans un mot serait pire qu'une branche jamais
+empruntée.
+
+Déposer un avis remet aussi le tri sur « Plus récents », pour la même raison : daté du jour, l'avis serait dernier sous
 « Plus anciens » et perdu au milieu sous un tri par note. La moyenne et le
 total en tête portent toujours sur l'ensemble : ils doivent parler du même lot.
 

@@ -131,22 +131,31 @@ export function AvisClients({
     })
   }
 
+  const parNote = (a: Avis) => filtreNote === null || a.note === filtreNote
+  const parReponse = (a: Avis) => !avecReponse || Boolean(a.reponse)
+
+  const filtreActif = filtreNote !== null || avecReponse
+  const filtres = tous.filter((a) => parNote(a) && parReponse(a))
+  const liste = trier(filtres, tri, utilite)
+
+  /*
+   * Compteurs en facettes : chacun annonce ce que donnerait ce choix-là,
+   * l'autre critère appliqué mais pas le sien. Sans cette exclusion,
+   * sélectionner une note mettrait toutes les autres lignes à zéro. Un
+   * compteur à zéro désactive son critère, si bien qu'aucun croisement vide
+   * n'est atteignable depuis le panneau.
+   */
   // De 5 à 1 : c'est l'ordre attendu d'un histogramme d'avis.
   const distribution = [5, 4, 3, 2, 1].map((note) => ({
     note,
-    nombre: tous.filter((a) => a.note === note).length,
+    nombre: tous.filter((a) => a.note === note && parReponse(a)).length,
   }))
-
-  const nombreReponses = tous.filter((a) => a.reponse).length
-  const filtreActif = filtreNote !== null || avecReponse
-  // Les deux critères se cumulent, et leur croisement peut ne rien donner :
-  // la liste vide est un état à afficher, pas un cas impossible.
-  const filtres = tous.filter(
-    (a) =>
-      (filtreNote === null || a.note === filtreNote) &&
-      (!avecReponse || a.reponse),
-  )
-  const liste = trier(filtres, tri, utilite)
+  /** Base des barres : le lot que l'autre critère laisse, pas la fiche entière. */
+  const baseNotes = tous.filter(parReponse).length
+  /** Sur la fiche entière : décide si la bascule a lieu d'être proposée. */
+  const reponsesTotal = tous.filter((a) => a.reponse).length
+  /** En facette : ce que la bascule donnerait avec la note déjà choisie. */
+  const facetteReponse = tous.filter((a) => a.reponse && parNote(a)).length
 
   /** Repart d'une liste entière, quel que soit le critère qui la réduisait. */
   function toutAfficher() {
@@ -201,7 +210,7 @@ export function AvisClients({
           <ul className="mt-3 flex flex-col gap-1.5">
             {distribution.map(({ note, nombre }) => {
               const actif = filtreNote === note
-              const part = tous.length === 0 ? 0 : (nombre / tous.length) * 100
+              const part = baseNotes === 0 ? 0 : (nombre / baseNotes) * 100
               return (
                 <li key={note}>
                   <button
@@ -243,24 +252,31 @@ export function AvisClients({
             })}
           </ul>
 
-          {/* Absente des fiches sans réponse : elle n'y filtrerait rien. */}
-          {nombreReponses > 0 && (
+          {/* Absente des fiches sans réponse : elle n'y filtrerait rien.
+              Désactivée, en revanche, quand c'est la note choisie qui n'en
+              laisse aucune — un contrôle qui disparaît sous le doigt est pire
+              qu'un contrôle éteint. */}
+          {reponsesTotal > 0 && (
             <button
               type="button"
               onClick={() => {
                 setAvecReponse(!avecReponse)
                 setPage(1)
               }}
+              disabled={facetteReponse === 0}
               aria-pressed={avecReponse}
               className={cn(
-                "mt-3 flex w-full items-center gap-3 rounded-md border-t border-border px-2 pb-1.5 pt-3 text-left text-sm transition-colors hover:bg-muted",
+                "mt-3 flex w-full items-center gap-3 rounded-md border-t border-border px-2 pb-1.5 pt-3 text-left text-sm transition-colors",
+                facetteReponse === 0
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-muted",
                 avecReponse && "bg-muted",
               )}
             >
               <MessageSquareReply className="size-4 shrink-0" aria-hidden="true" />
               <span className="flex-1">Avec réponse du vendeur</span>
               <span className="w-6 shrink-0 text-right tabular-nums text-muted-foreground">
-                {nombreReponses}
+                {facetteReponse}
               </span>
             </button>
           )}
@@ -314,8 +330,9 @@ export function AvisClients({
           Cette référence n'a pas encore d'avis.
         </p>
       ) : liste.length === 0 ? (
-        // Possible depuis que deux critères se croisent : une note sur
-        // laquelle la boutique n'a jamais répondu ne donne aucun avis.
+        // Inatteignable depuis le panneau, les facettes désactivant tout
+        // choix sans résultat. Gardé comme filet : une liste vide sans un
+        // mot serait pire qu'une branche jamais empruntée.
         <p className="mt-6 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card px-5 py-8 text-sm text-muted-foreground">
           <MessageSquareOff className="size-4 shrink-0" aria-hidden="true" />
           Aucun avis ne correspond à ces filtres.
