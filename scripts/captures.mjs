@@ -72,6 +72,19 @@ const vues = [
     hauteur: 2300,
   },
   {
+    /*
+     * Le pied de page se prend par le bas et non au sélecteur : arrivé en
+     * butée de défilement, la correction du bandeau collé rognerait d'autant
+     * le bas de la capture. La hauteur vaut celle du pied plus le bandeau,
+     * qui recouvre exactement la bande de section restée au-dessus.
+     */
+    nom: "10-pied.webp",
+    bas: true,
+    selecteur: null,
+    largeur: 1280,
+    hauteur: 404,
+  },
+  {
     // Page servie par l'hébergeur : elle vit hors de l'application, d'où
     // l'URL directe vers le fichier.
     nom: "08-404.webp",
@@ -139,6 +152,10 @@ try {
     ])
     await page.setViewport({ width: vue.largeur, height: vue.hauteur })
     await page.goto(vue.url ?? URL_SITE, { waitUntil: "networkidle0" })
+
+    if (vue.bas) {
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    }
 
     if (vue.selecteur) {
       // scrollIntoView puis correction du bandeau collé, sinon il recouvre le

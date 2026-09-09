@@ -59,6 +59,13 @@ Les deux façons d'échouer, volontairement distinctes :
 | ![Vue « Référence introuvable » : l'identifiant demandé est affiché, avec deux sorties et des suggestions](docs/captures/07-introuvable.webp) | ![Page 404 : grand chiffre en brique, titre et deux liens de retour](docs/captures/08-404.webp) |
 | L'adresse est valide, son contenu manque : on garde l'en-tête, le panier et l'URL. | L'adresse n'existe pas : page autonome, hors application. |
 
+![Pied de page charbon : marque, accroche, coordonnées fictives, deux colonnes de liens, mentions, lien vers le code source et rappel de démonstration](docs/captures/10-pied.webp)
+
+Le pied de page, avec le bandeau de démonstration qui reste collé en haut de
+l'écran. Les coordonnées sont fictives comme le reste ; le lien vers le code
+est le seul de la page qui mène quelque part de réel, et il est rangé avec les
+mentions pour cette raison.
+
 Les captures ci-dessus sont en thème clair ; `docs/captures/` contient les
 mêmes en sombre, suffixées `-sombre`. Elles se régénèrent toutes, dans les deux
 thèmes, avec le serveur de dev lancé :
