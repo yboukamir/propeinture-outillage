@@ -461,7 +461,13 @@ le mode sombre se résume à redéfinir leurs valeurs sous
 
 | Clair | Sombre |
 |---|---|
+| ![Hero en thème clair : panneau charbon sur fond plâtre](docs/captures/01-hero.webp) | ![Hero en thème sombre : le panneau se fond dans la page, le titre et l'accent jaune portent seuls le contraste](docs/captures/01-hero-sombre.webp) |
 | ![Catalogue en thème clair](docs/captures/02-catalogue.webp) | ![Catalogue en thème sombre](docs/captures/02-catalogue-sombre.webp) |
+
+Le hero est la vue où le changement s'entend le mieux : en clair, le panneau
+charbon tranche sur le fond plâtre ; en sombre, il n'a plus de fond clair
+contre lequel se détacher et ce sont le titre et l'accent jaune qui portent le
+contraste.
 
 La bascule est dans les deux en-têtes. Sans choix explicite, la préférence
 système est suivie et continue de l'être si elle change ; un clic enregistre un
