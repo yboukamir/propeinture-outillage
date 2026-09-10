@@ -92,6 +92,12 @@ navigateur (`CHROME_PATH=...` pour en désigner un autre). Le thème est obtenu
 en émulant la préférence système, chaque passe dans un contexte de navigation
 neuf.
 
+Une régénération peut faire ressortir `01-hero-sombre.webp` comme modifié
+sans que rien n'ait bougé : l'encodeur WebP alterne entre deux tirages de
+cette photo, six octets d'écart, jamais plus de 9 sur 255 par pixel. Il n'y a
+rien à committer dans ce cas — la règle appliquée ici est de comparer les
+images avant de conclure, et de ne verser que ce qui se voit.
+
 ## Stack
 
 - Vite 6 + React 19 + TypeScript
