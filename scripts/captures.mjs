@@ -141,6 +141,18 @@ const vues = [
   },
   {
     /*
+     * La référence introuvable en 420 px. La hauteur descend au bas de la
+     * première suggestion — 1020 px —, assez pour montrer que la sortie de
+     * secours continue en dessous sans dérouler les trois cartes.
+     */
+    nom: "16-introuvable-mobile.webp",
+    url: `${URL_SITE}?produit=reference-supprimee`,
+    selecteur: null,
+    largeur: 420,
+    hauteur: 1030,
+  },
+  {
+    /*
      * Les avis en 420 px, sur la fiche à deux avis plutôt que sur la plus
      * commentée : ses deux cartes tiennent dans un cadre et la seconde porte
      * une réponse du vendeur, qui est ce que la colonne étroite met le plus à

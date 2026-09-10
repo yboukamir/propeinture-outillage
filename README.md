@@ -78,12 +78,17 @@ Les deux façons d'échouer, volontairement distinctes :
 | ![Vue « Référence introuvable » : l'identifiant demandé est affiché, avec deux sorties et des suggestions](docs/captures/07-introuvable.webp) | ![Page 404 : grand chiffre en brique, titre et deux liens de retour](docs/captures/08-404.webp) |
 | L'adresse est valide, son contenu manque : on garde l'en-tête, le panier et l'URL. | L'adresse n'existe pas : page autonome, hors application. |
 
-<img src="docs/captures/14-404-mobile.webp" alt="La page 404 en 420 px : chiffre et titre centrés, les deux boutons de retour côte à côte, mentions collées en bas" width="300">
+Les mêmes, en 420 px :
 
-La 404 en 420 px. Elle se dimensionne sur la fenêtre — contenu centré, pied
-collé en bas — et n'emprunte rien à l'application : ses styles et son script
-de thème lui sont propres, puisqu'elle doit s'afficher quand le bundle n'est
-jamais chargé.
+| Dans l'appli | Servie par l'hébergeur |
+|---|---|
+| <img src="docs/captures/16-introuvable-mobile.webp" alt="La vue « Référence introuvable » en 420 px : identifiant demandé, deux sorties côte à côte, suggestions en une colonne" width="300"> | <img src="docs/captures/14-404-mobile.webp" alt="La page 404 en 420 px : chiffre et titre centrés, les deux boutons de retour côte à côte, mentions collées en bas" width="300"> |
+
+L'une garde l'en-tête, le panier et les suggestions, qui descendent en une
+colonne. L'autre se dimensionne sur la fenêtre — contenu centré, pied collé en
+bas — et n'emprunte rien à l'application : ses styles et son script de thème
+lui sont propres, puisqu'elle doit s'afficher quand le bundle n'est jamais
+chargé.
 
 ![Pied de page charbon : marque, accroche, coordonnées fictives, deux colonnes de liens, mentions, lien vers le code source et rappel de démonstration](docs/captures/10-pied.webp)
 
