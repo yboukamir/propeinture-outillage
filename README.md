@@ -18,6 +18,12 @@ Le hero et sa barre de navigation. Le panneau charbon et l'encoche claire du
 header donnent le contraste ; les quatre vignettes de catégories suivent juste
 en dessous.
 
+![Le même hero en thème sombre : le panneau n'a plus de fond plâtre contre lequel se détacher, le titre et l'accent jaune portent le contraste](docs/captures/01-hero-sombre.webp)
+
+Le même, en sombre. C'est la vue où la bascule s'entend le mieux : le panneau
+charbon n'a plus de fond plâtre contre lequel se détacher, et ce sont le titre
+et l'accent jaune qui portent le contraste.
+
 ![Grille produits : six cartes avec photo en 4:3, badge best-seller, pastille de stock, note moyenne et prix à l'unité](docs/captures/02-catalogue.webp)
 
 Le catalogue, sa recherche, son tri et ses filtres par catégorie. Chaque carte
@@ -103,8 +109,8 @@ l'écran. Les coordonnées sont fictives comme le reste ; le lien vers le code
 est le seul de la page qui mène quelque part de réel, et il est rangé avec les
 mentions pour cette raison.
 
-Les captures ci-dessus sont en thème clair ; `docs/captures/` contient les
-mêmes en sombre, suffixées `-sombre`. Elles se régénèrent toutes, dans les deux
+Hormis le hero, les captures ci-dessus sont en thème clair ;
+`docs/captures/` contient les mêmes en sombre, suffixées `-sombre`. Elles se régénèrent toutes, dans les deux
 thèmes, avec le serveur de dev lancé :
 
 ```bash
@@ -461,13 +467,7 @@ le mode sombre se résume à redéfinir leurs valeurs sous
 
 | Clair | Sombre |
 |---|---|
-| ![Hero en thème clair : panneau charbon sur fond plâtre](docs/captures/01-hero.webp) | ![Hero en thème sombre : le panneau se fond dans la page, le titre et l'accent jaune portent seuls le contraste](docs/captures/01-hero-sombre.webp) |
 | ![Catalogue en thème clair](docs/captures/02-catalogue.webp) | ![Catalogue en thème sombre](docs/captures/02-catalogue-sombre.webp) |
-
-Le hero est la vue où le changement s'entend le mieux : en clair, le panneau
-charbon tranche sur le fond plâtre ; en sombre, il n'a plus de fond clair
-contre lequel se détacher et ce sont le titre et l'accent jaune qui portent le
-contraste.
 
 La bascule est dans les deux en-têtes. Sans choix explicite, la préférence
 système est suivie et continue de l'être si elle change ; un clic enregistre un
