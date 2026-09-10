@@ -49,6 +49,17 @@ const MARGE_BANDEAU = 4
  * palier grossiste est visible. Partagé par les deux vues du panier, pour
  * qu'elles montrent le même contenu à deux largeurs.
  */
+const ouvrirPanier = async () => {
+  const attendre = (ms) => new Promise((r) => setTimeout(r, ms))
+  const bouton = [...document.querySelectorAll("button")].find((b) =>
+    (b.getAttribute("aria-label") ?? "").startsWith("Panier"),
+  )
+  bouton.click()
+  await attendre(400)
+  document.activeElement?.blur()
+  await attendre(300)
+}
+
 const remplirPanier = async () => {
   const attendre = (ms) => new Promise((r) => setTimeout(r, ms))
   const ajouter = [...document.querySelectorAll("button")].filter(
@@ -203,6 +214,15 @@ const vues = [
     largeur: 1280,
     hauteur: 900,
     prepare: remplirPanier,
+  },
+  {
+    // Le même panneau sans rien dedans, au même cadrage : les deux images se
+    // comparent poste pour poste.
+    nom: "18-panier-vide.webp",
+    selecteur: null,
+    largeur: 1280,
+    hauteur: 900,
+    prepare: ouvrirPanier,
   },
   {
     // Le même panier en 420 px : le panneau latéral y occupe tout l'écran.

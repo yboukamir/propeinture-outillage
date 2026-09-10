@@ -55,6 +55,12 @@ Le panier, seule partie réellement fonctionnelle du concept : la remise se
 recalcule à chaque changement de quantité et la jauge annonce ce qui manque
 pour atteindre le palier suivant.
 
+![Le même panneau, panier vide : titre, icône et une phrase qui dit quoi faire, sans total ni bouton de commande](docs/captures/18-panier-vide.webp)
+
+Le même panneau avant tout ajout. Rien n'y est grisé pour faire nombre : ni
+total, ni jauge, ni bouton de commande — seulement la phrase qui dit quoi
+faire. Le pied du panneau n'apparaît qu'avec une ligne à totaliser.
+
 ![Trois paliers tarifaires, celui du milieu en charbon avec la remise en jaune](docs/captures/03-tarifs.webp)
 
 Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
