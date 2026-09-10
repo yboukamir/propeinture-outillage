@@ -144,6 +144,18 @@ const vues = [
     hauteur: 720,
   },
   {
+    /*
+     * La 404 en 420 px. La page se dimensionne sur la fenêtre — contenu
+     * centré, pied collé en bas —, la hauteur d'un écran de téléphone suffit
+     * donc à la montrer entière.
+     */
+    nom: "14-404-mobile.webp",
+    url: `${URL_SITE}404.html`,
+    selecteur: null,
+    largeur: 420,
+    hauteur: 860,
+  },
+  {
     nom: "05-panier.webp",
     selecteur: null,
     largeur: 1280,
