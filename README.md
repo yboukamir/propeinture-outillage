@@ -54,6 +54,12 @@ pour atteindre le palier suivant.
 Les tarifs dégressifs. Le palier atteint par le panier en cours y est signalé
 « Votre palier ».
 
+<img src="docs/captures/17-tarifs-mobile.webp" alt="Les trois paliers en 420 px : empilés au lieu d'être côte à côte, celui du milieu toujours en charbon" width="300">
+
+Les mêmes en 420 px : les trois paliers s'empilent, et celui du milieu garde
+son fond charbon plutôt que de compter sur sa position centrale pour se
+distinguer.
+
 | L'accueil | Le catalogue |
 |---|---|
 | <img src="docs/captures/04-mobile.webp" alt="Le hero en 420 px de large : navigation repliée derrière un bouton, contenu en une colonne" width="300"> | <img src="docs/captures/13-catalogue-mobile.webp" alt="Le catalogue en 420 px : filtres par catégorie sur deux rangées, tri et recherche empilés, une carte par rangée" width="300"> |

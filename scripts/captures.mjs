@@ -141,6 +141,18 @@ const vues = [
   },
   {
     /*
+     * Les tarifs en 420 px : les trois paliers, côte à côte en 1280, s'y
+     * empilent. La hauteur descend au bas du troisième — 1666 px sous le haut
+     * de section, plus le bandeau — pour montrer le barème entier sans
+     * traîner le remplissage de fin de section.
+     */
+    nom: "17-tarifs-mobile.webp",
+    selecteur: "#tarifs",
+    largeur: 420,
+    hauteur: 1724,
+  },
+  {
+    /*
      * La référence introuvable en 420 px. La hauteur descend au bas de la
      * première suggestion — 1020 px —, assez pour montrer que la sortie de
      * secours continue en dessous sans dérouler les trois cartes.
