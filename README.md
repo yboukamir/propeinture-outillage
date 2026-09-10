@@ -31,11 +31,17 @@ La fiche produit, atteinte en cliquant une carte. Elle décline le prix unitaire
 
 ![Section avis : moyenne en étoiles, mention d'avis fictifs, histogramme filtrant, sélecteur de tri, cinq avis avec boutons d'utilité, de partage et de signalement dont un suivi d'une réponse du vendeur, pagination et formulaire de dépôt](docs/captures/09-avis.webp)
 
-Les avis, en bas de fiche : panneau de filtres — histogramme des notes et
-avis répondus —, tri, liste avec boutons d'utilité, de partage et de
-signalement,
-réponses du vendeur, pagination et formulaire de dépôt. La mention d'avis fictifs est en clair
-au-dessus, et le formulaire annonce avant la saisie que rien n'est envoyé.
+Les avis, en bas de fiche : panneau de filtres — histogramme des notes et avis
+répondus —, tri, liste avec boutons d'utilité, de partage et de signalement,
+réponses du vendeur, pagination et formulaire de dépôt. La mention d'avis
+fictifs est en clair au-dessus, et le formulaire annonce avant la saisie que
+rien n'est envoyé.
+
+<img src="docs/captures/15-avis-mobile.webp" alt="Les avis en 420 px : panneau de filtres, tri, deux avis dont un suivi d'une réponse du vendeur, actions passées à la ligne" width="300">
+
+Les mêmes avis en 420 px, sur la fiche à deux avis : la rangée d'actions passe
+à la ligne plutôt que de déborder, et la réponse du vendeur garde son décalage
+et son propre signalement dans la colonne étroite.
 
 ![Panneau panier ouvert : deux lignes avec photo et sélecteur de quantité, jauge vers le palier suivant, remise artisan appliquée au total](docs/captures/05-panier.webp)
 

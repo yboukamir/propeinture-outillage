@@ -34,8 +34,12 @@ if (!executablePath) {
   process.exit(1)
 }
 
-/** Hauteur du bandeau de démonstration, qui reste collé en haut. */
-const BANDEAU = 44
+/**
+ * Marge laissée sous le bandeau collé. Sa hauteur, elle, se mesure dans la
+ * page : elle passe de 40 à 54 px quand le texte se met sur deux lignes en
+ * mobile, et un décalage fixe recouvrait alors le titre de la section visée.
+ */
+const MARGE_BANDEAU = 4
 
 /**
  * `prepare` s'exécute dans la page avant la capture, pour les vues qui
@@ -77,13 +81,14 @@ const vues = [
     /*
      * Le catalogue en 420 px : filtres qui passent à la ligne, tri et
      * recherche empilés, une carte par rangée. La hauteur s'arrête au bas de
-     * la première carte — 1135 px sous le haut de section, plus le bandeau —
-     * pour ne pas laisser dépasser un liseré de la suivante.
+     * la première carte — 1135 px sous le haut de section, plus le bandeau,
+     * qui fait 54 px à cette largeur — pour ne pas laisser dépasser un liseré
+     * de la suivante.
      */
     nom: "13-catalogue-mobile.webp",
     selecteur: "#catalogue",
     largeur: 420,
-    hauteur: 1180,
+    hauteur: 1194,
   },
   {
     nom: "06-produit.webp",
@@ -133,6 +138,19 @@ const vues = [
     selecteur: null,
     largeur: 1280,
     hauteur: 404,
+  },
+  {
+    /*
+     * Les avis en 420 px, sur la fiche à deux avis plutôt que sur la plus
+     * commentée : ses deux cartes tiennent dans un cadre et la seconde porte
+     * une réponse du vendeur, qui est ce que la colonne étroite met le plus à
+     * l'épreuve. La hauteur s'arrête au bas de cette carte.
+     */
+    nom: "15-avis-mobile.webp",
+    url: `${URL_SITE}?produit=enduit-lissage-25`,
+    selecteur: "#titre-avis",
+    largeur: 420,
+    hauteur: 1361,
   },
   {
     // Page servie par l'hébergeur : elle vit hors de l'application, d'où
@@ -209,11 +227,13 @@ try {
     if (vue.selecteur) {
       // scrollIntoView puis correction du bandeau collé, sinon il recouvre le
       // haut de la section capturée.
-      await page.evaluate((sel, decalage) => {
+      await page.evaluate((sel, marge) => {
         const cible = document.querySelector(sel)
         cible.scrollIntoView()
-        window.scrollBy(0, -decalage)
-      }, vue.selecteur, BANDEAU)
+        const bandeau = document.querySelector(".sticky.top-0")
+        const hauteur = bandeau ? bandeau.getBoundingClientRect().height : 0
+        window.scrollBy(0, -(hauteur + marge))
+      }, vue.selecteur, MARGE_BANDEAU)
     }
 
     // Les images sont en `loading="lazy"` : le défilement en déclenche le
